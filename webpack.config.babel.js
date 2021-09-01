@@ -19,6 +19,7 @@ const browserConfig = {
   },
   output: {
     path: join(__dirname, 'dist'),
+    chunkFormat: 'array-push',
   },
   optimization: {
     minimize: false,
@@ -79,6 +80,7 @@ const commonJsConfig = merge(browserConfig, {
   },
   output: {
     path: join(__dirname, 'lib'),
+    chunkFormat: 'commonjs',
   },
 });
 
