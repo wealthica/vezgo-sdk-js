@@ -2,7 +2,7 @@
   "name": "vezgo-node",
   "version": "0.0.1",
   "description": "Official Vezgo SDK",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "watch:test": "npm t -- --watch",
     "prebuild": "rimraf dist lib",

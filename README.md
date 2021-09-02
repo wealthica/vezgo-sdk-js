@@ -46,7 +46,7 @@ const account = await vezgo.accounts.getOne('ACCOUNT_ID');
 
 #### vezgo.accounts.getList()
 
-This method retrieves the list of accounts for an user.
+This method retrieves the list of accounts for a user.
 
 ```javascript
 const accounts = await vezgo.accounts.getList();
