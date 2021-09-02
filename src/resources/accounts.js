@@ -1,4 +1,4 @@
-export default class Accounts {
+class Accounts {
   constructor(api) {
     this.api = api.userApi;
   }
@@ -19,3 +19,5 @@ export default class Accounts {
     return response.data;
   }
 }
+
+module.exports = Accounts;

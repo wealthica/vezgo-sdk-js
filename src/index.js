@@ -1,13 +1,13 @@
-import API from './api';
+const API = require('./api');
 
 class Vezgo {
   // eslint-disable-next-line class-methods-use-this
   async init(config = {}) {
-    const api = new API(config);
-    await api.init();
+    const api = new API();
+    await api.init(config);
 
     return api;
   }
 }
 
-export default new Vezgo();
+module.exports = new Vezgo();

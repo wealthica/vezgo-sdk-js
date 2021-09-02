@@ -1,4 +1,4 @@
-export default class Providers {
+class Teams {
   constructor(api) {
     this.api = api.api;
     this.clientId = api.config.clientId;
@@ -11,3 +11,5 @@ export default class Providers {
     return response.data;
   }
 }
+
+module.exports = Teams;

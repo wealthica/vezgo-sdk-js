@@ -1,9 +1,9 @@
-import { create } from 'apisauce';
-import jwt from 'jsonwebtoken';
-import { API_URL } from './constants';
-import createResources from './resources';
+const { create } = require('apisauce');
+const jwt = require('jsonwebtoken');
+const { API_URL } = require('./constants');
+const createResources = require('./resources');
 
-export default class API {
+class API {
   // eslint-disable-next-line class-methods-use-this
   async init(config) {
     this.config = config;
@@ -86,3 +86,5 @@ export default class API {
     return this.teams.info();
   }
 }
+
+module.exports = API;

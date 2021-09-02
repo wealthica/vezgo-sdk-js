@@ -1,13 +1,13 @@
-import Accounts from './accounts';
-import Providers from './providers';
-import Teams from './teams';
-import Transactions from './transactions';
+const Accounts = require('./accounts');
+const Providers = require('./providers');
+const Teams = require('./teams');
+const Transactions = require('./transactions');
 
-export default function createResources(api) {
+module.exports = function createResources(api) {
   return {
     accounts: new Accounts(api),
     providers: new Providers(api),
     teams: new Teams(api),
     transactions: new Transactions(api),
   };
-}
+};

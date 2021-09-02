@@ -1,4 +1,4 @@
-export default class Providers {
+class Providers {
   constructor(api) {
     this.api = api.api;
   }
@@ -19,3 +19,5 @@ export default class Providers {
     return response.data;
   }
 }
+
+module.exports = Providers;

@@ -1,4 +1,4 @@
-export default class Transactions {
+class Transactions {
   constructor(api) {
     this.api = api.userApi;
   }
@@ -38,3 +38,5 @@ export default class Transactions {
     return response.data;
   }
 }
+
+module.exports = Transactions;
