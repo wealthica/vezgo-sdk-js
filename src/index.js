@@ -1,8 +1,13 @@
+import API from './api';
+
 class Vezgo {
-  constructor(options = {}) {
-    this.options = options;
-    return this;
+  // eslint-disable-next-line class-methods-use-this
+  async init(config = {}) {
+    const api = new API(config);
+    await api.init();
+
+    return api;
   }
 }
 
-module.exports = Vezgo;
+export default new Vezgo();
