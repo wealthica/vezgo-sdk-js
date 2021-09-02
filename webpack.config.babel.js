@@ -3,6 +3,7 @@ import merge from 'webpack-merge';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import TerserPlugin from 'terser-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
+import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
 
 const include = join(__dirname, 'src');
 
@@ -35,6 +36,10 @@ const browserConfig = {
       { test: /\.js$/, loader: 'babel-loader', include },
     ],
   },
+  plugins: [
+    // Have eslint here so it only run once instead of once for each build config
+    new NodePolyfillPlugin(),
+  ],
 };
 
 const browserMinifiedConfig = merge(browserConfig, {

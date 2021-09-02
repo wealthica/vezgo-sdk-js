@@ -1,8 +1,13 @@
+const API = require('./api');
+
 class Vezgo {
-  constructor(options = {}) {
-    this.options = options;
-    return this;
+  // eslint-disable-next-line class-methods-use-this
+  async init(config = {}) {
+    const api = new API();
+    await api.init(config);
+
+    return api;
   }
 }
 
-module.exports = Vezgo;
+module.exports = new Vezgo();
