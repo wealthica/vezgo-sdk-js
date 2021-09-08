@@ -31,16 +31,16 @@ class API {
       // Skip if not logged in
       if (!this.config.loginName) return request;
 
-      const { payload } = this.token || {};
+      const { payload } = this._token || {};
       const currentTime = new Date().valueOf();
 
       // Get a new token 10 secs before the old one expires
-      if (!payload || currentTime < (payload.exp + 10) * 1000) {
-        this.token = await this.getToken();
+      if (!payload || currentTime > (payload.exp + 10) * 1000) {
+        await this.fetchToken();
       }
 
       // Set token to Authorization header
-      request.headers.Authorization = `Bearer ${this.token.token}`;
+      request.headers.Authorization = `Bearer ${this.getToken()}`;
 
       return request;
     });
@@ -55,10 +55,10 @@ class API {
 
   async login(loginName) {
     this.config.loginName = loginName;
-    this.token = await this.getToken();
+    await this.fetchToken();
   }
 
-  async getToken() {
+  async fetchToken() {
     const {
       clientId,
       secret,
@@ -78,12 +78,42 @@ class API {
 
     const { token } = response.data;
     const payload = jwt.decode(token);
+    this._token = { token, payload };
 
-    return { token, payload };
+    return this._token;
+  }
+
+  getToken() {
+    return this._token ? this._token.token : null;
   }
 
   getTeam() {
     return this.teams.info();
+  }
+
+  getConnectUrl(options = {}) {
+    const { provider, redirectURI, state } = options;
+    const { clientId } = this.config;
+    const token = this.getToken();
+
+    if (!redirectURI) throw new Error('Please provide a valid redirectURI.');
+    if (!token) throw new Error('Please login the instance.');
+
+    const query = {
+      client_id: clientId,
+      redirect_uri: redirectURI,
+      state,
+      token,
+    };
+
+    Object.keys(query).forEach((key) => query[key] === undefined && delete query[key]);
+    const queryString = new URLSearchParams(query).toString();
+
+    const baseConnectURL = provider
+      ? `https://connect.vezgo.com/connect/${provider}`
+      : 'https://connect.vezgo.com/connect';
+
+    return `${baseConnectURL}?${queryString}`;
   }
 }
 
