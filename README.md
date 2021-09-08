@@ -28,6 +28,60 @@ import Vezgo from 'vezgo-node';
 
 ## APIs
 
+### General APIs
+
+These methods are SDK-specific and do not have a corresponding Vezgo API endpoint.
+
+#### vezgo.login(loginName)
+
+This method logs in a Vezgo SDK instance so you can call user-specific APIs.
+
+```javascript
+// Create a Vezgo SDK instance without a loginName
+const vezgo = await Vezgo.init({
+  clientId: 'YOUR_CLIENT_ID',
+  secret: 'YOUR_CLIENT_SECRET',
+});
+
+// Login the instance
+vezgo.login('YOUR_USERNAME_OR_ID');
+
+// Call user APIs
+const account = await vezgo.accounts.getOne('ACCOUNT_ID');
+```
+
+#### vezgo.getToken()
+
+This method returns a user token. Requires a logged-in instance.
+
+```javascript
+
+const vezgo = await Vezgo.init({
+  clientId: 'YOUR_CLIENT_ID',
+  secret: 'YOUR_CLIENT_SECRET',
+});
+
+let token = vezgo.getToken(); // returns null because the instance is not logged in
+
+vezgo.login('YOUR_USERNAME_OR_ID');
+token = vezgo.getToken(); // returns the user token
+```
+
+#### vezgo.getConnectUrl({ provider, redirectURI, state })
+
+This method returns a Vezgo Connect URL for user to connect an account. Requires a logged-in instance.
+
+```javascript
+
+const url = vezgo.getConnectUrl({
+  provider: 'coinbase', // optional
+  redirectURI: 'YOUR_REDIRECT_URI', // required, must be a registered URI
+  state: 'YOUR_APP_STATE', // optional
+});
+// https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&state=YOUR_APP_STATE&token=USER_TOKEN
+```
+
+
 ### User APIs
 
 These methods return user data and thus require a Vezgo SDK instance initiated with `loginName`.
