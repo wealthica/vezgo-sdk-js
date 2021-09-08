@@ -35,7 +35,7 @@ class API {
       const currentTime = new Date().valueOf();
 
       // Get a new token 10 secs before the old one expires
-      if (!payload || currentTime < (payload.exp + 10) * 1000) {
+      if (!payload || currentTime > (payload.exp + 10) * 1000) {
         this.token = await this.getToken();
       }
 
