@@ -1,13 +1,14 @@
-const Accounts = require('./accounts');
-const Providers = require('./providers');
-const Teams = require('./teams');
-const Transactions = require('./transactions');
+/* eslint-disable global-require */
+const RESOURCES = {
+  accounts: require('./accounts'),
+  providers: require('./providers'),
+  teams: require('./teams'),
+  transactions: require('./transactions'),
+};
 
-module.exports = function createResources(api) {
-  return {
-    accounts: new Accounts(api),
-    providers: new Providers(api),
-    teams: new Teams(api),
-    transactions: new Transactions(api),
-  };
+module.exports = function createResources(api, resources) {
+  return resources.reduce((res, resource) => {
+    res[resource] = new RESOURCES[resource](api);
+    return res;
+  }, {});
 };
