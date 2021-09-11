@@ -87,7 +87,7 @@ const user = await vezgo.login('YOUR_USERNAME_OR_ID');
 const token = user.getToken(); // returns the user token
 ```
 
-#### user.getConnectUrl({ provider, redirectURI, state })
+#### user.getConnectUrl({ provider, redirectURI, state, lang })
 
 This method returns a Vezgo Connect URL for user to connect an account.
 
@@ -99,8 +99,9 @@ const url = user.getConnectUrl({
   // required, optional if already passed to `Vezgo.init()` (see below). Must be a registered URI
   redirectURI: 'YOUR_REDIRECT_URI',
   state: 'YOUR_APP_STATE', // optional
+  lang: 'en', // optional (en | fr), 'en' by default
 });
-// https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&state=YOUR_APP_STATE&token=USER_TOKEN
+// https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&state=YOUR_APP_STATE&token=USER_TOKEN&lang=en
 
 // Alternatively, pass redirectURI once to `Vezgo.init()`
 const vezgo = Vezgo.init({
