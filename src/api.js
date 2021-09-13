@@ -110,6 +110,7 @@ class API {
   getConnectUrl(options = {}) {
     const { provider, state } = options;
     const redirectURI = options.redirectURI || this.config.redirectURI;
+    const lang = ['en', 'fr'].includes(options.lang) ? options.lang : 'en';
     const { clientId } = this.config;
     const token = this.getToken();
 
@@ -121,6 +122,7 @@ class API {
       redirect_uri: redirectURI,
       state,
       token,
+      lang
     };
 
     Object.keys(query).forEach((key) => query[key] === undefined && delete query[key]);
