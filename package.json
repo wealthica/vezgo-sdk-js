@@ -3,6 +3,7 @@
   "version": "0.0.2",
   "description": "Official Vezgo SDK",
   "author": "Wealthica Financial Technology Inc. <hello@wealthica.com> (https://wealthica.com/)",
+  "license": "MIT",
   "main": "lib/vezgo.js",
   "scripts": {
     "watch:test": "npm t -- --watch",
