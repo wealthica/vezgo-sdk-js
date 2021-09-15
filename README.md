@@ -9,7 +9,19 @@ import Vezgo from 'vezgo-node';
 
 (async () => {
   // Create a Vezgo SDK instance
-  const vezgo = await Vezgo.init({
+  const vezgo = Vezgo.init({
+    clientId: 'YOUR_CLIENT_ID',
+    secret: 'YOUR_CLIENT_SECRET',
+  });
+
+  // Call the API helper methods
+  const providers = await vezgo.providers.getList();
+  const team = await vezgo.getTeam();
+
+  // Alternately, pass a loginName to return a Vezgo SDK User instance in order to call
+  // user-specific endpoints
+  // NOTE the method is asynchronous now
+  const user = await Vezgo.init({
     clientId: 'YOUR_CLIENT_ID',
     secret: 'YOUR_CLIENT_SECRET',
     // Optional, only if you need to work with user data API, such as `vezgo.accounts.getOne(id)`,
@@ -17,12 +29,8 @@ import Vezgo from 'vezgo-node';
     loginName: 'YOUR_USERNAME_OR_ID',
   });
 
-  // Call the API helper methods
-  const account = await vezgo.accounts.getOne('ACCOUNT_ID');
-
-  // Data endpoints do not require passing `loginName` to `Vezgo.init({})`
-  const providers = await vezgo.providers.getList();
-  const team = await vezgo.getTeam();
+  // Call the user-specific API methods
+  const account = await user.accounts.getOne('ACCOUNT_ID');
 })();
 ```
 
@@ -34,76 +42,114 @@ These methods are SDK-specific and do not have a corresponding Vezgo API endpoin
 
 #### vezgo.login(loginName)
 
-This method logs in a Vezgo SDK instance so you can call user-specific APIs.
-
-```javascript
-// Create a Vezgo SDK instance without a loginName
-const vezgo = await Vezgo.init({
-  clientId: 'YOUR_CLIENT_ID',
-  secret: 'YOUR_CLIENT_SECRET',
-});
-
-// Login the instance
-vezgo.login('YOUR_USERNAME_OR_ID');
-
-// Call user APIs
-const account = await vezgo.accounts.getOne('ACCOUNT_ID');
-```
-
-#### vezgo.getToken()
-
-This method returns a user token. Requires a logged-in instance.
-
-```javascript
-
-const vezgo = await Vezgo.init({
-  clientId: 'YOUR_CLIENT_ID',
-  secret: 'YOUR_CLIENT_SECRET',
-});
-
-let token = vezgo.getToken(); // returns null because the instance is not logged in
-
-vezgo.login('YOUR_USERNAME_OR_ID');
-token = vezgo.getToken(); // returns the user token
-```
-
-#### vezgo.getConnectUrl({ provider, redirectURI, state })
-
-This method returns a Vezgo Connect URL for user to connect an account. Requires a logged-in instance.
-
-```javascript
-
-const url = vezgo.getConnectUrl({
-  provider: 'coinbase', // optional
-  redirectURI: 'YOUR_REDIRECT_URI', // required, must be a registered URI
-  state: 'YOUR_APP_STATE', // optional
-});
-// https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&state=YOUR_APP_STATE&token=USER_TOKEN
-```
-
-
-### User APIs
-
-These methods return user data and thus require a Vezgo SDK instance initiated with `loginName`.
+This method logs a user in and returns a Vezgo SDK User instance so you can call user-specific APIs.
 
 ```javascript
 // Create a Vezgo SDK instance
-const vezgo = await Vezgo.init({
+const vezgo = Vezgo.init({
+  clientId: 'YOUR_CLIENT_ID',
+  secret: 'YOUR_CLIENT_SECRET',
+});
+
+// Log user(s) in
+const user1 = await vezgo.login('USER_ID_1');
+const user2 = await vezgo.login('USER_ID_2');
+
+// Call user APIs
+const user1Account = await user1.accounts.getOne('ACCOUNT_ID_1');
+const user2Account = await user2.accounts.getOne('ACCOUNT_ID_2');
+```
+
+#### user.fetchToken()
+
+This method fetches and returns a new user token.
+
+**NOTE**
+
+- User token has a maximum lifetime duration. Current default is 20 minutes.
+- All User API methods automatically fetch a new token if the old one expires so this is rarely needed.
+
+```javascript
+const token = await user.fetchToken();
+```
+
+#### user.getToken()
+
+This method returns an existing user token.
+
+```javascript
+const vezgo = Vezgo.init({
+  clientId: 'YOUR_CLIENT_ID',
+  secret: 'YOUR_CLIENT_SECRET',
+});
+
+const user = await vezgo.login('YOUR_USERNAME_OR_ID');
+const token = user.getToken(); // returns the user token
+```
+
+#### user.getConnectUrl({ provider, redirectURI, state, lang })
+
+This method returns a Vezgo Connect URL for user to connect an account.
+
+**NOTE** The Connect URL is assigned the existing token, and thus only valid within that token's lifetime. If you need to have a fresh token for a maximum valid duration, call `user.fetchToken()` to fetch a new token right before calling this.
+
+```javascript
+const url = user.getConnectUrl({
+  provider: 'coinbase', // optional
+  // required, optional if already passed to `Vezgo.init()` (see below). Must be a registered URI
+  redirectURI: 'YOUR_REDIRECT_URI',
+  state: 'YOUR_APP_STATE', // optional
+  lang: 'en', // optional (en | fr), 'en' by default
+});
+// https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&state=YOUR_APP_STATE&token=USER_TOKEN&lang=en
+
+// Alternatively, pass redirectURI once to `Vezgo.init()`
+const vezgo = Vezgo.init({
+  clientId: 'YOUR_CLIENT_ID',
+  secret: 'YOUR_CLIENT_SECRET',
+  redirectURI: 'YOUR_REDIRECT_URI',
+});
+
+const user1 = await vezgo.login('USER_ID_1');
+const url1 = user1.getConnectUrl();
+
+const user2 = await vezgo.login('USER_ID_2');
+const url2 = user2.getConnectUrl();
+
+// If much time has passed since the last .login() or .fetchToken() calls, fetch a fresh token first
+await user1.fetchToken();
+const url1 = user1.getConnectUrl(); // This url will have maximum lifetime of 20 minutes.
+```
+
+### User APIs
+
+These methods return user data and thus require a Vezgo SDK User instance. They automatically fetch a new token if necessary so you would not be bothered with tokens logic.
+
+```javascript
+// Create a Vezgo SDK User instance
+const vezgo = Vezgo.init({
+  clientId: 'YOUR_CLIENT_ID',
+  secret: 'YOUR_CLIENT_SECRET',
+});
+const user = await vezgo.login('YOUR_USERNAME_OR_ID');
+
+// Alternatively, pass loginName directly to Vezgo.init
+const user = await Vezgo.init({
   clientId: 'YOUR_CLIENT_ID',
   secret: 'YOUR_CLIENT_SECRET',
   loginName: 'YOUR_USERNAME_OR_ID',
 });
 
-const account = await vezgo.accounts.getOne('ACCOUNT_ID');
-
+// Then call the API methods
+const account = await user.accounts.getOne('ACCOUNT_ID');
 ```
 
-#### vezgo.accounts.getList()
+#### user.accounts.getList()
 
 This method retrieves the list of accounts for a user.
 
 ```javascript
-const accounts = await vezgo.accounts.getList();
+const accounts = await user.accounts.getList();
 ```
 
 ```json
@@ -160,12 +206,12 @@ const accounts = await vezgo.accounts.getList();
 ]
 ```
 
-#### vezgo.accounts.getOne(id)
+#### user.accounts.getOne(id)
 
 This method retrieves a single account.
 
 ```javascript
-const account = await vezgo.accounts.getOne('603522490d2b02001233a5d6');
+const account = await user.accounts.getOne('603522490d2b02001233a5d6');
 ```
 
 ```json
@@ -204,14 +250,14 @@ const account = await vezgo.accounts.getOne('603522490d2b02001233a5d6');
 }
 ```
 
-#### vezgo.transactions.getList({ accountId, ticker, from, to })
+#### user.transactions.getList({ accountId, ticker, from, to })
 
 This method retrieves the list of transactions for an account.
 
 Returns data within the last 1 year by default.
 
 ```javascript
-const transactions = await vezgo.transactions.getList({
+const transactions = await user.transactions.getList({
   accountId: '603522490d2b02001233a5d6',
   ticker: 'BTC', // optional
   from: '2020-08-31', // optional
@@ -272,12 +318,12 @@ const transactions = await vezgo.transactions.getList({
 ]
 ```
 
-#### vezgo.transactions.getOne({ accountId, txId })
+#### user.transactions.getOne({ accountId, txId })
 
 This method retrieves a single transaction.
 
 ```javascript
-const transaction = await vezgo.transactions.getOne({
+const transaction = await user.transactions.getOne({
   accountId: '603522490d2b02001233a5d6',
   txId: '603522490d2b02001233a5d6'
 });
@@ -324,10 +370,10 @@ const transaction = await vezgo.transactions.getOne({
 
 ### Data APIs
 
-These methods provide general Vezgo information and do not require a `loginName`
+These methods provide general Vezgo information and do not require logging in a user.
 
 ```javascript
-const vezgo = await Vezgo.init({
+const vezgo = Vezgo.init({
   clientId: 'YOUR_CLIENT_ID',
   secret: 'YOUR_CLIENT_SECRET',
 });

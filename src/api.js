@@ -4,16 +4,14 @@ const { API_URL } = require('./constants');
 const createResources = require('./resources');
 
 class API {
-  // eslint-disable-next-line class-methods-use-this
-  async init(config) {
-    this.config = config;
+  constructor(config) {
+    this.config = { ...config };
+    this.config.baseURL = this.config.baseURL || API_URL;
 
     const {
       clientId,
       secret,
-      loginName,
-    } = config;
-    const baseURL = config.baseURL || API_URL;
+    } = this.config;
 
     // TODO add an error code for each SDK error
     if (!clientId || typeof clientId !== 'string') {
@@ -23,39 +21,57 @@ class API {
     if (!secret || typeof secret !== 'string') {
       throw new Error('Please provide a valid Vezgo secret.');
     }
+  }
+
+  init() {
+    const { loginName, baseURL } = this.config;
 
     // Data & token endpoints do not require authentication
     this.api = create({ baseURL });
-    this.userApi = create({ baseURL });
-    this.userApi.addAsyncRequestTransform(async (request) => {
-      // Skip if not logged in
-      if (!this.config.loginName) return request;
 
-      const { payload } = this._token || {};
+    const dataResources = createResources(this, ['providers', 'teams']);
+    Object.assign(this, dataResources);
+
+    if (loginName) return this.login(loginName);
+
+    return this;
+  }
+
+  async login(loginName) {
+    if (!loginName || typeof loginName !== 'string') {
+      throw new Error('Please provide a valid loginName.');
+    }
+
+    const { baseURL } = this.config;
+
+    // Create new user instance, without loginName so it does not recursively loop on init
+    const user = new API({ ...this.config, loginName: null });
+    user.init();
+
+    // Initiate user api & resource helpers
+    user.userApi = create({ baseURL });
+    user.userApi.addAsyncRequestTransform(async (request) => {
+      const { payload } = user._token || {};
       const currentTime = new Date().valueOf();
 
       // Get a new token 10 secs before the old one expires
       if (!payload || currentTime > (payload.exp + 10) * 1000) {
-        await this.fetchToken();
+        await user.fetchToken();
       }
 
       // Set token to Authorization header
-      request.headers.Authorization = `Bearer ${this.getToken()}`;
+      request.headers.Authorization = `Bearer ${user.getToken()}`;
 
       return request;
     });
 
-    const resources = createResources(this);
-    Object.assign(this, resources);
+    const userResources = createResources(user, ['accounts', 'transactions']);
+    Object.assign(user, userResources);
 
-    if (loginName) {
-      await this.login(loginName);
-    }
-  }
+    user.config.loginName = loginName;
+    await user.fetchToken();
 
-  async login(loginName) {
-    this.config.loginName = loginName;
-    await this.fetchToken();
+    return user;
   }
 
   async fetchToken() {
@@ -80,7 +96,7 @@ class API {
     const payload = jwt.decode(token);
     this._token = { token, payload };
 
-    return this._token;
+    return this._token.token;
   }
 
   getToken() {
@@ -92,7 +108,9 @@ class API {
   }
 
   getConnectUrl(options = {}) {
-    const { provider, redirectURI, state } = options;
+    const { provider, state } = options;
+    const redirectURI = options.redirectURI || this.config.redirectURI;
+    const lang = ['en', 'fr'].includes(options.lang) ? options.lang : 'en';
     const { clientId } = this.config;
     const token = this.getToken();
 
@@ -104,6 +122,7 @@ class API {
       redirect_uri: redirectURI,
       state,
       token,
+      lang
     };
 
     Object.keys(query).forEach((key) => query[key] === undefined && delete query[key]);
