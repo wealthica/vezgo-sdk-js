@@ -7,21 +7,12 @@ import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
 
 const include = join(__dirname, 'src');
 
-const browserConfig = {
-  entry: {
-    Vezgo: {
-      import: './src/index',
-      filename: 'vezgo.js',
-      library: {
-        name: '[name]',
-        type: 'var',
-      },
-    },
-  },
+const baseConfig = {
+  entry: './src/index',
   output: {
-    path: join(__dirname, 'dist'),
-    chunkFormat: 'array-push',
+    filename: 'vezgo.js',
   },
+  mode: 'production',
   optimization: {
     minimize: false,
     minimizer: [
@@ -30,83 +21,51 @@ const browserConfig = {
       }),
     ],
   },
-  mode: 'production',
   module: {
     rules: [
       { test: /\.js$/, loader: 'babel-loader', include },
     ],
   },
+};
+
+const browserConfig = merge(baseConfig, {
+  output: {
+    library: {
+      name: 'Vezgo',
+      type: 'window',
+    },
+  },
   plugins: [
-    // Have eslint here so it only run once instead of once for each build config
     new NodePolyfillPlugin(),
   ],
-};
+});
 
 const browserMinifiedConfig = merge(browserConfig, {
   devtool: 'source-map',
-  entry: {
-    Vezgo: {
-      filename: 'vezgo.min.js',
-    },
+  output: {
+    filename: 'vezgo.min.js',
   },
   optimization: {
     minimize: true,
   },
 });
 
-const browserES5Config = merge(browserConfig, {
-  entry: {
-    Vezgo: {
-      filename: 'vezgo.es5.js',
-    },
-  },
-  target: ['web', 'es5'],
-});
-
-const browserES5MinifiedConfig = merge(browserES5Config, {
-  devtool: 'source-map',
-  entry: {
-    Vezgo: {
-      filename: 'vezgo.es5.min.js',
-    },
-  },
-  optimization: {
-    minimize: true,
-  },
-});
-
-const commonJsConfig = merge(browserConfig, {
-  entry: {
-    Vezgo: {
-      library: {
-        type: 'commonjs',
-      },
-    },
-  },
+const commonJsConfig = merge(baseConfig, {
   output: {
     path: join(__dirname, 'lib'),
-    chunkFormat: 'commonjs',
-  },
-});
-
-const commonJsES5Config = merge(commonJsConfig, {
-  entry: {
-    Vezgo: {
-      filename: 'vezgo.es5.js',
+    library: {
+      type: 'umd',
     },
   },
   plugins: [
     // Have eslint here so it only run once instead of once for each build config
     new ESLintPlugin(),
   ],
-  target: 'es5',
+  target: 'node',
 });
 
 module.exports = [
   browserConfig,
   browserMinifiedConfig,
-  browserES5Config,
-  browserES5MinifiedConfig,
   commonJsConfig,
-  commonJsES5Config,
 ];

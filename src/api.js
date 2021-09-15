@@ -122,7 +122,7 @@ class API {
       redirect_uri: redirectURI,
       state,
       token,
-      lang
+      lang,
     };
 
     Object.keys(query).forEach((key) => query[key] === undefined && delete query[key]);
