@@ -3,7 +3,7 @@ const { create } = require('apisauce');
 const jwt = require('jsonwebtoken');
 const { API_URL, CONNECT_URL } = require('./constants');
 const createResources = require('./resources');
-const { isBrowser, isNode } = require('./utils');
+const { isBrowser, isNode, isReactNative } = require('./utils');
 
 class API {
   constructor(config) {
@@ -18,6 +18,9 @@ class API {
 
     this.isBrowser = isBrowser();
     this.isNode = isNode();
+    this.isReactNative = isReactNative();
+    this.isClient = this.isBrowser || this.isReactNative;
+    this._token = {};
 
     // TODO add an error code for each SDK error
     if (!clientId || typeof clientId !== 'string') {
@@ -53,8 +56,8 @@ class API {
     return this;
   }
 
-  async login(loginName) {
-    if (!loginName || typeof loginName !== 'string') {
+  login(loginName) {
+    if (this.isNode && (!loginName || typeof loginName !== 'string')) {
       throw new Error('Please provide a valid loginName.');
     }
 
@@ -67,16 +70,8 @@ class API {
     // Initiate user api & resource helpers
     user.userApi = create({ baseURL });
     user.userApi.addAsyncRequestTransform(async (request) => {
-      const { payload } = user._token || {};
-      const currentTime = new Date().valueOf();
-
-      // Get a new token 10 secs before the old one expires
-      if (!payload || currentTime > (payload.exp + 10) * 1000) {
-        await user.fetchToken();
-      }
-
-      // Set token to Authorization header
-      request.headers.Authorization = `Bearer ${user.getToken()}`;
+      // Set token (guaranteed to have > 10 secs left) to Authorization header
+      request.headers.Authorization = `Bearer ${await user.getToken()}`;
 
       return request;
     });
@@ -85,13 +80,12 @@ class API {
     Object.assign(user, userResources);
 
     user.config.loginName = loginName;
-    await user.fetchToken();
 
     return user;
   }
 
   async fetchToken() {
-    const response = await (this.isBrowser ? this.fetchTokenBrowser() : this.fetchTokenNode());
+    const response = await (this.isClient ? this.fetchTokenClient() : this.fetchTokenNode());
 
     if (!response.ok) {
       // TODO process error before throwing
@@ -119,7 +113,7 @@ class API {
     );
   }
 
-  fetchTokenBrowser() {
+  fetchTokenClient() {
     const { auth, authEndpoint, authorizer } = this.config;
     const { params } = auth;
 
@@ -131,7 +125,7 @@ class API {
             return;
           }
 
-          resolve(result); // expect result = { token: 'the token' }
+          resolve(result); // expected result = { token: 'the token' }
         });
       });
     }
@@ -139,15 +133,24 @@ class API {
     return this.authApi.post(authEndpoint, params);
   }
 
-  getToken() {
-    return this._token ? this._token.token : null;
+  async getToken(options = {}) {
+    // Get a new token if the old one has < minimumLifetime left
+    const currentTime = new Date().valueOf();
+    const { payload } = this._token;
+    let { token } = this._token;
+
+    if (!payload || currentTime > (payload.exp - (options.minimumLifetime || 10)) * 1000) {
+      token = await this.fetchToken();
+    }
+
+    return token;
   }
 
   getTeam() {
     return this.teams.info();
   }
 
-  getConnectUrl(options = {}) {
+  async getConnectUrl(options = {}) {
     const {
       provider,
       state,
@@ -156,10 +159,11 @@ class API {
       redirectURI = this.config.redirectURI,
     } = options;
     const { clientId, connectURL } = this.config;
-    const token = this.getToken();
 
-    if (!token) throw new Error('Please login the instance.');
     if (!origin) throw new Error('Please provide an origin.');
+
+    // Get a token with at least 10 minutes left
+    const token = await this.getToken({ minimumLifetime: 600 });
 
     const query = {
       client_id: clientId,
