@@ -2,6 +2,7 @@ const { create } = require('apisauce');
 const jwt = require('jsonwebtoken');
 const { API_URL } = require('./constants');
 const createResources = require('./resources');
+const { isBrowser, isNode } = require('./utils');
 
 class API {
   constructor(config) {
@@ -13,13 +14,26 @@ class API {
       secret,
     } = this.config;
 
+    this.isBrowser = isBrowser();
+    this.isNode = isNode();
+
     // TODO add an error code for each SDK error
     if (!clientId || typeof clientId !== 'string') {
       throw new Error('Please provide a valid Vezgo clientId.');
     }
 
-    if (!secret || typeof secret !== 'string') {
+    if (this.isNode && (!secret || typeof secret !== 'string')) {
       throw new Error('Please provide a valid Vezgo secret.');
+    }
+
+    if (this.isBrowser) {
+      const auth = config.auth || {};
+      this.config.authEndpoint = this.config.authEndpoint || '/vezgo/auth';
+      this.config.auth = {
+        params: auth.params || {},
+        headers: auth.headers || {},
+      };
+      this.authApi = create({ headers: this.config.auth.headers });
     }
   }
 
@@ -75,17 +89,7 @@ class API {
   }
 
   async fetchToken() {
-    const {
-      clientId,
-      secret,
-      loginName,
-    } = this.config;
-
-    const response = await this.api.post(
-      '/auth/token',
-      { clientId, secret },
-      { headers: { loginName } },
-    );
+    const response = await (this.isBrowser ? this.fetchTokenBrowser() : this.fetchTokenNode());
 
     if (!response.ok) {
       // TODO process error before throwing
@@ -97,6 +101,40 @@ class API {
     this._token = { token, payload };
 
     return this._token.token;
+  }
+
+  fetchTokenNode() {
+    const {
+      clientId,
+      secret,
+      loginName,
+    } = this.config;
+
+    return this.api.post(
+      '/auth/token',
+      { clientId, secret },
+      { headers: { loginName } },
+    );
+  }
+
+  fetchTokenBrowser() {
+    const { auth, authEndpoint, authorizer } = this.config;
+    const { params } = auth;
+
+    if (typeof authorizer === 'function') {
+      return new Promise((resolve, reject) => {
+        authorizer((error, result) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+
+          resolve(result); // expect result = { token: 'the token' }
+        });
+      });
+    }
+
+    return this.authApi.post(authEndpoint, params);
   }
 
   getToken() {
