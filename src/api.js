@@ -1,6 +1,7 @@
+/* global window */
 const { create } = require('apisauce');
 const jwt = require('jsonwebtoken');
-const { API_URL } = require('./constants');
+const { API_URL, CONNECT_URL } = require('./constants');
 const createResources = require('./resources');
 const { isBrowser, isNode } = require('./utils');
 
@@ -8,6 +9,7 @@ class API {
   constructor(config) {
     this.config = { ...config };
     this.config.baseURL = this.config.baseURL || API_URL;
+    this.config.connectURL = this.config.connectURL || CONNECT_URL;
 
     const {
       clientId,
@@ -146,31 +148,37 @@ class API {
   }
 
   getConnectUrl(options = {}) {
-    const { provider, state } = options;
-    const redirectURI = options.redirectURI || this.config.redirectURI;
-    const lang = ['en', 'fr'].includes(options.lang) ? options.lang : 'en';
-    const { clientId } = this.config;
+    const {
+      provider,
+      state,
+      origin = this.isBrowser ? window.location.host : undefined,
+      lang,
+      redirectURI = this.config.redirectURI,
+    } = options;
+    const { clientId, connectURL } = this.config;
     const token = this.getToken();
 
-    if (!redirectURI) throw new Error('Please provide a valid redirectURI.');
     if (!token) throw new Error('Please login the instance.');
+    if (!origin) throw new Error('Please provide an origin.');
 
     const query = {
       client_id: clientId,
       redirect_uri: redirectURI,
       state,
       token,
-      lang,
+      lang: ['en', 'fr'].includes(lang) ? lang : 'en',
+      origin,
     };
 
-    Object.keys(query).forEach((key) => query[key] === undefined && delete query[key]);
+    // Cleanup blank params
+    Object.keys(query).forEach((key) => (
+      [undefined, null, ''].includes(query[key]) && delete query[key]
+    ));
     const queryString = new URLSearchParams(query).toString();
 
-    const baseConnectURL = provider
-      ? `https://connect.vezgo.com/connect/${provider}`
-      : 'https://connect.vezgo.com/connect';
+    const url = provider ? `${connectURL}/connect/${provider}` : `${connectURL}/connect`;
 
-    return `${baseConnectURL}?${queryString}`;
+    return `${url}?${queryString}`;
   }
 }
 
