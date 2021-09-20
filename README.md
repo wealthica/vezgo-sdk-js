@@ -188,13 +188,13 @@ Connection response are provided via callbacks.
 ```javascript
 user.connect({
   provider: 'coinbase', // optional
-});
-
-user.onConnection(account => {
+}).onConnection(account => {
   // Send the account to your server
   sendToServer('/some-route', account);
 }).onError(error => {
   console.error('account connection error:', error)
+}).onEvent((name, data) => {
+  console.log('account connection event:', name, data);
 });
 ```
 
