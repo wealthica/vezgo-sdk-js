@@ -157,7 +157,7 @@ const url = await user.getConnectUrl({
   // required for server-side, optional for client (browser, ReactNative) or if already passed to `Vezgo.init()`.
   // Must be a registered URI.
   redirectURI: 'YOUR_REDIRECT_URI',
-  // required for Node & ReactNative, optional for browser (defaults to window.location.host)
+  // required for Vezgo Connect drop-in widget, but already handled by calling `user.connect()`
   origin: 'YOUR_SITE_ORIGIN', // or com.your-bundle-id for ReactNative
   state: 'YOUR_APP_STATE', // optional
   lang: 'en', // optional (en | fr), 'en' by default

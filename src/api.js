@@ -173,8 +173,6 @@ class API {
     } = options;
     const { clientId, connectURL } = this.config;
 
-    if (!origin) throw new Error('Please provide an origin.');
-
     // Get a token with at least 10 minutes left
     const token = await this.getToken({ minimumLifetime: 600 });
 
