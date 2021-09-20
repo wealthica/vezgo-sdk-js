@@ -26,6 +26,9 @@ const baseConfig = {
       { test: /\.js$/, loader: 'babel-loader', include },
     ],
   },
+  plugins: [
+    new NodePolyfillPlugin(),
+  ],
 };
 
 const browserConfig = merge(baseConfig, {
@@ -35,9 +38,6 @@ const browserConfig = merge(baseConfig, {
       type: 'window',
     },
   },
-  plugins: [
-    new NodePolyfillPlugin(),
-  ],
 });
 
 const browserMinifiedConfig = merge(browserConfig, {
@@ -54,18 +54,20 @@ const commonJsConfig = merge(baseConfig, {
   output: {
     path: join(__dirname, 'lib'),
     library: {
-      type: 'umd',
+      type: 'umd', // to be universal
     },
+    globalObject: 'this', // workaround webpack using 'self' by default
   },
   plugins: [
     // Have eslint here so it only run once instead of once for each build config
     new ESLintPlugin(),
   ],
-  target: 'node',
 });
 
 module.exports = [
-  browserConfig,
-  browserMinifiedConfig,
-  commonJsConfig,
+  // Browser build to be included directly in a frontend page (exposed as `window.Vezgo`)
+  browserConfig, // dist/vezgo.js
+  browserMinifiedConfig, // dist/vezgo.min.js
+  // Universal build, to be used on either backend (nodejs) or frontend (build system)
+  commonJsConfig, // lib/vezgo.js
 ];
