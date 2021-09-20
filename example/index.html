@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Vezgo Example App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="/assets/config.js"></script>
+    <script type="text/javascript" src="/assets/vezgo.js"></script>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but Vezgo Example App doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app">
+      <h1>Vezgo Example App</h1>
+
+      <label for="user_id">Unique User ID</label>
+      <input type="text" name="user_id" value="user_1" />
+
+      <button id="connect">Connect</button>
+
+      <br><br>
+      <div id="account_id">Connected account: <strong></strong></div>
+      <div id="error">Connection error: <strong></strong></div>
+      <br><br>
+
+      <button id="account">Get Account</button>
+      <button id="transactions">Get Transaction</button>
+
+      <div id="result"></div>
+
+      <script type="text/javascript">
+        let user;
+        let vezgo;
+        let accountId;
+
+        $(document).ready(function(){
+          $("#connect").click(function() {
+            $('#account_id strong').text('');
+            $('#error strong').text('');
+            $('#result').text('');
+
+            vezgo = Vezgo.init({
+              clientId: constants.VEZGO_CLIENT_ID,
+              authEndpoint: '/vezgo/auth', // default value, but set here for the sake of demo
+              auth: {
+                headers: { Authorization: `Bearer ${$('[name="user_id"').val()}` },
+              },
+            });
+
+            user = vezgo.login();
+            user.connect().onConnection(function(account) {
+              console.log('connection success', account);
+              accountId = account;
+              $('#account_id strong').text(account);
+            }).onError(function(error) {
+              console.log('connection error', error);
+              $('#error strong').text(error.message);
+            });
+          });
+
+          $("#account").click(async function() {
+            if (!user || !accountId) alert('Must connect an account first');
+
+            try {
+              const account = await user.accounts.getOne(accountId);
+
+              $('#result').html('Account:<br><code>' + JSON.stringify(account) + '</code>');
+            } catch (err) {
+              $('#result').html('Error:<br><code>' + err + '</code>');
+            }
+          });
+
+          $("#transactions").click(async function() {
+            if (!user || !accountId) alert('Must connect an account first');
+
+            try {
+              const transactions = await user.transactions.getList({ accountId });
+
+              $('#result').html('Transactions:<br><code>' + JSON.stringify(transactions) + '</code>');
+            } catch (err) {
+              $('#result').html('Error:<br><code>' + err + '</code>');
+            }
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>

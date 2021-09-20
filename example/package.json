@@ -1,0 +1,14 @@
+{
+  "name": "vezgo-example",
+  "version": "1.0.0",
+  "description": "Example app using Vezgo SDK",
+  "author": "Wealthica Financial Technology Inc. <hello@wealthica.com> (https://wealthica.com/)",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
