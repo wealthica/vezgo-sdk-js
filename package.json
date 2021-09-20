@@ -1,19 +1,27 @@
 {
-  "name": "vezgo-node",
-  "version": "0.0.1",
+  "name": "vezgo-sdk-js",
+  "version": "0.0.6",
   "description": "Official Vezgo SDK",
-  "main": "src/index.js",
+  "author": "Wealthica Financial Technology Inc. <hello@wealthica.com> (https://wealthica.com/)",
+  "license": "MIT",
+  "main": "lib/vezgo.js",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "watch:test": "npm t -- --watch",
     "prebuild": "rimraf dist lib",
-    "build": "webpack --config webpack.config.babel.js",
+    "build": "webpack",
+    "prepublishOnly": "npm run build",
     "lint": "eslint .",
     "lint-fix": "eslint --fix ."
   },
-  "author": "Wealthica Financial Technology Inc. <hello@wealthica.com> (https://wealthica.com/)",
   "dependencies": {
     "apisauce": "^2.1.1",
-    "jsonwebtoken": "^8.5.1"
+    "core-js": "^3.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "regenerator-runtime": "^0.13.9"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.8",

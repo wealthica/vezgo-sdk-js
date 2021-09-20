@@ -20,8 +20,7 @@ import Vezgo from 'vezgo-node';
 
   // Alternately, pass a loginName to return a Vezgo SDK User instance in order to call
   // user-specific endpoints
-  // NOTE the method is asynchronous now
-  const user = await Vezgo.init({
+  const user = Vezgo.init({
     clientId: 'YOUR_CLIENT_ID',
     secret: 'YOUR_CLIENT_SECRET',
     // Optional, only if you need to work with user data API, such as `vezgo.accounts.getOne(id)`,
@@ -44,6 +43,10 @@ These methods are SDK-specific and do not have a corresponding Vezgo API endpoin
 
 This method logs a user in and returns a Vezgo SDK User instance so you can call user-specific APIs.
 
+##### From server
+
+`loginName` is required
+
 ```javascript
 // Create a Vezgo SDK instance
 const vezgo = Vezgo.init({
@@ -52,12 +55,60 @@ const vezgo = Vezgo.init({
 });
 
 // Log user(s) in
-const user1 = await vezgo.login('USER_ID_1');
-const user2 = await vezgo.login('USER_ID_2');
+const user1 = vezgo.login('USER_ID_1');
+const user2 = vezgo.login('USER_ID_2');
 
 // Call user APIs
 const user1Account = await user1.accounts.getOne('ACCOUNT_ID_1');
 const user2Account = await user2.accounts.getOne('ACCOUNT_ID_2');
+```
+
+##### From client (browser/ReactNative)
+
+`loginName` is optional. Authentication is done either via an `authEndpoint` or a custom `authorizer` callback passed to `Vezgo.init()`
+
+```javascript
+// Create a Vezgo SDK instance
+const vezgo = Vezgo.init({
+  clientId: 'YOUR_CLIENT_ID',
+  // POST to `authEndpoint` on your server, expecting a JSON { token: 'USER_TOKEN' }
+  authEndpoint: '/vezgo/auth', // default value
+  // Optional parameters for `authEndpoint` to authenticate your user
+  auth: {
+    params: {}, // custom `authEndpoint` body
+    headers: { Authorization: `Bearer ${yourAppsUserToken}` }, // custom `authEndpoint` headers
+  },
+  // Optional authorization method to use instead of `authEndpoint`
+  authorizer: async (callback) => {
+    try {
+      const token = await getUserTokenFromYourServer();
+      callback(null, { token });
+    } catch (error) {
+      callback(error);
+    }
+  }
+});
+
+// Log in to create a Vezgo User instance
+const user = vezgo.login();
+
+// Call user APIs
+const account = await user.accounts.getOne('ACCOUNT_ID_1');
+```
+
+Example server implementation for `authEndpoint`:
+
+```
+const vezgo = Vezgo.init({
+  clientId: 'YOUR_CLIENT_ID',
+  secret: 'YOUR_CLIENT_SECRET',
+});
+
+router.post('/vezgo/auth', async function(req, res) {
+  const user = vezgo.login(req.user.id);
+
+  res.json({ token: await user.getToken() });
+});
 ```
 
 #### user.fetchToken()
@@ -75,7 +126,7 @@ const token = await user.fetchToken();
 
 #### user.getToken()
 
-This method returns an existing user token.
+This method returns an existing user token or fetch a new one if the existing token has less than a specified amount of duration (default 10 seconds).
 
 ```javascript
 const vezgo = Vezgo.init({
@@ -83,66 +134,73 @@ const vezgo = Vezgo.init({
   secret: 'YOUR_CLIENT_SECRET',
 });
 
-const user = await vezgo.login('YOUR_USERNAME_OR_ID');
-const token = user.getToken(); // returns the user token
+const user = vezgo.login('YOUR_USERNAME_OR_ID');
+let token = await user.getToken(); // returns the user token, 20 minutes lifetime
+// After 10 minutes
+token = await user.getToken(); // returns the same token
+// After 19 minutes 51 seconds
+token = await user.getToken(); // fetches and returns a new token
+
+// After > another 10 minutes
+token = await user.getToken({ minimumLifeTime: 600 }); // fetches and returns another new token
 ```
 
 #### user.getConnectUrl({ provider, redirectURI, state, lang })
 
 This method returns a Vezgo Connect URL for user to connect an account.
 
-**NOTE** The Connect URL is assigned the existing token, and thus only valid within that token's lifetime. If you need to have a fresh token for a maximum valid duration, call `user.fetchToken()` to fetch a new token right before calling this.
+The URL has a 10 minute session timeout.
 
 ```javascript
-const url = user.getConnectUrl({
+const url = await user.getConnectUrl({
   provider: 'coinbase', // optional
-  // required, optional if already passed to `Vezgo.init()` (see below). Must be a registered URI
+  // required for server-side, optional for client (browser, ReactNative) or if already passed to `Vezgo.init()`.
+  // Must be a registered URI.
   redirectURI: 'YOUR_REDIRECT_URI',
+  // required for Vezgo Connect drop-in widget, but already handled by calling `user.connect()`
+  origin: 'YOUR_SITE_ORIGIN', // or com.your-bundle-id for ReactNative
   state: 'YOUR_APP_STATE', // optional
   lang: 'en', // optional (en | fr), 'en' by default
 });
-// https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&state=YOUR_APP_STATE&token=USER_TOKEN&lang=en
+// https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&origin=YOUR_SITE_ORIGIN&state=YOUR_APP_STATE&token=USER_TOKEN&lang=en
 
 // Alternatively, pass redirectURI once to `Vezgo.init()`
 const vezgo = Vezgo.init({
   clientId: 'YOUR_CLIENT_ID',
   secret: 'YOUR_CLIENT_SECRET',
   redirectURI: 'YOUR_REDIRECT_URI',
+  origin: 'YOUR_SITE_ORIGIN',
 });
 
-const user1 = await vezgo.login('USER_ID_1');
-const url1 = user1.getConnectUrl();
+const user1 = vezgo.login('USER_ID_1');
+const url1 = await user1.getConnectUrl();
 
-const user2 = await vezgo.login('USER_ID_2');
-const url2 = user2.getConnectUrl();
+const user2 = vezgo.login('USER_ID_2');
+const url2 = await user2.getConnectUrl();
+```
 
-// If much time has passed since the last .login() or .fetchToken() calls, fetch a fresh token first
-await user1.fetchToken();
-const url1 = user1.getConnectUrl(); // This url will have maximum lifetime of 20 minutes.
+#### (pending) user.connect({ provider })
+
+This method starts the Vezgo Connect process inside your webpage/app for user to connect their account.
+
+Connection response are provided via callbacks.
+
+```javascript
+user.connect({
+  provider: 'coinbase', // optional
+}).onConnection(account => {
+  // Send the account to your server
+  sendToServer('/some-route', account);
+}).onError(error => {
+  console.error('account connection error:', error)
+}).onEvent((name, data) => {
+  console.log('account connection event:', name, data);
+});
 ```
 
 ### User APIs
 
 These methods return user data and thus require a Vezgo SDK User instance. They automatically fetch a new token if necessary so you would not be bothered with tokens logic.
-
-```javascript
-// Create a Vezgo SDK User instance
-const vezgo = Vezgo.init({
-  clientId: 'YOUR_CLIENT_ID',
-  secret: 'YOUR_CLIENT_SECRET',
-});
-const user = await vezgo.login('YOUR_USERNAME_OR_ID');
-
-// Alternatively, pass loginName directly to Vezgo.init
-const user = await Vezgo.init({
-  clientId: 'YOUR_CLIENT_ID',
-  secret: 'YOUR_CLIENT_SECRET',
-  loginName: 'YOUR_USERNAME_OR_ID',
-});
-
-// Then call the API methods
-const account = await user.accounts.getOne('ACCOUNT_ID');
-```
 
 #### user.accounts.getList()
 
