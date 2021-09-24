@@ -1,11 +1,11 @@
-# vezgo-node
+# vezgo-sdk-js
 
-Official Vezgo SDK for NodeJS
+Official Vezgo JS SDK for the Browser & NodeJS
 
 ## Getting started
 
 ```javascript
-import Vezgo from 'vezgo-node';
+import Vezgo from 'vezgo-sdk-js';
 
 (async () => {
   // Create a Vezgo SDK instance
