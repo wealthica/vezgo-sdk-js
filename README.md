@@ -308,6 +308,14 @@ const account = await user.accounts.getOne('603522490d2b02001233a5d6');
 }
 ```
 
+#### user.accounts.remove(id)
+
+This method removes a single account from the user.
+
+```javascript
+await user.accounts.remove('603522490d2b02001233a5d6');
+```
+
 #### user.transactions.getList({ accountId, ticker, from, to })
 
 This method retrieves the list of transactions for an account.
