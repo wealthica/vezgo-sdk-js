@@ -26,9 +26,6 @@ const baseConfig = {
       { test: /\.js$/, loader: 'babel-loader', include },
     ],
   },
-  plugins: [
-    new NodePolyfillPlugin(),
-  ],
 };
 
 const browserConfig = merge(baseConfig, {
@@ -38,6 +35,9 @@ const browserConfig = merge(baseConfig, {
       type: 'window',
     },
   },
+  plugins: [
+    new NodePolyfillPlugin(),
+  ],
 });
 
 const browserMinifiedConfig = merge(browserConfig, {
@@ -50,24 +50,39 @@ const browserMinifiedConfig = merge(browserConfig, {
   },
 });
 
+const browserES5Config = merge(baseConfig, {
+  output: {
+    filename: 'vezgo.es5.js',
+    library: {
+      type: 'umd',
+    },
+    globalObject: 'this', // workaround webpack using 'self' by default
+  },
+  plugins: [
+    new NodePolyfillPlugin(),
+  ],
+});
+
 const commonJsConfig = merge(baseConfig, {
   output: {
     path: join(__dirname, 'lib'),
     library: {
-      type: 'umd', // to be universal
+      type: 'umd',
     },
-    globalObject: 'this', // workaround webpack using 'self' by default
   },
   plugins: [
     // Have eslint here so it only run once instead of once for each build config
     new ESLintPlugin(),
   ],
+  target: 'node',
 });
 
 module.exports = [
   // Browser build to be included directly in a frontend page (exposed as `window.Vezgo`)
   browserConfig, // dist/vezgo.js
   browserMinifiedConfig, // dist/vezgo.min.js
-  // Universal build, to be used on either backend (nodejs) or frontend (build system)
+  // Browser build to be imported in a build system
+  browserES5Config, // dist/vezgo.es5.js
+  // Commonjs build for NodeJS
   commonJsConfig, // lib/vezgo.js
 ];
