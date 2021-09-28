@@ -16,18 +16,23 @@
     <div id="app">
       <h1>Vezgo Example App</h1>
 
-      <label for="user_id">Unique User ID</label>
-      <input type="text" name="user_id" value="user_1" />
+      <label for="username">Logged in as</label>
+      <input type="text" id="username" value="username_1" />
 
+      <br><br>
+
+      <label for="account_id">Account ID</label>
+      <input type="text" id="account_id" value="" />
       <button id="connect">Connect</button>
-
-      <br><br>
-      <div id="account_id">Connected account: <strong></strong></div>
-      <div id="error">Connection error: <strong></strong></div>
+      <button id="reconnect">Reconnect</button>
       <br><br>
 
-      <button id="account">Get Account</button>
-      <button id="transactions">Get Transaction</button>
+      <div id="connection_error">Connection error: <strong></strong></div>
+      <br><br>
+
+      <button id="get_accounts">Get Accounts</button>
+      <button id="get_account">Get Account</button>
+      <button id="get_transactions">Get Transaction</button>
 
       <div id="result"></div>
 
@@ -36,33 +41,66 @@
         let vezgo;
         let accountId;
 
+        function login() {
+          vezgo = Vezgo.init({
+            clientId: constants.VEZGO_CLIENT_ID,
+            authEndpoint: '/vezgo/auth', // default value, but set here for the sake of demo
+            auth: {
+              headers: { Authorization: `Bearer ${$('#username').val()}` },
+            },
+          });
+
+          user = vezgo.login();
+        }
+
         $(document).ready(function(){
           $("#connect").click(function() {
-            $('#account_id strong').text('');
-            $('#error strong').text('');
-            $('#result').text('');
+            $('#connection_error strong').text('');
 
-            vezgo = Vezgo.init({
-              clientId: constants.VEZGO_CLIENT_ID,
-              authEndpoint: '/vezgo/auth', // default value, but set here for the sake of demo
-              auth: {
-                headers: { Authorization: `Bearer ${$('[name="user_id"').val()}` },
-              },
-            });
+            login();
 
-            user = vezgo.login();
             user.connect().onConnection(function(account) {
               console.log('connection success', account);
-              accountId = account;
-              $('#account_id strong').text(account);
+              $('#account_id').val(account);
             }).onError(function(error) {
               console.log('connection error', error);
-              $('#error strong').text(error.message);
+              $('#connection_error strong').text(error.message);
             });
           });
 
-          $("#account").click(async function() {
-            if (!user || !accountId) alert('Must connect an account first');
+          $("#reconnect").click(function() {
+            const accountId = $('#account_id').val();
+            if (!accountId) alert('Must enter an Account ID first.')
+            $('#connection_error strong').text('');
+
+            login();
+
+            user.reconnect(accountId).onConnection(function(account) {
+              console.log('reconnection success', account);
+              $('#account_id').val(account);
+            }).onError(function(error) {
+              console.log('reconnection error', error);
+              $('#connection_error strong').text(error.message);
+            });
+          });
+
+          $("#get_accounts").click(async function() {
+            login();
+
+            try {
+              const accounts = await user.accounts.getList();
+
+              $('#result').html('Accounts:<br><code>' + JSON.stringify(accounts) + '</code>');
+            } catch (err) {
+              $('#result').html('Error:<br><code>' + err + '</code>');
+            }
+          });
+
+          $("#get_account").click(async function() {
+            const accountId = $('#account_id').val();
+            if (!accountId) alert('Must connect an account first');
+
+            login();
 
             try {
               const account = await user.accounts.getOne(accountId);
@@ -73,8 +111,11 @@
             }
           });
 
-          $("#transactions").click(async function() {
-            if (!user || !accountId) alert('Must connect an account first');
+          $("#get_transactions").click(async function() {
+            const accountId = $('#account_id').val();
+            if (!accountId) alert('Must connect an account first');
+
+            login();
 
             try {
               const transactions = await user.transactions.getList({ accountId });
