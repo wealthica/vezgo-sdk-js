@@ -184,7 +184,7 @@ class API {
       token,
       lang: ['en', 'fr'].includes(lang) ? lang : 'en',
       origin,
-      demo: this.config.demo ? "true" : undefined,
+      demo: this.config.demo ? 'true' : undefined,
     };
 
     // Cleanup blank params
