@@ -179,7 +179,7 @@ const user2 = vezgo.login('USER_ID_2');
 const url2 = await user2.getConnectUrl();
 ```
 
-#### (pending) user.connect({ provider })
+#### user.connect({ provider })
 
 This method starts the Vezgo Connect process inside your webpage/app for user to connect their account.
 
@@ -189,6 +189,23 @@ Connection response are provided via callbacks.
 user.connect({
   provider: 'coinbase', // optional
 }).onConnection(account => {
+  // Send the account to your server
+  sendToServer('/some-route', account);
+}).onError(error => {
+  console.error('account connection error:', error)
+}).onEvent((name, data) => {
+  console.log('account connection event:', name, data);
+});
+```
+
+#### user.reconnect(accountId)
+
+This method starts the Vezgo Connect process to re-connect an existing account that has expired/revoked credentials.
+
+Connection response are provided via callbacks.
+
+```javascript
+user.reconnect('ACCOUNT_ID').onConnection(account => {
   // Send the account to your server
   sendToServer('/some-route', account);
 }).onError(error => {
