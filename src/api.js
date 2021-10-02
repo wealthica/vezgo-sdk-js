@@ -166,6 +166,7 @@ class API {
   async getConnectUrl(options = {}) {
     const {
       provider,
+      accountId,
       state,
       origin = this.isBrowser ? window.location.host : undefined,
       lang,
@@ -191,13 +192,24 @@ class API {
     ));
     const queryString = new URLSearchParams(query).toString();
 
-    const url = provider ? `${connectURL}/connect/${provider}` : `${connectURL}/connect`;
+    let url = provider ? `${connectURL}/connect/${provider}` : `${connectURL}/connect`;
+
+    // Return reconnect url if accountId is passed in
+    if (accountId) {
+      url = `${connectURL}/reconnect/${accountId}`;
+    }
 
     return `${url}?${queryString}`;
   }
 
   connect(options = {}) {
     this._connect(options);
+
+    return this; // return the instance so we can chain the callbacks
+  }
+
+  reconnect(accountId) {
+    this._connect({ accountId });
 
     return this; // return the instance so we can chain the callbacks
   }
@@ -226,8 +238,8 @@ class API {
   async _connect(options = {}) {
     try {
       this._widgetOpened = true;
-      const { provider } = options;
-      const url = await this.getConnectUrl({ provider });
+      const { provider, accountId } = options;
+      const url = await this.getConnectUrl({ provider, accountId });
 
       this.iframe = appendVezgoIframe();
       this.widget = window.open(url, this.iframe.name);
