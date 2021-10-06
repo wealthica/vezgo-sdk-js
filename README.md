@@ -333,7 +333,7 @@ This method removes a single account from the user.
 await user.accounts.remove('603522490d2b02001233a5d6');
 ```
 
-#### user.transactions.getList({ accountId, ticker, from, to })
+#### user.transactions.getList({ accountId, ticker, from, to, wallet, last, limit })
 
 This method retrieves the list of transactions for an account.
 
@@ -345,6 +345,9 @@ const transactions = await user.transactions.getList({
   ticker: 'BTC', // optional
   from: '2020-08-31', // optional
   to: '2021-08-31', // optional
+  wallet: 'bitcoin:cash:usd', // optional
+  last: '603522490d2b02001233a5d6', // optional, blank string is allowed
+  limit: 10, // optional
 });
 ```
 
@@ -551,7 +554,7 @@ yarn test
 ### Release
 ```
 npm version patch # or minor/major
-git push --tags
+git push && git push --tags
 # wait until merged then
 npm publish
 ```

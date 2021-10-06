@@ -8,6 +8,9 @@ class Transactions {
     from,
     to,
     ticker,
+    wallet,
+    last,
+    limit,
   }) {
     if (!accountId) throw new Error('Please provide a valid Vezgo account id.');
 
@@ -18,6 +21,9 @@ class Transactions {
     if (from) searchParams.append('from', from);
     if (to) searchParams.append('to', to);
     if (ticker) searchParams.append('ticker', ticker);
+    if (wallet) searchParams.append('wallet', wallet);
+    if (last !== undefined) searchParams.append('last', last); // allow an empty ?last
+    if (limit) searchParams.append('limit', limit);
 
     const query = searchParams.toString();
     if (query) url = `${url}?${query}`;
