@@ -209,6 +209,10 @@ class API {
   }
 
   reconnect(accountId) {
+    if (!accountId || typeof accountId !== 'string') {
+      throw new Error('Please provide a valid accountId.');
+    }
+
     this._connect({ accountId });
 
     return this; // return the instance so we can chain the callbacks
@@ -235,22 +239,26 @@ class API {
     return this; // chaining support
   }
 
-  async _connect(options = {}) {
-    try {
-      this._widgetOpened = true;
-      const { provider, accountId } = options;
-      const url = await this.getConnectUrl({ provider, accountId });
+  _connect(options = {}) {
+    if (!this.isBrowser) throw new Error('Only supported in Browser.');
 
-      this.iframe = appendVezgoIframe();
-      this.widget = window.open(url, this.iframe.name);
-      this.widget.focus();
+    (async () => {
+      try {
+        this._widgetOpened = true;
+        const { provider, accountId } = options;
+        const url = await this.getConnectUrl({ provider, accountId });
 
-      this._widgetActive = true;
-      this._addListeners();
-      this._addWatchers();
-    } catch (error) {
-      this._closeWidgetWithError(500, 'Connection refused');
-    }
+        this.iframe = appendVezgoIframe();
+        this.widget = window.open(url, this.iframe.name);
+        this.widget.focus();
+
+        this._widgetActive = true;
+        this._addListeners();
+        this._addWatchers();
+      } catch (error) {
+        this._closeWidgetWithError(500, 'Connection refused');
+      }
+    })();
   }
 
   _onMessage({ origin, data }) {
