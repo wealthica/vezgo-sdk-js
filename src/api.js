@@ -55,7 +55,7 @@ class API {
     this._widgetActive = false;
   }
 
-  init() {
+  _init() {
     const { loginName, baseURL } = this.config;
 
     // Data & token endpoints do not require authentication
@@ -78,7 +78,7 @@ class API {
 
     // Create new user instance, without loginName so it does not recursively loop on init
     const user = new API({ ...this.config, loginName: null });
-    user.init();
+    user._init();
 
     // Initiate user api & resource helpers
     user.userApi = create({ baseURL });
@@ -98,7 +98,7 @@ class API {
   }
 
   async fetchToken() {
-    const response = await (this.isClient ? this.fetchTokenClient() : this.fetchTokenNode());
+    const response = await (this.isClient ? this._fetchTokenClient() : this._fetchTokenNode());
 
     if (!response.ok) {
       // TODO process error before throwing
@@ -112,7 +112,7 @@ class API {
     return this._token.token;
   }
 
-  fetchTokenNode() {
+  _fetchTokenNode() {
     const {
       clientId,
       secret,
@@ -126,7 +126,7 @@ class API {
     );
   }
 
-  fetchTokenClient() {
+  _fetchTokenClient() {
     const { auth, authEndpoint, authorizer } = this.config;
     const { params } = auth;
 
