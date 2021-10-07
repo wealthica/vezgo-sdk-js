@@ -100,12 +100,12 @@ class API {
   async fetchToken() {
     const response = await (this.isClient ? this._fetchTokenClient() : this._fetchTokenNode());
 
-    if (!response.ok) {
+    if (!response.ok && !response.token) {
       // TODO process error before throwing
       throw response.originalError;
     }
 
-    const { token } = response.data;
+    const { token } = (response.data || response);
     const payload = jwt.decode(token);
     this._token = { token, payload };
 
