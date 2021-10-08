@@ -26,7 +26,10 @@ global.mockReactNative = () => {
 global.mockAxios = (options = {}) => {
   create.mockReturnValue({
     defaults: {},
-    request: jest.fn().mockResolvedValue({ ok: true }),
+    request: jest.fn().mockResolvedValue({ status: 200 }),
     ...options,
   });
 };
+
+// Mock NodeJS environment by default
+global.mockNode();
