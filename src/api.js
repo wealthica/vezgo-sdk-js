@@ -55,7 +55,7 @@ class API {
     this._widgetActive = false;
   }
 
-  init() {
+  _init() {
     const { loginName, baseURL } = this.config;
 
     // Data & token endpoints do not require authentication
@@ -78,7 +78,7 @@ class API {
 
     // Create new user instance, without loginName so it does not recursively loop on init
     const user = new API({ ...this.config, loginName: null });
-    user.init();
+    user._init();
 
     // Initiate user api & resource helpers
     user.userApi = create({ baseURL });
@@ -98,21 +98,21 @@ class API {
   }
 
   async fetchToken() {
-    const response = await (this.isClient ? this.fetchTokenClient() : this.fetchTokenNode());
+    const response = await (this.isClient ? this._fetchTokenClient() : this._fetchTokenNode());
 
-    if (!response.ok) {
+    if (!response.ok && !response.token) {
       // TODO process error before throwing
       throw response.originalError;
     }
 
-    const { token } = response.data;
+    const { token } = (response.data || response);
     const payload = jwt.decode(token);
     this._token = { token, payload };
 
     return this._token.token;
   }
 
-  fetchTokenNode() {
+  _fetchTokenNode() {
     const {
       clientId,
       secret,
@@ -126,7 +126,7 @@ class API {
     );
   }
 
-  fetchTokenClient() {
+  _fetchTokenClient() {
     const { auth, authEndpoint, authorizer } = this.config;
     const { params } = auth;
 
@@ -209,6 +209,10 @@ class API {
   }
 
   reconnect(accountId) {
+    if (!accountId || typeof accountId !== 'string') {
+      throw new Error('Please provide a valid accountId.');
+    }
+
     this._connect({ accountId });
 
     return this; // return the instance so we can chain the callbacks
@@ -235,22 +239,26 @@ class API {
     return this; // chaining support
   }
 
-  async _connect(options = {}) {
-    try {
-      this._widgetOpened = true;
-      const { provider, accountId } = options;
-      const url = await this.getConnectUrl({ provider, accountId });
+  _connect(options = {}) {
+    if (!this.isBrowser) throw new Error('Only supported in Browser.');
 
-      this.iframe = appendVezgoIframe();
-      this.widget = window.open(url, this.iframe.name);
-      this.widget.focus();
+    (async () => {
+      try {
+        this._widgetOpened = true;
+        const { provider, accountId } = options;
+        const url = await this.getConnectUrl({ provider, accountId });
 
-      this._widgetActive = true;
-      this._addListeners();
-      this._addWatchers();
-    } catch (error) {
-      this._closeWidgetWithError(500, 'Connection refused');
-    }
+        this.iframe = appendVezgoIframe();
+        this.widget = window.open(url, this.iframe.name);
+        this.widget.focus();
+
+        this._widgetActive = true;
+        this._addListeners();
+        this._addWatchers();
+      } catch (error) {
+        this._closeWidgetWithError(500, 'Connection refused');
+      }
+    })();
   }
 
   _onMessage({ origin, data }) {

@@ -8,7 +8,7 @@ class Vezgo {
   init(config = {}) {
     const api = new API(config);
 
-    return api.init();
+    return api._init();
   }
 }
 
