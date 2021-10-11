@@ -2,6 +2,12 @@
 
 All notable changes to the Vezgo SDK across versions will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Add `user.accounts.sync()` to trigger an account sync.
+
 ## [0.0.11]
 
 ### Fixed
@@ -67,6 +73,7 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 - Add browser auth parameters (`authEndpoint`, `auth { params, headers }`, `authorizer`) to `Vezgo.init()`
 
+[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.11...HEAD
 [0.0.11]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.10...v0.0.11
 [0.0.10]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.9...v0.0.10
 [0.0.9]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.8...v0.0.9
