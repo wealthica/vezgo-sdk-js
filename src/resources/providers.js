@@ -11,7 +11,9 @@ class Providers {
   }
 
   async getOne(id) {
-    if (!id) throw new Error('Please provide a valid Vezgo provider id.');
+    if (!id || typeof id !== 'string') {
+      throw new Error('Please provide a valid Vezgo provider id.');
+    }
 
     const response = await this.api.get(`/providers/${id}`);
     if (!response.ok) throw response.originalError;

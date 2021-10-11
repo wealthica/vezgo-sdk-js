@@ -12,7 +12,9 @@ class Transactions {
     last,
     limit,
   }) {
-    if (!accountId) throw new Error('Please provide a valid Vezgo account id.');
+    if (!accountId || typeof accountId !== 'string') {
+      throw new Error('Please provide a valid Vezgo account id.');
+    }
 
     let url = `/accounts/${accountId}/transactions`;
 
@@ -35,8 +37,12 @@ class Transactions {
   }
 
   async getOne({ accountId, txId }) {
-    if (!accountId) throw new Error('Please provide a valid Vezgo account id.');
-    if (!txId) throw new Error('Please provide a valid Vezgo transaction id.');
+    if (!accountId || typeof accountId !== 'string') {
+      throw new Error('Please provide a valid Vezgo account id.');
+    }
+    if (!txId || typeof txId !== 'string') {
+      throw new Error('Please provide a valid Vezgo transaction id.');
+    }
 
     const response = await this.api.get(`/accounts/${accountId}/transactions/${txId}`);
     if (!response.ok) throw response.originalError;
