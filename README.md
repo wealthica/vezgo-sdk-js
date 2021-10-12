@@ -1,6 +1,6 @@
 # vezgo-sdk-js
 
-[![Build Status](https://semaphoreci.com/api/v1/wealthica/vezgo-sdk-js/branches/demo-prop-support/badge.svg)](https://semaphoreci.com/wealthica/vezgo-sdk-js)
+[![Build Status](https://semaphoreci.com/api/v1/wealthica/vezgo-sdk-js/branches/master/badge.svg)](https://semaphoreci.com/wealthica/vezgo-sdk-js)
 
 Official Vezgo JS SDK for the Browser & NodeJS
 
