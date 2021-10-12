@@ -151,6 +151,11 @@ class API {
             return;
           }
 
+          if (!result || typeof result !== 'object' || !result.token) {
+            reject(new Error('Invalid authorizer result. Expecting `{ token: "the token" }`.'));
+            return;
+          }
+
           resolve(result); // expected result = { token: 'the token' }
         });
       });

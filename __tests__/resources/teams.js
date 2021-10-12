@@ -1,7 +1,7 @@
-const r = require('../testutils/resources');
+const c = require('../testutils/common');
 
 describe('Vezgo Teams resource', () => {
-  r.setup.bind(this)();
+  c.setupResource.bind(this)();
 
   test('should be initiated along with the Vezgo instance', () => {
     expect(this.vezgo.teams).toBeDefined();
@@ -16,7 +16,7 @@ describe('Vezgo Teams resource', () => {
       expect(this.apiMock.history.get[0].url).toBe('/teams/info?client_id=test');
     });
 
-    r.shouldHandleApiError.bind(this)(
+    c.shouldHandleApiError.bind(this)(
       () => this.apiMock.onGet('/teams/info?client_id=test'),
       () => this.vezgo.teams.info(),
     );

@@ -1,7 +1,7 @@
-const r = require('../testutils/resources');
+const c = require('../testutils/common');
 
 describe('Vezgo Providers resource', () => {
-  r.setup.bind(this)();
+  c.setupResource.bind(this)();
 
   test('should be initiated along with the Vezgo instance', () => {
     expect(this.vezgo.providers).toBeDefined();
@@ -17,7 +17,7 @@ describe('Vezgo Providers resource', () => {
       expect(this.apiMock.history.get[0].url).toBe('/providers');
     });
 
-    r.shouldHandleApiError.bind(this)(
+    c.shouldHandleApiError.bind(this)(
       () => this.apiMock.onGet('/providers'),
       () => this.vezgo.providers.getList(),
     );
@@ -31,12 +31,12 @@ describe('Vezgo Providers resource', () => {
       expect(this.apiMock.history.get[0].url).toBe('/providers/test');
     });
 
-    r.shouldValidateId.bind(this)('provider id', false, [
+    c.shouldValidateId.bind(this)('provider id', false, [
       () => this.vezgo.providers.getOne(),
       () => this.vezgo.providers.getOne(1),
     ]);
 
-    r.shouldHandleApiError.bind(this)(
+    c.shouldHandleApiError.bind(this)(
       () => this.apiMock.onGet('/providers/test'),
       () => this.vezgo.providers.getOne('test'),
     );

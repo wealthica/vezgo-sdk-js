@@ -18,10 +18,12 @@ describe('Vezgo instance', () => {
 
     test('should NOT require loginName in Browser & ReactNative', () => {
       mockBrowser();
-      expect(() => Vezgo.init({ clientId: 'test', secret: 'test' }).login()).not.toThrow(/loginName/);
+      expect(() => Vezgo.init({ clientId: 'test', secret: 'test' }).login())
+        .not.toThrow(/loginName/);
 
       mockReactNative();
-      expect(() => Vezgo.init({ clientId: 'test', secret: 'test' }).login()).not.toThrow(/loginName/);
+      expect(() => Vezgo.init({ clientId: 'test', secret: 'test' }).login())
+        .not.toThrow(/loginName/);
     });
   });
 

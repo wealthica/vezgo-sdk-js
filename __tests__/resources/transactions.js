@@ -1,7 +1,8 @@
-const r = require('../testutils/resources');
+const c = require('../testutils/common');
+const h = require('../testutils/helpers');
 
 describe('Vezgo Transactions resource', () => {
-  r.setup.bind(this)(true);
+  c.setupResource.bind(this)(true);
 
   test('should NOT be initiated along with the Vezgo instance', () => {
     expect(this.vezgo.transactions).not.toBeDefined();
@@ -19,7 +20,7 @@ describe('Vezgo Transactions resource', () => {
       await expect(() => this.user.transactions.getList({})).rejects.toThrow('account id');
       await expect(() => this.user.transactions.getList({ accountId: 1 })).rejects
         .toThrow('account id');
-      expect(r.countRequests(this.userApiMock.history)).toBe(0);
+      expect(h.countRequests(this.userApiMock)).toBe(0);
     });
 
     test('should GET /accounts/:id/transactions', async () => {
@@ -52,12 +53,12 @@ describe('Vezgo Transactions resource', () => {
       expect(this.userApiMock.history.get[0].url).toBe('/accounts/test/transactions?last=');
     });
 
-    r.shouldHandleApiError.bind(this)(
+    c.shouldHandleApiError.bind(this)(
       () => this.userApiMock.onGet('/accounts/test/transactions'),
       () => this.user.transactions.getList({ accountId: 'test' }),
     );
 
-    r.shouldHandleTokenError.bind(this)(
+    c.shouldHandleTokenError.bind(this)(
       () => this.user.transactions.getList({ accountId: 'test' }),
     );
   });
@@ -74,7 +75,7 @@ describe('Vezgo Transactions resource', () => {
         .toThrow('transaction id');
       await expect(() => this.user.transactions.getOne({ accountId: 1, txId: 'test' })).rejects
         .toThrow('account id');
-      expect(r.countRequests(this.userApiMock.history)).toBe(0);
+      expect(h.countRequests(this.userApiMock)).toBe(0);
     });
 
     test('should GET /accounts/:id/transactions/:txid', async () => {
@@ -88,12 +89,12 @@ describe('Vezgo Transactions resource', () => {
       expect(this.userApiMock.history.get[0].url).toBe('/accounts/test/transactions/test');
     });
 
-    r.shouldHandleApiError.bind(this)(
+    c.shouldHandleApiError.bind(this)(
       () => this.userApiMock.onGet('/accounts/test/transactions/test'),
       () => this.user.transactions.getOne({ accountId: 'test', txId: 'test' }),
     );
 
-    r.shouldHandleTokenError.bind(this)(
+    c.shouldHandleTokenError.bind(this)(
       () => this.user.transactions.getOne({ accountId: 'test', txId: 'test' }),
     );
   });

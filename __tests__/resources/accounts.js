@@ -1,7 +1,7 @@
-const r = require('../testutils/resources');
+const c = require('../testutils/common');
 
 describe('Vezgo Accounts resource', () => {
-  r.setup.bind(this)(true);
+  c.setupResource.bind(this)(true);
 
   test('should NOT be initiated along with the Vezgo instance', () => {
     expect(this.vezgo.accounts).not.toBeDefined();
@@ -22,12 +22,12 @@ describe('Vezgo Accounts resource', () => {
       expect(this.userApiMock.history.get[0].url).toBe('/accounts');
     });
 
-    r.shouldHandleApiError.bind(this)(
+    c.shouldHandleApiError.bind(this)(
       () => this.userApiMock.onGet('/accounts'),
       () => this.user.accounts.getList(),
     );
 
-    r.shouldHandleTokenError.bind(this)(() => this.user.accounts.getList());
+    c.shouldHandleTokenError.bind(this)(() => this.user.accounts.getList());
   });
 
   describe('.getOne()', () => {
@@ -38,17 +38,17 @@ describe('Vezgo Accounts resource', () => {
       expect(this.userApiMock.history.get[0].url).toBe('/accounts/test');
     });
 
-    r.shouldValidateId.bind(this)('account id', true, [
+    c.shouldValidateId.bind(this)('account id', true, [
       () => this.user.accounts.getOne(),
       () => this.user.accounts.getOne(1),
     ]);
 
-    r.shouldHandleApiError.bind(this)(
+    c.shouldHandleApiError.bind(this)(
       () => this.userApiMock.onGet('/accounts/test'),
       () => this.user.accounts.getOne('test'),
     );
 
-    r.shouldHandleTokenError.bind(this)(() => this.user.accounts.getOne('test'));
+    c.shouldHandleTokenError.bind(this)(() => this.user.accounts.getOne('test'));
   });
 
   describe('.remove()', () => {
@@ -59,16 +59,16 @@ describe('Vezgo Accounts resource', () => {
       expect(this.userApiMock.history.delete[0].url).toBe('/accounts/test');
     });
 
-    r.shouldValidateId.bind(this)('account id', true, [
+    c.shouldValidateId.bind(this)('account id', true, [
       () => this.user.accounts.remove(),
       () => this.user.accounts.remove(1),
     ]);
 
-    r.shouldHandleApiError.bind(this)(
+    c.shouldHandleApiError.bind(this)(
       () => this.userApiMock.onDelete('/accounts/test'),
       () => this.user.accounts.remove('test'),
     );
 
-    r.shouldHandleTokenError.bind(this)(() => this.user.accounts.remove('test'));
+    c.shouldHandleTokenError.bind(this)(() => this.user.accounts.remove('test'));
   });
 });
