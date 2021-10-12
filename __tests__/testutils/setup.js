@@ -1,9 +1,6 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { create } = require('axios');
-const utils = require('../src/utils');
+const utils = require('../../src/utils');
 
-jest.mock('../src/utils');
-jest.mock('axios');
+jest.mock('../../src/utils');
 
 global.mockNode = () => {
   utils.isNode.mockReturnValue(true);
@@ -15,6 +12,7 @@ global.mockBrowser = () => {
   utils.isNode.mockReturnValue(false);
   utils.isBrowser.mockReturnValue(true);
   utils.isReactNative.mockReturnValue(false);
+  global.window = { location: { host: 'http://localhost' } };
 };
 
 global.mockReactNative = () => {
@@ -23,13 +21,7 @@ global.mockReactNative = () => {
   utils.isReactNative.mockReturnValue(true);
 };
 
-global.mockAxios = (options = {}) => {
-  create.mockReturnValue({
-    defaults: {},
-    request: jest.fn().mockResolvedValue({ status: 200 }),
-    ...options,
-  });
-};
-
 // Mock NodeJS environment by default
-global.mockNode();
+global.beforeEach(() => {
+  global.mockNode();
+});
