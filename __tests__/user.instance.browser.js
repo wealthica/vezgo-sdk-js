@@ -6,7 +6,7 @@ const { generateToken } = require('./testutils/helpers');
 describe('Vezgo User instance (Browser)', () => {
   beforeEach(() => {
     mockBrowser();
-    this.user = Vezgo.init({ clientId: 'test' }).login('test');
+    this.user = Vezgo.init({ clientId: 'test' }).login();
     this.token = generateToken();
     this.authMock = new MockAdapter(this.user.authApi.axiosInstance);
     this.authMock.onPost('/vezgo/auth').reply(200, { token: this.token });
@@ -14,7 +14,6 @@ describe('Vezgo User instance (Browser)', () => {
 
   describe('.reconnect()', () => {
     test('should require accountId', () => {
-      mockBrowser();
       expect(() => this.user.reconnect()).toThrow(/accountId/);
     });
   });
@@ -75,8 +74,7 @@ describe('Vezgo User instance (Browser)', () => {
       });
       this.user = Vezgo.init({
         clientId: 'test',
-        // define authEndpoint to test authorizer function taking precedence
-        authEndpoint: 'http://localhost/custom/auth',
+        authEndpoint: 'http://localhost/custom/auth', // to test authorizer taking precedence
         authorizer,
       }).login('test');
       this.authMock = new MockAdapter(this.user.authApi.axiosInstance);
@@ -93,8 +91,7 @@ describe('Vezgo User instance (Browser)', () => {
       });
       this.user = Vezgo.init({
         clientId: 'test',
-        // define authEndpoint to test authorizer function taking precedence
-        authEndpoint: 'http://localhost/custom/auth',
+        authEndpoint: 'http://localhost/custom/auth', // to test authorizer taking precedence
         authorizer,
       }).login('test');
       this.authMock = new MockAdapter(this.user.authApi.axiosInstance);
@@ -107,8 +104,7 @@ describe('Vezgo User instance (Browser)', () => {
       });
       this.user = Vezgo.init({
         clientId: 'test',
-        // define authEndpoint to test authorizer function taking precedence
-        authEndpoint: 'http://localhost/custom/auth',
+        authEndpoint: 'http://localhost/custom/auth', // to test authorizer taking precedence
         authorizer,
       }).login('test');
       this.authMock = new MockAdapter(this.user.authApi.axiosInstance);
@@ -117,6 +113,6 @@ describe('Vezgo User instance (Browser)', () => {
   });
 
   c.testGetTokenBehavior.bind(this)({ isBrowser: true });
-
   c.testAutoRefreshBehavior.bind(this)({ isBrowser: true });
+  c.testGetConnectUrlBehavior.bind(this)({ isBrowser: true });
 });
