@@ -59,6 +59,33 @@ describe('Vezgo Accounts resource', () => {
     });
   });
 
+  describe('.sync()', () => {
+    test('should POST /accounts/:id/sync', async () => {
+      this.userApiMock.onPost().reply(202, { test: 'data' });
+      const account = await this.user.accounts.sync('test');
+      expect(account).toEqual({ test: 'data' });
+      expect(this.userApiMock.history.post[0].url).toBe('/accounts/test/sync');
+    });
+
+    c.shouldValidateResourceId.bind(this)({
+      message: 'account id',
+      isUser: true,
+      calls: [
+        () => this.user.accounts.sync(),
+        () => this.user.accounts.sync(1),
+      ],
+    });
+
+    c.shouldHandleResourceEndpointError.bind(this)({
+      mockCall: () => this.userApiMock.onPost('/accounts/test/sync'),
+      methodCall: () => this.user.accounts.sync('test'),
+    });
+
+    c.shouldHandleTokenError.bind(this)({
+      methodCall: () => this.user.accounts.sync('test'),
+    });
+  });
+
   describe('.remove()', () => {
     test('should DELETE /accounts/:id', async () => {
       this.userApiMock.onDelete().reply(202);
