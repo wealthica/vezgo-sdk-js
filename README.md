@@ -327,6 +327,14 @@ const account = await user.accounts.getOne('603522490d2b02001233a5d6');
 }
 ```
 
+#### user.accounts.sync(id)
+
+This method triggers an account sync.
+
+```javascript
+const account = await user.accounts.sync('603522490d2b02001233a5d6');
+```
+
 #### user.accounts.remove(id)
 
 This method removes a single account from the user.

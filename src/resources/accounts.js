@@ -19,6 +19,15 @@ class Accounts {
     return response.data;
   }
 
+  async sync(id) {
+    if (!id) throw new Error('Please provide a valid Vezgo account id.');
+
+    const response = await this.api.post(`/accounts/${id}/sync`);
+    if (!response.ok) throw response.originalError;
+
+    return response.data;
+  }
+
   async remove(id) {
     if (!id || typeof id !== 'string') throw new Error('Please provide a valid Vezgo account id.');
 
