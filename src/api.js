@@ -186,7 +186,8 @@ class API {
       lang: ['en', 'fr'].includes(lang) ? lang : 'en',
       origin,
       demo: this.config.demo ? true : undefined,
-      providers: Array.isArray(providers) && providers.length ? providers.join(',') : undefined,
+      // 'provider' param in priority, skip 'providers' param if 'provider' is set
+      providers: !provider && Array.isArray(providers) && providers.length ? providers.join(',') : undefined,
     };
 
     // Cleanup blank params
