@@ -97,6 +97,19 @@ class API {
     return user;
   }
 
+  async getToken(options = {}) {
+    // Get a new token if the old one has < minimumLifetime left
+    const currentTime = new Date().valueOf();
+    const { payload } = this._token;
+    let { token } = this._token;
+
+    if (!payload || currentTime > (payload.exp - (options.minimumLifetime || 10)) * 1000) {
+      token = await this.fetchToken();
+    }
+
+    return token;
+  }
+
   async fetchToken() {
     const response = await (this.isClient ? this._fetchTokenClient() : this._fetchTokenNode());
 
@@ -144,19 +157,6 @@ class API {
     }
 
     return this.authApi.post(authEndpoint, params);
-  }
-
-  async getToken(options = {}) {
-    // Get a new token if the old one has < minimumLifetime left
-    const currentTime = new Date().valueOf();
-    const { payload } = this._token;
-    let { token } = this._token;
-
-    if (!payload || currentTime > (payload.exp - (options.minimumLifetime || 10)) * 1000) {
-      token = await this.fetchToken();
-    }
-
-    return token;
   }
 
   getTeam() {

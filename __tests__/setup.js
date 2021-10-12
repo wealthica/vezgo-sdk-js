@@ -32,4 +32,6 @@ global.mockAxios = (options = {}) => {
 };
 
 // Mock NodeJS environment by default
-global.mockNode();
+global.beforeEach(() => {
+  global.mockNode();
+});
