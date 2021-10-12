@@ -1,61 +1,44 @@
-const Vezgo = require('../../src');
+const r = require('../testutils/resources');
 
 describe('Vezgo Providers resource', () => {
+  r.setup.bind(this)();
+
   test('should be initiated along with the Vezgo instance', () => {
-    const vezgo = Vezgo.init({ clientId: 'test', secret: 'test' });
-    expect(vezgo.providers).toBeDefined();
-    expect(vezgo.providers).toHaveProperty('getList');
-    expect(vezgo.providers).toHaveProperty('getOne');
+    expect(this.vezgo.providers).toBeDefined();
+    expect(this.vezgo.providers).toHaveProperty('getList');
+    expect(this.vezgo.providers).toHaveProperty('getOne');
   });
 
   describe('.getList()', () => {
-    test('should call /providers endpoint', async () => {
-      const request = jest.fn().mockResolvedValue({ status: 200, data: [{ test: 'data' }] });
-      mockAxios({ request });
-      const vezgo = Vezgo.init({ clientId: 'test', secret: 'test' });
-      const providers = await vezgo.providers.getList();
-      expect(request).toHaveBeenCalledTimes(1); // called once because token request is not needed
-      expect(request.mock.calls[0][0].url).toBe('/providers');
+    test('should GET /providers', async () => {
+      this.apiMock.onGet().reply(200, [{ test: 'data' }]);
+      const providers = await this.vezgo.providers.getList();
       expect(providers).toEqual(expect.arrayContaining([{ test: 'data' }]));
+      expect(this.apiMock.history.get[0].url).toBe('/providers');
     });
 
-    test('should handle API error', async () => {
-      const error = new Error('Test Error');
-      error.response = { status: 400 };
-      const request = jest.fn().mockRejectedValue(error);
-      mockAxios({ request });
-      const vezgo = Vezgo.init({ clientId: 'test', secret: 'test' });
-      await expect(() => vezgo.providers.getList()).rejects.toThrow('Test Error'); // original error
-    });
+    r.shouldHandleApiError.bind(this)(
+      () => this.apiMock.onGet('/providers'),
+      () => this.vezgo.providers.getList(),
+    );
   });
 
   describe('.getOne(id)', () => {
-    test('should validate id', async () => {
-      const request = jest.fn().mockResolvedValue({ status: 200, data: [{ test: 'data' }] });
-      mockAxios({ request });
-      const vezgo = Vezgo.init({ clientId: 'test', secret: 'test' });
-      await expect(() => vezgo.providers.getOne()).rejects.toThrow('provider id');
-      await expect(() => vezgo.providers.getOne(1)).rejects.toThrow('provider id');
-      expect(request).not.toHaveBeenCalled();
-    });
-
-    test('should call /providers/:id endpoint', async () => {
-      const request = jest.fn().mockResolvedValue({ status: 200, data: { test: 'data' } });
-      mockAxios({ request });
-      const vezgo = Vezgo.init({ clientId: 'test', secret: 'test' });
-      const provider = await vezgo.providers.getOne('test');
-      expect(request).toHaveBeenCalledTimes(1); // called once because token request is not needed
-      expect(request.mock.calls[0][0].url).toBe('/providers/test');
+    test('should GET /providers/:id', async () => {
+      this.apiMock.onGet().reply(200, { test: 'data' });
+      const provider = await this.vezgo.providers.getOne('test');
       expect(provider).toEqual({ test: 'data' });
+      expect(this.apiMock.history.get[0].url).toBe('/providers/test');
     });
 
-    test('should handle API error', async () => {
-      const error = new Error('Test Error');
-      error.response = { status: 400 };
-      const request = jest.fn().mockRejectedValue(error);
-      mockAxios({ request });
-      const vezgo = Vezgo.init({ clientId: 'test', secret: 'test' });
-      await expect(() => vezgo.providers.getOne('test')).rejects.toThrow('Test Error');
-    });
+    r.shouldValidateId.bind(this)('provider id', false, [
+      () => this.vezgo.providers.getOne(),
+      () => this.vezgo.providers.getOne(1),
+    ]);
+
+    r.shouldHandleApiError.bind(this)(
+      () => this.apiMock.onGet('/providers/test'),
+      () => this.vezgo.providers.getOne('test'),
+    );
   });
 });

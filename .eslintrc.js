@@ -16,6 +16,9 @@ module.exports = {
         mockReactNative: 'readonly',
         mockAxios: 'readonly',
       },
+      rules: {
+        'func-names': 'off',
+      },
     },
   ],
 };
