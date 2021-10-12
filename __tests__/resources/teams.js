@@ -16,9 +16,9 @@ describe('Vezgo Teams resource', () => {
       expect(this.apiMock.history.get[0].url).toBe('/teams/info?client_id=test');
     });
 
-    c.shouldHandleApiError.bind(this)(
-      () => this.apiMock.onGet('/teams/info?client_id=test'),
-      () => this.vezgo.teams.info(),
-    );
+    c.shouldHandleResourceEndpointError.bind(this)({
+      mockCall: () => this.apiMock.onGet('/teams/info?client_id=test'),
+      methodCall: () => this.vezgo.teams.info(),
+    });
   });
 });

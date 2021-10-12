@@ -17,10 +17,10 @@ describe('Vezgo Providers resource', () => {
       expect(this.apiMock.history.get[0].url).toBe('/providers');
     });
 
-    c.shouldHandleApiError.bind(this)(
-      () => this.apiMock.onGet('/providers'),
-      () => this.vezgo.providers.getList(),
-    );
+    c.shouldHandleResourceEndpointError.bind(this)({
+      mockCall: () => this.apiMock.onGet('/providers'),
+      methodCall: () => this.vezgo.providers.getList(),
+    });
   });
 
   describe('.getOne(id)', () => {
@@ -31,14 +31,17 @@ describe('Vezgo Providers resource', () => {
       expect(this.apiMock.history.get[0].url).toBe('/providers/test');
     });
 
-    c.shouldValidateId.bind(this)('provider id', false, [
-      () => this.vezgo.providers.getOne(),
-      () => this.vezgo.providers.getOne(1),
-    ]);
+    c.shouldValidateResourceId.bind(this)({
+      message: 'provider id',
+      calls: [
+        () => this.vezgo.providers.getOne(),
+        () => this.vezgo.providers.getOne(1),
+      ],
+    });
 
-    c.shouldHandleApiError.bind(this)(
-      () => this.apiMock.onGet('/providers/test'),
-      () => this.vezgo.providers.getOne('test'),
-    );
+    c.shouldHandleResourceEndpointError.bind(this)({
+      mockCall: () => this.apiMock.onGet('/providers/test'),
+      methodCall: () => this.vezgo.providers.getOne('test'),
+    });
   });
 });

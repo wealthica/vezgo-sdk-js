@@ -2,7 +2,7 @@ const c = require('../testutils/common');
 const h = require('../testutils/helpers');
 
 describe('Vezgo Transactions resource', () => {
-  c.setupResource.bind(this)(true);
+  c.setupResource.bind(this)({ isUser: true });
 
   test('should NOT be initiated along with the Vezgo instance', () => {
     expect(this.vezgo.transactions).not.toBeDefined();
@@ -53,14 +53,14 @@ describe('Vezgo Transactions resource', () => {
       expect(this.userApiMock.history.get[0].url).toBe('/accounts/test/transactions?last=');
     });
 
-    c.shouldHandleApiError.bind(this)(
-      () => this.userApiMock.onGet('/accounts/test/transactions'),
-      () => this.user.transactions.getList({ accountId: 'test' }),
-    );
+    c.shouldHandleResourceEndpointError.bind(this)({
+      mockCall: () => this.userApiMock.onGet('/accounts/test/transactions'),
+      methodCall: () => this.user.transactions.getList({ accountId: 'test' }),
+    });
 
-    c.shouldHandleTokenError.bind(this)(
-      () => this.user.transactions.getList({ accountId: 'test' }),
-    );
+    c.shouldHandleTokenError.bind(this)({
+      methodCall: () => this.user.transactions.getList({ accountId: 'test' }),
+    });
   });
 
   describe('.getOne()', () => {
@@ -89,13 +89,13 @@ describe('Vezgo Transactions resource', () => {
       expect(this.userApiMock.history.get[0].url).toBe('/accounts/test/transactions/test');
     });
 
-    c.shouldHandleApiError.bind(this)(
-      () => this.userApiMock.onGet('/accounts/test/transactions/test'),
-      () => this.user.transactions.getOne({ accountId: 'test', txId: 'test' }),
-    );
+    c.shouldHandleResourceEndpointError.bind(this)({
+      mockCall: () => this.userApiMock.onGet('/accounts/test/transactions/test'),
+      methodCall: () => this.user.transactions.getOne({ accountId: 'test', txId: 'test' }),
+    });
 
-    c.shouldHandleTokenError.bind(this)(
-      () => this.user.transactions.getOne({ accountId: 'test', txId: 'test' }),
-    );
+    c.shouldHandleTokenError.bind(this)({
+      methodCall: () => this.user.transactions.getOne({ accountId: 'test', txId: 'test' }),
+    });
   });
 });

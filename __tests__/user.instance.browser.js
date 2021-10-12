@@ -116,7 +116,7 @@ describe('Vezgo User instance (Browser)', () => {
     });
   });
 
-  c.testGetTokenBehavior.bind(this)(true);
+  c.testGetTokenBehavior.bind(this)({ isBrowser: true });
 
-  c.testAutoRefreshBehavior.bind(this)(true);
+  c.testAutoRefreshBehavior.bind(this)({ isBrowser: true });
 });

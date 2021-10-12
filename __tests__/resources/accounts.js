@@ -1,7 +1,7 @@
 const c = require('../testutils/common');
 
 describe('Vezgo Accounts resource', () => {
-  c.setupResource.bind(this)(true);
+  c.setupResource.bind(this)({ isUser: true });
 
   test('should NOT be initiated along with the Vezgo instance', () => {
     expect(this.vezgo.accounts).not.toBeDefined();
@@ -22,12 +22,14 @@ describe('Vezgo Accounts resource', () => {
       expect(this.userApiMock.history.get[0].url).toBe('/accounts');
     });
 
-    c.shouldHandleApiError.bind(this)(
-      () => this.userApiMock.onGet('/accounts'),
-      () => this.user.accounts.getList(),
-    );
+    c.shouldHandleResourceEndpointError.bind(this)({
+      mockCall: () => this.userApiMock.onGet('/accounts'),
+      methodCall: () => this.user.accounts.getList(),
+    });
 
-    c.shouldHandleTokenError.bind(this)(() => this.user.accounts.getList());
+    c.shouldHandleTokenError.bind(this)({
+      methodCall: () => this.user.accounts.getList(),
+    });
   });
 
   describe('.getOne()', () => {
@@ -38,17 +40,23 @@ describe('Vezgo Accounts resource', () => {
       expect(this.userApiMock.history.get[0].url).toBe('/accounts/test');
     });
 
-    c.shouldValidateId.bind(this)('account id', true, [
-      () => this.user.accounts.getOne(),
-      () => this.user.accounts.getOne(1),
-    ]);
+    c.shouldValidateResourceId.bind(this)({
+      message: 'account id',
+      isUser: true,
+      calls: [
+        () => this.user.accounts.getOne(),
+        () => this.user.accounts.getOne(1),
+      ],
+    });
 
-    c.shouldHandleApiError.bind(this)(
-      () => this.userApiMock.onGet('/accounts/test'),
-      () => this.user.accounts.getOne('test'),
-    );
+    c.shouldHandleResourceEndpointError.bind(this)({
+      mockCall: () => this.userApiMock.onGet('/accounts/test'),
+      methodCall: () => this.user.accounts.getOne('test'),
+    });
 
-    c.shouldHandleTokenError.bind(this)(() => this.user.accounts.getOne('test'));
+    c.shouldHandleTokenError.bind(this)({
+      methodCall: () => this.user.accounts.getOne('test'),
+    });
   });
 
   describe('.remove()', () => {
@@ -59,16 +67,22 @@ describe('Vezgo Accounts resource', () => {
       expect(this.userApiMock.history.delete[0].url).toBe('/accounts/test');
     });
 
-    c.shouldValidateId.bind(this)('account id', true, [
-      () => this.user.accounts.remove(),
-      () => this.user.accounts.remove(1),
-    ]);
+    c.shouldValidateResourceId.bind(this)({
+      message: 'account id',
+      isUser: true,
+      calls: [
+        () => this.user.accounts.remove(),
+        () => this.user.accounts.remove(1),
+      ],
+    });
 
-    c.shouldHandleApiError.bind(this)(
-      () => this.userApiMock.onDelete('/accounts/test'),
-      () => this.user.accounts.remove('test'),
-    );
+    c.shouldHandleResourceEndpointError.bind(this)({
+      mockCall: () => this.userApiMock.onDelete('/accounts/test'),
+      methodCall: () => this.user.accounts.remove('test'),
+    });
 
-    c.shouldHandleTokenError.bind(this)(() => this.user.accounts.remove('test'));
+    c.shouldHandleTokenError.bind(this)({
+      methodCall: () => this.user.accounts.remove('test'),
+    });
   });
 });
