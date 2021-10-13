@@ -4,9 +4,12 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [0.0.12]
+
 ### Added
 
 - Add `user.accounts.sync()` to trigger an account sync.
+- Add `providers` parameter to `user.connect()` & `user.getConnectUrl()` to control the list of providers in Vezgo Connect.
 
 ## [0.0.11]
 
@@ -73,7 +76,8 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 - Add browser auth parameters (`authEndpoint`, `auth { params, headers }`, `authorizer`) to `Vezgo.init()`
 
-[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.11...HEAD
+[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.12...HEAD
+[0.0.12]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.11...v0.0.12
 [0.0.11]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.10...v0.0.11
 [0.0.10]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.9...v0.0.10
 [0.0.9]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.8...v0.0.9
