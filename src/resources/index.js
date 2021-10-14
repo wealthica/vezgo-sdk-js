@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 const RESOURCES = {
   accounts: require('./accounts'),
+  history: require('./history'),
   providers: require('./providers'),
   teams: require('./teams'),
   transactions: require('./transactions'),

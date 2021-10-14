@@ -344,6 +344,40 @@ This method removes a single account from the user.
 await user.accounts.remove('603522490d2b02001233a5d6');
 ```
 
+#### user.history.getList({ accountId, from, to, wallet })
+
+This method retrieves the balance history for an account.
+
+Returns data within the last 1 year by default.
+
+```javascript
+const history = await user.history.getList({
+  accountId: '603522490d2b02001233a5d6',
+  from: '2021-01-01',
+  to: '2021-09-09',
+  wallet: 'bitcoin:cash:usd',
+});
+```
+
+```json
+[
+  {
+    "id": "6144755af8a77cae7174afa3",
+    "date": 1630412605283,
+    "wallet": "demo:cash:usd",
+    "fiat_ticker": "USD",
+    "fiat_value": "125.30"
+  },
+  {
+    "id": "6144755af8a77cae7174afa4",
+    "date": 1630412605283,
+    "wallet": "demo:cash:cad",
+    "fiat_ticker": "USD",
+    "fiat_value": "125.30"
+  },
+]
+```
+
 #### user.transactions.getList({ accountId, ticker, from, to, wallet, last, limit })
 
 This method retrieves the list of transactions for an account.
