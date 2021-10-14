@@ -89,7 +89,7 @@ class API {
       return request;
     });
 
-    const userResources = createResources(user, ['accounts', 'transactions']);
+    const userResources = createResources(user, ['accounts', 'history', 'transactions']);
     Object.assign(user, userResources);
 
     user.config.loginName = loginName;

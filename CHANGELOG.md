@@ -4,6 +4,12 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [0.0.13]
+
+### Added
+
+- Add `user.history.getList()` to get account balance history.
+
 ## [0.0.12]
 
 ### Added
@@ -76,7 +82,8 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 - Add browser auth parameters (`authEndpoint`, `auth { params, headers }`, `authorizer`) to `Vezgo.init()`
 
-[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.12...HEAD
+[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.13...HEAD
+[0.0.13]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.12...v0.0.13
 [0.0.12]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.11...v0.0.12
 [0.0.11]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.10...v0.0.11
 [0.0.10]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.9...v0.0.10

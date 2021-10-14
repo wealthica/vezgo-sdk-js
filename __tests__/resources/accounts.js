@@ -11,6 +11,7 @@ describe('Vezgo Accounts resource', () => {
     expect(this.user.accounts).toBeDefined();
     expect(this.user.accounts).toHaveProperty('getList');
     expect(this.user.accounts).toHaveProperty('getOne');
+    expect(this.user.accounts).toHaveProperty('sync');
     expect(this.user.accounts).toHaveProperty('remove');
   });
 
