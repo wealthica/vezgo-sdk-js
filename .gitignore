@@ -7,3 +7,4 @@ yarn-error.log*
 dist
 lib
 .idea
+docker-compose.override.yml
