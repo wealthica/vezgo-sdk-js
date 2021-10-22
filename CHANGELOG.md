@@ -4,6 +4,10 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [0.0.14]
+
+- Add `lang: 'es'` support for `user.connect()`, `user.reconnect()` & `user.getConnectUrl()`.
+
 ## [0.0.13]
 
 ### Added
@@ -82,7 +86,8 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 - Add browser auth parameters (`authEndpoint`, `auth { params, headers }`, `authorizer`) to `Vezgo.init()`
 
-[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.13...HEAD
+[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.14...HEAD
+[0.0.14]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.13...v0.0.14
 [0.0.13]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.12...v0.0.13
 [0.0.12]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.11...v0.0.12
 [0.0.11]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.10...v0.0.11

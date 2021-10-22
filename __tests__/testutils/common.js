@@ -176,11 +176,8 @@ module.exports.testGetConnectUrlBehavior = function ({ isBrowser } = {}) {
     });
 
     test('should use custom `lang` if passed in', async () => {
-      let url = await this.user.getConnectUrl({ lang: 'fr' });
+      const url = await this.user.getConnectUrl({ lang: 'fr' });
       expect(url).toContain('lang=fr');
-
-      url = await this.user.getConnectUrl({ lang: 'not supported' });
-      expect(url).toContain('lang=en'); // default to en if not supported
     });
 
     test('should use `state` if passed in', async () => {
