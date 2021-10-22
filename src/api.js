@@ -188,7 +188,7 @@ class API {
       redirect_uri: redirectURI,
       state,
       token,
-      lang: ['en', 'fr'].includes(lang) ? lang : 'en',
+      lang: lang || 'en',
       origin,
       demo: this.config.demo ? true : undefined,
       // 'provider' param in priority, skip 'providers' param if 'provider' is set
