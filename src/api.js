@@ -254,8 +254,12 @@ class API {
     (async () => {
       try {
         this._widgetOpened = true;
-        const { provider, providers, accountId } = options;
-        const url = await this.getConnectUrl({ provider, providers, accountId });
+        const {
+          provider, providers, accountId, lang,
+        } = options;
+        const url = await this.getConnectUrl({
+          provider, providers, accountId, lang,
+        });
 
         this.iframe = appendVezgoIframe();
         this.widget = window.open(url, this.iframe.name);
