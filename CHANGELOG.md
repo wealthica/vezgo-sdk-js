@@ -3,6 +3,7 @@
 All notable changes to the Vezgo SDK across versions will be documented in this file.
 
 ## [Unreleased]
+- Fix missed lang parameter in `user.connect()`.
 
 ## [0.0.14]
 
