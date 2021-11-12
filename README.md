@@ -182,7 +182,7 @@ const user2 = vezgo.login('USER_ID_2');
 const url2 = await user2.getConnectUrl();
 ```
 
-#### user.connect({ provider })
+#### user.connect({ provider, providers, accountId, lang })
 
 This method starts the Vezgo Connect process inside your webpage/app for user to connect their account.
 
