@@ -3,7 +3,10 @@
 All notable changes to the Vezgo SDK across versions will be documented in this file.
 
 ## [Unreleased]
-- Fix missed lang parameter in `user.connect()`.
+
+## [0.0.15]
+- Fix missing lang parameter in `user.connect()`.
+- Update default origin for `user.connect()` to the full url origin.
 
 ## [0.0.14]
 
@@ -87,7 +90,8 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 - Add browser auth parameters (`authEndpoint`, `auth { params, headers }`, `authorizer`) to `Vezgo.init()`
 
-[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.14...HEAD
+[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.15...HEAD
+[0.0.15]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.14...v0.0.15
 [0.0.14]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.13...v0.0.14
 [0.0.13]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.12...v0.0.13
 [0.0.12]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.11...v0.0.12
