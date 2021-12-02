@@ -12,7 +12,7 @@ global.mockBrowser = () => {
   utils.isNode.mockReturnValue(false);
   utils.isBrowser.mockReturnValue(true);
   utils.isReactNative.mockReturnValue(false);
-  global.window = { location: { host: 'http://localhost' } };
+  global.window = { location: { origin: 'http://localhost' } };
 };
 
 global.mockReactNative = () => {

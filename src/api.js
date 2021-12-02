@@ -173,7 +173,7 @@ class API {
       provider,
       accountId,
       state,
-      origin = this.isBrowser ? window.location.host : undefined,
+      origin = this.isBrowser ? window.location.origin : undefined,
       lang,
       redirectURI = this.config.redirectURI,
       providers,
