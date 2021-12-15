@@ -1,6 +1,6 @@
 {
   "name": "vezgo-sdk-js",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Official Vezgo JS SDK for the Browser & NodeJS",
   "author": "Wealthica Financial Technology Inc. <hello@wealthica.com> (https://wealthica.com/)",
   "license": "MIT",
