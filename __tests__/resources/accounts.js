@@ -23,6 +23,12 @@ describe('Vezgo Accounts resource', () => {
       expect(this.userApiMock.history.get[0].url).toBe('/accounts');
     });
 
+    test('should forward query params', async () => {
+      this.userApiMock.onGet().reply(200, [{ test: 'data' }]);
+      await this.user.accounts.getList({ some: 'thing' });
+      expect(this.userApiMock.history.get[0].url).toBe('/accounts?some=thing');
+    });
+
     c.shouldHandleResourceEndpointError.bind(this)({
       mockCall: () => this.userApiMock.onGet('/accounts'),
       methodCall: () => this.user.accounts.getList(),
@@ -39,6 +45,12 @@ describe('Vezgo Accounts resource', () => {
       const account = await this.user.accounts.getOne('test');
       expect(account).toEqual({ test: 'data' });
       expect(this.userApiMock.history.get[0].url).toBe('/accounts/test');
+    });
+
+    test('should forward query params', async () => {
+      this.userApiMock.onGet().reply(200, { test: 'data' });
+      await this.user.accounts.getOne('test', { some: 'thing' });
+      expect(this.userApiMock.history.get[0].url).toBe('/accounts/test?some=thing');
     });
 
     c.shouldValidateResourceId.bind(this)({

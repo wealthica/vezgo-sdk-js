@@ -30,9 +30,19 @@ function appendVezgoIframe() {
   return iframe;
 }
 
+const getQueryString = (params = {}) => {
+  const searchParams = new URLSearchParams();
+  Object.keys(params).forEach((key) => {
+    searchParams.append(key, params[key]);
+  });
+
+  return searchParams.toString();
+};
+
 module.exports = {
   isBrowser,
   isNode,
   isReactNative,
   appendVezgoIframe,
+  getQueryString,
 };

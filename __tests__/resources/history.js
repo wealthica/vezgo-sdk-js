@@ -36,10 +36,10 @@ describe('Vezgo History resource', () => {
         from: '2021-01-01',
         to: '2021-10-01',
         wallet: 'aa:bb:cc',
-        not: 'supported', // unsupported param should be ignored
+        anything: 'else',
       });
       expect(this.userApiMock.history.get[0].url).toBe(
-        '/accounts/test/history?from=2021-01-01&to=2021-10-01&wallet=aa%3Abb%3Acc',
+        '/accounts/test/history?from=2021-01-01&to=2021-10-01&wallet=aa%3Abb%3Acc&anything=else',
       );
     });
 

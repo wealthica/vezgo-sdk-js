@@ -1,6 +1,15 @@
 const utils = require('../../src/utils');
 
-jest.mock('../../src/utils');
+jest.mock('../../src/utils', () => {
+  const originalModule = jest.requireActual('../../src/utils');
+
+  return {
+    ...originalModule,
+    isNode: jest.fn(),
+    isBrowser: jest.fn(),
+    isReactNative: jest.fn(),
+  };
+});
 
 global.mockNode = () => {
   utils.isNode.mockReturnValue(true);

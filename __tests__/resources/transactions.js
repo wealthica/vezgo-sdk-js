@@ -40,10 +40,10 @@ describe('Vezgo Transactions resource', () => {
         wallet: 'aa:bb:cc',
         last: 'test',
         limit: 10,
-        not: 'supported', // unsupported param should be ignored
+        anything: 'else',
       });
       expect(this.userApiMock.history.get[0].url).toBe(
-        '/accounts/test/transactions?from=2021-01-01&to=2021-10-01&ticker=ABC&wallet=aa%3Abb%3Acc&last=test&limit=10',
+        '/accounts/test/transactions?from=2021-01-01&to=2021-10-01&ticker=ABC&wallet=aa%3Abb%3Acc&last=test&limit=10&anything=else',
       );
     });
 
@@ -83,10 +83,10 @@ describe('Vezgo Transactions resource', () => {
       const transaction = await this.user.transactions.getOne({
         accountId: 'test',
         txId: 'test',
-        not: 'supported', // unsupported param should be ignored
+        anything: 'else',
       });
       expect(transaction).toEqual({ test: 'data' });
-      expect(this.userApiMock.history.get[0].url).toBe('/accounts/test/transactions/test');
+      expect(this.userApiMock.history.get[0].url).toBe('/accounts/test/transactions/test?anything=else');
     });
 
     c.shouldHandleResourceEndpointError.bind(this)({
