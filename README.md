@@ -164,7 +164,7 @@ const url = await user.getConnectUrl({
   // https://vezgo.com/docs/#connect-url-parameters
   origin: 'YOUR_SITE_ORIGIN',
   state: 'YOUR_APP_STATE', // optional
-  lang: 'en', // optional (en | es | fr), 'en' by default
+  lang: 'en', // optional (en | es | fr | it), 'en' by default
   providers: ['binance', 'coinbase', 'ethereum'], // optional, ignored if `provider` is also passed in.
 });
 // https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&origin=YOUR_SITE_ORIGIN&state=YOUR_APP_STATE&token=USER_TOKEN&lang=en
