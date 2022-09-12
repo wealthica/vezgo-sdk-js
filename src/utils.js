@@ -30,6 +30,23 @@ function appendVezgoIframe() {
   return iframe;
 }
 
+function appendVezgoForm({ url, token, iframe }) {
+  const form = document.createElement('form');
+  form.target = iframe.name;
+  form.method = 'POST';
+  form.action = url;
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.name = 'token';
+  input.value = token;
+  form.appendChild(input);
+
+  document.body.appendChild(form);
+
+  return form;
+}
+
 const getQueryString = (params = {}) => {
   const searchParams = new URLSearchParams();
   Object.keys(params).forEach((key) => {
@@ -44,5 +61,6 @@ module.exports = {
   isNode,
   isReactNative,
   appendVezgoIframe,
+  appendVezgoForm,
   getQueryString,
 };
