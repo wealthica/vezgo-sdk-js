@@ -4,6 +4,13 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [1.0.0]
+Note: Latest Vezgo Connect requires to be opened via `POST` request with `token` in the form data.
+
+- Add `user.getConnectData()` to get Vezgo Connect URL and authorization token.
+- Delete `user.getConnectUrl()`.
+- `user.connect()` and `user.reconnect()` updated accordingly.
+
 ## [0.0.16]
 - Allow passing extra query params to API calls.
 
@@ -93,8 +100,9 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 - Add browser auth parameters (`authEndpoint`, `auth { params, headers }`, `authorizer`) to `Vezgo.init()`
 
-[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.16...HEAD
-[0.0.16]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.16...v0.0.16
+[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.0...HEAD
+[0.0.16]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.16...v1.0.0
+[0.0.16]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.15...v0.0.16
 [0.0.15]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.14...v0.0.15
 [0.0.14]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.13...v0.0.14
 [0.0.13]: https://github.com/wealthica/vezgo-sdk-js/compare/v0.0.12...v0.0.13

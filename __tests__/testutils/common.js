@@ -129,23 +129,25 @@ module.exports.testAutoRefreshBehavior = function ({ isBrowser } = {}) {
   });
 };
 
-module.exports.testGetConnectUrlBehavior = function ({ isBrowser } = {}) {
-  describe('.getConnectUrl()', () => {
-    test('should return the correct url', async () => {
-      const url = await this.user.getConnectUrl();
+module.exports.testGetConnectDataBehavior = function ({ isBrowser } = {}) {
+  describe('.getConnectData()', () => {
+    test('should return the correct url and token', async () => {
+      const { url, token } = await this.user.getConnectData();
       const expectedUrl = isBrowser
-        ? `https://connect.vezgo.com/connect?client_id=test&token=${this.token}&lang=en&origin=http%3A%2F%2Flocalhost`
-        : `https://connect.vezgo.com/connect?client_id=test&token=${this.token}&lang=en`;
+        ? `https://connect.vezgo.com/connect?client_id=test&lang=en&origin=http%3A%2F%2Flocalhost`
+        : `https://connect.vezgo.com/connect?client_id=test&lang=en`;
+
       expect(url).toBe(expectedUrl);
+      expect(token).toBe(this.token);
     });
 
     test('should return preselected url if `provider` is passed in', async () => {
-      const url = await this.user.getConnectUrl({ provider: 'someprovider' });
+      const { url } = await this.user.getConnectData({ provider: 'someprovider' });
       expect(url).toContain('https://connect.vezgo.com/connect/someprovider?');
     });
 
     test('should return reconnect url if `accountId` is passed in', async () => {
-      const url = await this.user.getConnectUrl({
+      const { url } = await this.user.getConnectData({
         provider: 'someprovider', // to test accountId taking precedence
         accountId: 'someaccount',
       });
@@ -167,34 +169,34 @@ module.exports.testGetConnectUrlBehavior = function ({ isBrowser } = {}) {
         this.apiMock.onPost('/auth/token').reply(200, { token: this.token });
       }
 
-      let url = await this.user.getConnectUrl();
+      const { url } = await this.user.getConnectData();
       expect(url).toContain('redirect_uri=http%3A%2F%2Ftesturi');
 
       // redirectURI passed to the method call takes precedence over Vezgo.init() option
-      url = await this.user.getConnectUrl({ redirectURI: 'http://anotheruri' });
-      expect(url).toContain('redirect_uri=http%3A%2F%2Fanotheruri');
+      const { url: url2 } = await this.user.getConnectData({ redirectURI: 'http://anotheruri' });
+      expect(url2).toContain('redirect_uri=http%3A%2F%2Fanotheruri');
     });
 
     test('should use custom `lang` if passed in', async () => {
-      const url = await this.user.getConnectUrl({ lang: 'fr' });
+      const { url } = await this.user.getConnectData({ lang: 'fr' });
       expect(url).toContain('lang=fr');
     });
 
     test('should use `state` if passed in', async () => {
-      let url = await this.user.getConnectUrl({ state: 'eyJzb21lIjoiZGF0YSIsIm90aGVyIjoxfQ==' });
+      const { url } = await this.user.getConnectData({ state: 'eyJzb21lIjoiZGF0YSIsIm90aGVyIjoxfQ==' });
       expect(url).toContain('state=eyJzb21lIjoiZGF0YSIsIm90aGVyIjoxfQ%3D%3D');
 
       // handle empty
-      url = await this.user.getConnectUrl({ state: '' });
-      expect(url).not.toContain('state=');
-      url = await this.user.getConnectUrl({ state: undefined });
-      expect(url).not.toContain('state=');
-      url = await this.user.getConnectUrl({ state: null });
-      expect(url).not.toContain('state=');
+      const { url: url2 } = await this.user.getConnectData({ state: '' });
+      expect(url2).not.toContain('state=');
+      const { url: url3 } = await this.user.getConnectData({ state: undefined });
+      expect(url3).not.toContain('state=');
+      const { url: url4 } = await this.user.getConnectData({ state: null });
+      expect(url4).not.toContain('state=');
     });
 
     test('should ignore unsupported params', async () => {
-      const url = await this.user.getConnectUrl({ not: 'supported' });
+      const { url } = await this.user.getConnectData({ not: 'supported' });
       expect(url).not.toContain('not=');
     });
 
@@ -211,7 +213,7 @@ module.exports.testGetConnectUrlBehavior = function ({ isBrowser } = {}) {
         .replyOnce(200, { token: newToken });
 
       await this.user.fetchToken();
-      const url = await this.user.getConnectUrl();
+      const { url } = await this.user.getConnectData();
       expect(url).toContain('https://connect.vezgo.com/');
       expect(mockObject.history.post).toHaveLength(2);
     });
@@ -224,7 +226,7 @@ module.exports.testGetConnectUrlBehavior = function ({ isBrowser } = {}) {
       mockObject.onPost().replyOnce(200, { token: existingToken });
 
       await this.user.fetchToken();
-      const url = await this.user.getConnectUrl();
+      const { url } = await this.user.getConnectData();
       expect(url).toContain('https://connect.vezgo.com/');
       expect(mockObject.history.post).toHaveLength(1);
     });

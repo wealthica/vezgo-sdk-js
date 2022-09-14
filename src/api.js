@@ -8,6 +8,7 @@ const {
   isNode,
   isReactNative,
   appendVezgoIframe,
+  appendVezgoForm,
 } = require('./utils');
 
 const CALLBACK_CONNECTION = '_onConnection';
@@ -168,7 +169,7 @@ class API {
     return this.teams.info();
   }
 
-  async getConnectUrl(options = {}) {
+  async getConnectData(options = {}) {
     const {
       provider,
       accountId,
@@ -187,7 +188,6 @@ class API {
       client_id: clientId,
       redirect_uri: redirectURI,
       state,
-      token,
       lang: lang || 'en',
       origin,
       demo: this.config.demo ? true : undefined,
@@ -208,7 +208,7 @@ class API {
       url = `${connectURL}/reconnect/${accountId}`;
     }
 
-    return `${url}?${queryString}`;
+    return { url: `${url}?${queryString}`, token };
   }
 
   connect(options = {}) {
@@ -257,12 +257,16 @@ class API {
         const {
           provider, providers, accountId, lang,
         } = options;
-        const url = await this.getConnectUrl({
+        const { url, token } = await this.getConnectData({
           provider, providers, accountId, lang,
         });
 
         this.iframe = appendVezgoIframe();
-        this.widget = window.open(url, this.iframe.name);
+
+        this.widget = window.open('', this.iframe.name);
+        this.form = appendVezgoForm({ url, token, iframe: this.iframe });
+
+        this.form.submit();
         this.widget.focus();
 
         this._widgetActive = true;
@@ -360,6 +364,11 @@ class API {
     if (this.iframe) {
       this.iframe.style.display = 'none';
       this.iframe.src = '';
+    }
+
+    // Delete form
+    if (this.form) {
+      this.form.remove();
     }
   }
 

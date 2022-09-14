@@ -37,5 +37,5 @@ describe('Vezgo User instance (NodeJS)', () => {
 
   c.testGetTokenBehavior.bind(this)();
   c.testAutoRefreshBehavior.bind(this)();
-  c.testGetConnectUrlBehavior.bind(this)();
+  c.testGetConnectDataBehavior.bind(this)();
 });
