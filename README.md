@@ -174,6 +174,21 @@ const { url, token } = await user.getConnectData({
 //   token: "USER_TOKEN"
 // }
 
+// POST Vezgo Connect URL from client (browser/ReactNative) example:
+const form = document.createElement("form");
+form.method = "POST";
+form.action = url;
+
+const input = document.createElement("input");
+input.type = "hidden";
+input.name = "token";
+input.value = token;
+form.appendChild(input);
+
+document.body.appendChild(form);
+
+form.submit();
+
 // Alternatively, pass redirectURI once to `Vezgo.init()`
 const vezgo = Vezgo.init({
   clientId: 'YOUR_CLIENT_ID',
