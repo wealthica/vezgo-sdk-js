@@ -156,7 +156,7 @@ Vezgo Connect URL must be called via POST method and pass token in the form data
 User token has a 10 minutes session timeout.
 
 ```javascript
-const url = await user.getConnectData({
+const { url, token } = await user.getConnectData({
   provider: 'coinbase', // optional
   // required for server-side, optional for client (browser, ReactNative) or if already passed to `Vezgo.init()`.
   // Must be a registered URI.
@@ -183,10 +183,10 @@ const vezgo = Vezgo.init({
 });
 
 const user1 = vezgo.login('USER_ID_1');
-const url1 = await user1.getConnectData();
+const { url: url1, token } = await user1.getConnectData();
 
 const user2 = vezgo.login('USER_ID_2');
-const url2 = await user2.getConnectData();
+const { url: url2, token } = await user2.getConnectData();
 ```
 
 #### user.connect({ provider, providers, accountId, lang })
