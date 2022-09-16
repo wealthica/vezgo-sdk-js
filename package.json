@@ -1,6 +1,6 @@
 {
   "name": "vezgo-sdk-js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Official Vezgo JS SDK for the Browser & NodeJS",
   "author": "Wealthica Financial Technology Inc. <hello@wealthica.com> (https://wealthica.com/)",
   "license": "MIT",
@@ -8,6 +8,20 @@
   "files": [
     "dist",
     "lib"
+  ],
+  "keywords": [
+    "vezgo",
+    "zabo",
+    "cryptocurrency",
+    "wallets",
+    "bitcoin",
+    "ethereum",
+    "metamask",
+    "ledger",
+    "coinbase",
+    "binance",
+    "kraken",
+    "api"
   ],
   "scripts": {
     "prebuild": "rimraf dist lib",

@@ -1,8 +1,32 @@
-# vezgo-sdk-js
+# Official Vezgo JS SDK for the Browser & NodeJS
 
 [![Build Status](https://semaphoreci.com/api/v1/wealthica/vezgo-sdk-js/branches/master/badge.svg)](https://semaphoreci.com/wealthica/vezgo-sdk-js)
 
-Official Vezgo JS SDK for the Browser & NodeJS
+## What is Vezgo? A Unified Cryptocurrency API.
+
+> *“We tried a few crypto data APIs to retrieve our users digital assets, Vezgo is the only one that actually works!”* — Wealth Tracking Dashboard Dev
+
+[Vezgo](https://vezgo.com/) is an API for connecting with cryptocurrency exchanges, wallets and protocols like Bitcoin. Instead of manually integrating with [Crypto Exchange APIs](https://vezgo.com/status/) like [Coinbase API](https://vezgo.com/), [Binance API](https://vezgo.com/), [Bitcoin APIs](https://vezgo.com/), [Crypto APIs](https://vezgo.com/) or the hundreds of other cryptocurrency APIs - you can simply use Vezgo for them all.
+
+Vezgo is the **#1** alternative to the discontinued [Zabo API](https://vezgo.com/).
+
+We believe teams and developers should focus on building great products, not worry about the fragmented landscape of exchange APIs and blockchain protocols.
+
+For our updated list of integrations, check out our list of [Vezgo Integrations](https://vezgo.com/status/).
+
+## Vezgo API Javascript (JS) SDK
+
+This is the Official Vezgo JS SDK for the Browser & NodeJS.
+
+The Vezgo SDK provides convenient access to the Vezgo API from applications written in browser and server-side JavaScript. Please note that you must register and [request your API keys](https://vezgo.com/) to use in your application.
+
+## Documentation
+
+Refer to the [Vezgo API Documentation](https://vezgo.com/docs) for more details.
+
+Bugs, requests or suggestions
+
+Get in touch at [hello@vezgo.com](mailto:hello@vezgo.com) for bug reports, requests or suggestions.
 
 ## Getting started
 
