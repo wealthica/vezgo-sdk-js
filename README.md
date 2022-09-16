@@ -8,7 +8,7 @@
 
 [Vezgo](https://vezgo.com/) is an API for connecting with cryptocurrency exchanges, wallets and protocols like Bitcoin. Instead of manually integrating with [Crypto Exchange APIs](https://vezgo.com/status/) like [Coinbase API](https://vezgo.com/), [Binance API](https://vezgo.com/), [Bitcoin APIs](https://vezgo.com/), [Crypto APIs](https://vezgo.com/) or the hundreds of other cryptocurrency APIs - you can simply use Vezgo for them all.
 
-Vezgo is the #1 alternative to the discontinued [Zabo API](https://vezgo.com/).
+Vezgo is the **#1** alternative to the discontinued [Zabo API](https://vezgo.com/).
 
 We believe teams and developers should focus on building great products, not worry about the fragmented landscape of exchange APIs and blockchain protocols.
 
