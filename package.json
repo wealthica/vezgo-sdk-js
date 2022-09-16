@@ -9,6 +9,20 @@
     "dist",
     "lib"
   ],
+  "keywords": [
+    "vezgo",
+    "zabo",
+    "cryptocurrency",
+    "wallets",
+    "bitcoin",
+    "ethereum",
+    "metamask",
+    "ledger",
+    "coinbase",
+    "binance",
+    "kraken",
+    "api"
+  ],
   "scripts": {
     "prebuild": "rimraf dist lib",
     "build": "webpack",
