@@ -31,7 +31,7 @@ const baseConfig = {
     new CopyPlugin({
       patterns: [
         {
-          from: './index.d.ts',
+          from: './src/index.d.ts',
           to: 'vezgo.d.ts',
         },
       ],
@@ -63,7 +63,7 @@ const browserMinifiedConfig = merge(browserConfig, {
     new CopyPlugin({
       patterns: [
         {
-          from: './index.d.ts',
+          from: './src/index.d.ts',
           to: 'vezgo.min.d.ts',
         },
       ],
@@ -84,7 +84,7 @@ const browserES5Config = merge(baseConfig, {
     new CopyPlugin({
       patterns: [
         {
-          from: './index.d.ts',
+          from: './src/index.d.ts',
           to: 'vezgo.es5.d.ts',
         },
       ],
