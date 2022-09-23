@@ -3,7 +3,7 @@ import { ApisauceInstance } from "apisauce";
 export = Vezgo
 
 declare var Vezgo: {
-  init(config: APIConfig):APIInterface;
+  init(config: APIConfig): APIInterface;
 };
 
 type APIConfig = {
