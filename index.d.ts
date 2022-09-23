@@ -42,7 +42,7 @@ type ConnectData = {
 
 interface APIInterface {
   constructor(config: APIConfig)
-  __init():APIInterface
+  __init(): APIInterface
   login(loginName: string): APIUserInterface
   getToken(options: TokenOptions): Promise<string>
   fetchToken(): Promise<string>
