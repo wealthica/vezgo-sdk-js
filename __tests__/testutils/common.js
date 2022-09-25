@@ -134,8 +134,8 @@ module.exports.testGetConnectDataBehavior = function ({ isBrowser } = {}) {
     test('should return the correct url and token', async () => {
       const { url, token } = await this.user.getConnectData();
       const expectedUrl = isBrowser
-        ? `https://connect.vezgo.com/connect?client_id=test&lang=en&origin=http%3A%2F%2Flocalhost`
-        : `https://connect.vezgo.com/connect?client_id=test&lang=en`;
+        ? 'https://connect.vezgo.com/connect?client_id=test&lang=en&origin=http%3A%2F%2Flocalhost&theme=light&providers_per_line=2'
+        : 'https://connect.vezgo.com/connect?client_id=test&lang=en&theme=light&providers_per_line=2';
 
       expect(url).toBe(expectedUrl);
       expect(token).toBe(this.token);
