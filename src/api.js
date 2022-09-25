@@ -178,6 +178,7 @@ class API {
       lang,
       redirectURI = this.config.redirectURI,
       providers,
+      theme,
     } = options;
     const { clientId, connectURL } = this.config;
 
@@ -193,6 +194,7 @@ class API {
       demo: this.config.demo ? true : undefined,
       // 'provider' param in priority, skip 'providers' param if 'provider' is set
       providers: !provider && Array.isArray(providers) && providers.length ? providers.join(',') : undefined,
+      theme: ['light', 'dark'].includes(theme) ? theme : 'light',
     };
 
     // Cleanup blank params
@@ -255,10 +257,10 @@ class API {
       try {
         this._widgetOpened = true;
         const {
-          provider, providers, accountId, lang,
+          provider, providers, accountId, lang, theme,
         } = options;
         const { url, token } = await this.getConnectData({
-          provider, providers, accountId, lang,
+          provider, providers, accountId, lang, theme,
         });
 
         this.iframe = appendVezgoIframe();
