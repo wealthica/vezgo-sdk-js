@@ -5,7 +5,8 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 ## [Unreleased]
 
 ## [1.0.3]
-- Add `theme` support for `user.connect()`, `user.reconnect()` & `user.getConnectUrl()`.
+- Add `theme` (light | dark) support for `user.connect()`, `user.reconnect()` & `user.getConnectUrl()`.
+- Add `providersPerLine` (1 | 2) support for `user.connect()`, `user.reconnect()` & `user.getConnectUrl()`.
 
 ## [1.0.2]
 - Add keywords
