@@ -188,6 +188,8 @@ const { url, token } = await user.getConnectData({
   // required for Vezgo Connect drop-in widget, but already handled by the SDK when calling
   // `user.connect()` (defaults to `window.location.origin`).
   // https://vezgo.com/docs/#connect-url-parameters
+  accountId: 'ACCOUNT_ID',
+  // Pass accountId to re-connect an existing account that has expired/revoked credentials
   origin: 'YOUR_SITE_ORIGIN',
   state: 'YOUR_APP_STATE', // optional
   lang: 'en', // optional (en | es | fr | it), 'en' by default
