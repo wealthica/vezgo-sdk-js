@@ -171,7 +171,7 @@ token = await user.getToken(); // fetches and returns a new token
 token = await user.getToken({ minimumLifeTime: 600 }); // fetches and returns another new token
 ```
 
-#### user.getConnectData({ provider, redirectURI, state, lang })
+#### user.getConnectData({ provider, redirectURI, state, lang, theme, providersPerLine })
 
 This method returns a Vezgo Connect URL and authentication token for user to connect an account.
 
@@ -188,13 +188,17 @@ const { url, token } = await user.getConnectData({
   // required for Vezgo Connect drop-in widget, but already handled by the SDK when calling
   // `user.connect()` (defaults to `window.location.origin`).
   // https://vezgo.com/docs/#connect-url-parameters
+  accountId: 'ACCOUNT_ID',
+  // Pass accountId to re-connect an existing account that has expired/revoked credentials
   origin: 'YOUR_SITE_ORIGIN',
   state: 'YOUR_APP_STATE', // optional
   lang: 'en', // optional (en | es | fr | it), 'en' by default
   providers: ['binance', 'coinbase', 'ethereum'], // optional, ignored if `provider` is also passed in.
+  theme: 'light', // optional (light | dark), 'light' by default
+  providersPerLine: 1 // optional (1 | 2), 2 by default
 });
 // {
-//   url: "https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&origin=YOUR_SITE_ORIGIN&state=YOUR_APP_STATE&lang=en",
+//   url: "https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&origin=YOUR_SITE_ORIGIN&state=YOUR_APP_STATE&lang=en&theme=light&providersPerLine=2",
 //   token: "USER_TOKEN"
 // }
 
@@ -228,7 +232,7 @@ const user2 = vezgo.login('USER_ID_2');
 const { url: url2, token } = await user2.getConnectData();
 ```
 
-#### user.connect({ provider, providers, accountId, lang })
+#### user.connect({ provider, providers, accountId, lang, theme, providersPerLine })
 
 This method starts the Vezgo Connect process inside your webpage/app for user to connect their account.
 

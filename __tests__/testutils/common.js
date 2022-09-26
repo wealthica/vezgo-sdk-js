@@ -134,8 +134,8 @@ module.exports.testGetConnectDataBehavior = function ({ isBrowser } = {}) {
     test('should return the correct url and token', async () => {
       const { url, token } = await this.user.getConnectData();
       const expectedUrl = isBrowser
-        ? `https://connect.vezgo.com/connect?client_id=test&lang=en&origin=http%3A%2F%2Flocalhost`
-        : `https://connect.vezgo.com/connect?client_id=test&lang=en`;
+        ? 'https://connect.vezgo.com/connect?client_id=test&lang=en&origin=http%3A%2F%2Flocalhost&theme=light&providers_per_line=2'
+        : 'https://connect.vezgo.com/connect?client_id=test&lang=en&theme=light&providers_per_line=2';
 
       expect(url).toBe(expectedUrl);
       expect(token).toBe(this.token);
@@ -180,6 +180,16 @@ module.exports.testGetConnectDataBehavior = function ({ isBrowser } = {}) {
     test('should use custom `lang` if passed in', async () => {
       const { url } = await this.user.getConnectData({ lang: 'fr' });
       expect(url).toContain('lang=fr');
+    });
+
+    test('should use custom `theme` if passed in', async () => {
+      const { url } = await this.user.getConnectData({ theme: 'dark' });
+      expect(url).toContain('theme=dark');
+    });
+
+    test('should use custom `providersPerLine` if passed in', async () => {
+      const { url } = await this.user.getConnectData({ providersPerLine: '1' });
+      expect(url).toContain('providers_per_line=1');
     });
 
     test('should use `state` if passed in', async () => {
