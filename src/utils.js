@@ -8,22 +8,19 @@ const isReactNative = () => typeof navigator !== 'undefined' && navigator.produc
 
 function appendVezgoIframe() {
   const name = 'vezgo-connect-widget';
-  let iframe = document.getElementsByName(name)[0];
 
-  if (!iframe) {
-    iframe = document.createElement('iframe');
-    iframe.name = name;
-    iframe.frameBorder = 0;
+  const iframe = document.createElement('iframe');
+  iframe.name = name;
+  iframe.frameBorder = 0;
 
-    iframe.setAttribute('style', [
-      'width:100%; height:100%;',
-      'position:fixed;',
-      'top:0; left:0; right:0; bottom:0;',
-      'z-index:2147483647;', // max possible z-index
-    ].join(' '));
+  iframe.setAttribute('style', [
+    'width:100%; height:100%;',
+    'position:fixed;',
+    'top:0; left:0; right:0; bottom:0;',
+    'z-index:2147483647;', // max possible z-index
+  ].join(' '));
 
-    document.body.appendChild(iframe);
-  }
+  document.body.appendChild(iframe);
 
   iframe.style.display = 'block';
 
@@ -35,7 +32,7 @@ function appendVezgoForm({ url, token, iframe }) {
   form.target = iframe.name;
   form.method = 'POST';
   form.action = url;
-  form.setAttribute('style', 'display:none;');
+  form.style.display = 'none';
 
   const input = document.createElement('input');
   input.type = 'text';

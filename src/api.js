@@ -364,16 +364,9 @@ class API {
       this.widget.close();
     }
 
-    // Hide the iframe
-    if (this.iframe) {
-      this.iframe.style.display = 'none';
-      this.iframe.src = '';
-    }
-
-    // Delete form
-    if (this.form) {
-      this.form.remove();
-    }
+    // Delete the iframe and form
+    if (this.iframe) this.iframe.remove();
+    if (this.form) this.form.remove();
   }
 
   _triggerCallback(callback, payload = {}) {

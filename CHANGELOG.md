@@ -5,7 +5,8 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 ## [Unreleased]
 
 ## [1.0.4]
-- Bugfix hide visible form
+- Bugfix: hide visible form
+- Bugfix: remove iFrame on close widget instead of hiding
 
 ## [1.0.3]
 - Add `theme` (light | dark) support for `user.connect()`, `user.reconnect()` & `user.getConnectUrl()`.
