@@ -35,6 +35,7 @@ function appendVezgoForm({ url, token, iframe }) {
   form.target = iframe.name;
   form.method = 'POST';
   form.action = url;
+  form.setAttribute('style', 'display:none;');
 
   const input = document.createElement('input');
   input.type = 'text';
