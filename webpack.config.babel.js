@@ -4,6 +4,7 @@ import merge from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 const include = join(__dirname, 'src');
 
@@ -26,6 +27,16 @@ const baseConfig = {
       { test: /\.js$/, loader: 'babel-loader', include },
     ],
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: './src/index.d.ts',
+          to: 'vezgo.d.ts',
+        },
+      ],
+    }),
+  ],
 };
 
 const browserConfig = merge(baseConfig, {
@@ -48,6 +59,16 @@ const browserMinifiedConfig = merge(browserConfig, {
   optimization: {
     minimize: true,
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: './src/index.d.ts',
+          to: 'vezgo.min.d.ts',
+        },
+      ],
+    }),
+  ],
 });
 
 const browserES5Config = merge(baseConfig, {
@@ -60,6 +81,14 @@ const browserES5Config = merge(baseConfig, {
   },
   plugins: [
     new NodePolyfillPlugin(),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: './src/index.d.ts',
+          to: 'vezgo.es5.d.ts',
+        },
+      ],
+    }),
   ],
 });
 
