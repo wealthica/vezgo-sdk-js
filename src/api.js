@@ -177,7 +177,7 @@ class API {
       origin = this.isBrowser ? window.location.origin : undefined,
       lang,
       redirectURI = this.config.redirectURI,
-      syncNfts,
+      syncNfts = true,
       providers,
       theme,
       providersPerLine,
@@ -193,7 +193,7 @@ class API {
       state,
       lang: lang || 'en',
       origin,
-      sync_nfts: syncNfts === false ? false : undefined,
+      sync_nfts: !!syncNfts,
       demo: this.config.demo ? true : undefined,
       // 'provider' param in priority, skip 'providers' param if 'provider' is set
       providers: !provider && Array.isArray(providers) && providers.length ? providers.join(',') : undefined,
