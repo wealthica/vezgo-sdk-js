@@ -196,7 +196,7 @@ const { url, token } = await user.getConnectData({
   providers: ['binance', 'coinbase', 'ethereum'], // optional, ignored if `provider` is also passed in.
   theme: 'light', // optional (light | dark), 'light' by default
   providersPerLine: 1, // optional (1 | 2), 2 by default
-  syncNfts: true, // optional, false by default (contact support to enable sync_nfts feature)
+  syncNfts: false, // optional, whether to show "Sync NFTs" checkbox. true by default (enabling sync_nfts feature on your account is done separately)
 });
 // {
 //   url: "https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&origin=YOUR_SITE_ORIGIN&state=YOUR_APP_STATE&lang=en&theme=light&providersPerLine=2",
