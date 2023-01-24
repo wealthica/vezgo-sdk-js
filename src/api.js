@@ -193,7 +193,7 @@ class API {
       state,
       lang: lang || 'en',
       origin,
-      sync_nfts: syncNfts ? true : undefined,
+      sync_nfts: syncNfts === false ? false : undefined,
       demo: this.config.demo ? true : undefined,
       // 'provider' param in priority, skip 'providers' param if 'provider' is set
       providers: !provider && Array.isArray(providers) && providers.length ? providers.join(',') : undefined,
