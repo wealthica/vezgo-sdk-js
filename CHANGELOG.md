@@ -5,7 +5,7 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 ## [Unreleased]
 
 ## [1.0.7]
-- `syncNfts` flag to `true` by default, pass `false` if you need to disable it. Besides `sync_nfts` feature should be enabled for your `App Project`.
+- `syncNfts` flag changed to `true` by default, pass `false` if you need to disable it. Besides `sync_nfts` feature should be enabled for your `App Project`.
 
 ## [1.0.6]
 - Add `syncNfts` flag support for `user.connect()` and `user.getConnectData()`.
