@@ -181,6 +181,7 @@ class API {
       providers,
       theme,
       providersPerLine,
+      features,
     } = options;
     const { clientId, connectURL } = this.config;
 
@@ -199,6 +200,7 @@ class API {
       providers: !provider && Array.isArray(providers) && providers.length ? providers.join(',') : undefined,
       theme: ['light', 'dark'].includes(theme) ? theme : 'light',
       providers_per_line: (providersPerLine && ['1', '2'].includes(providersPerLine.toString())) ? providersPerLine.toString() : '2',
+      features,
     };
 
     // Cleanup blank params
@@ -261,10 +263,10 @@ class API {
       try {
         this._widgetOpened = true;
         const {
-          provider, providers, accountId, lang, theme, providersPerLine, syncNfts,
+          provider, providers, accountId, lang, theme, providersPerLine, syncNfts, features,
         } = options;
         const { url, token } = await this.getConnectData({
-          provider, providers, accountId, lang, theme, providersPerLine, syncNfts,
+          provider, providers, accountId, lang, theme, providersPerLine, syncNfts, features,
         });
 
         this.iframe = appendVezgoIframe();

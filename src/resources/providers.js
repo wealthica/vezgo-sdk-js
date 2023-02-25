@@ -1,10 +1,16 @@
+const { getQueryString } = require('../utils');
+
 class Providers {
   constructor(api) {
     this.api = api.api;
   }
 
-  async getList() {
-    const response = await this.api.get('/providers');
+  async getList(options = {}) {
+    let url = '/providers';
+    const query = getQueryString(options);
+    if (query) url = `${url}?${query}`;
+
+    const response = await this.api.get(url);
     if (!response.ok) throw response.originalError;
 
     return response.data;
