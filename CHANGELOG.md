@@ -3,6 +3,8 @@
 All notable changes to the Vezgo SDK across versions will be documented in this file.
 
 ## [Unreleased]
+
+## [1.0.8]
 - Add `features` flag to enable certain experimental features.
 - Allow passing query parameters to `vezgo.providers.getList()` call.
 
