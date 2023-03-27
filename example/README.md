@@ -2,8 +2,6 @@
 
 ## Instructions
 
-
-
 ```
 # Clone the repo to your computer, and inside `vezgo-sdk-js`:
 
