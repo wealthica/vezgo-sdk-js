@@ -197,6 +197,7 @@ const { url, token } = await user.getConnectData({
   theme: 'light', // optional (light | dark), 'light' by default
   providersPerLine: 1, // optional (1 | 2), 2 by default
   syncNfts: false, // optional, whether to show "Sync NFTs" checkbox. true by default (enabling sync_nfts feature on your account is done separately)
+  features: 'feature1,feature2', // optional, a comma-separated list of features. undefined by default
 });
 // {
 //   url: "https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&origin=YOUR_SITE_ORIGIN&state=YOUR_APP_STATE&lang=en&theme=light&providersPerLine=2",
@@ -233,7 +234,7 @@ const user2 = vezgo.login('USER_ID_2');
 const { url: url2, token } = await user2.getConnectData();
 ```
 
-#### user.connect({ provider, providers, accountId, lang, theme, providersPerLine, syncNfts })
+#### user.connect({ provider, providers, accountId, lang, theme, providersPerLine, syncNfts, features })
 
 This method starts the Vezgo Connect process inside your webpage/app for user to connect their account.
 
