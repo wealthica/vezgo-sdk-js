@@ -1,5 +1,13 @@
 # Vezgo Example App
 
+## Overview
+
+This Example App provides you with a very basic example of how to implement Vezgo’s ready-to-use Connect Flow.
+
+The code is intentionally kept as simple and short as possible to allow you to quickly understand the use case and get started on your own project.
+
+To get started and to receive your **Client ID** and **Client Secret**, [sign up on the portal](https://portal.vezgo.com/sign-up). If you already have an account, [log in to the portal](https://portal.vezgo.com/sign-in).
+
 ## Instructions
 
 ```
