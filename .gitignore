@@ -8,3 +8,4 @@ dist
 lib
 .idea
 docker-compose.override.yml
+.env
