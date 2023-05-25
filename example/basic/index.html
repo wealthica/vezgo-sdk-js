@@ -7,7 +7,11 @@
     <title>Vezgo Example App</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="/assets/config.js"></script>
-    <script type="text/javascript" src="/assets/vezgo.js"></script>
+
+    <!-- Import a published version of Vezgo Browser SDK -->
+    <script type="text/javascript" src="https://unpkg.com/vezgo-sdk-js/dist/vezgo.js"></script>
+    <!-- Or import from local build -->
+    <!-- <script type="text/javascript" src="/assets/vezgo.js"></script> -->
   </head>
   <body>
     <noscript>
@@ -48,6 +52,9 @@
             auth: {
               headers: { Authorization: `Bearer ${$('#username').val()}` },
             },
+            // The following is for Vezgo developers only, remove if you are a Vezgo client
+            baseURL: constants.VEZGO_API_URL,
+            connectURL: constants.VEZGO_CONNECT_URL,
           });
 
           user = vezgo.login();

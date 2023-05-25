@@ -10,17 +10,21 @@ To get started and to receive your **Client ID** and **Client Secret**, [sign up
 
 ## Instructions
 
-```
+```bash
 # Clone the repo to your computer, and inside `vezgo-sdk-js`:
 
+# (Optional) install SDK dependencies and build, if you want to import the local build
 yarn install
 yarn build
 
-cd example
+# Install example dependencies
+cd example/basic
 yarn install
 
-# Edit `example/index.js` to set your `VEZGO_CLIENT_ID` and `VEZGO_CLIENT_SECRET`, then:
+# Create .env file to set your VEZGO_CLIENT_ID and VEZGO_CLIENT_SECRET
+cp .env.example .env
 
+# Start example server
 yarn start
 
 # Go to http://localhost:3001 in your browser to use the Vezgo Example App
