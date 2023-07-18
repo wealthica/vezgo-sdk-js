@@ -1,8 +1,11 @@
 /* global window,navigator,document */
 
-const isBrowser = () => typeof window !== 'undefined' && Object.prototype.toString.call(window) === '[object Window]';
+const isBrowser = () => typeof window !== 'undefined' && Object.prototype.toString.call(window) === '[object Window]' && !window.Deno;
 
-const isNode = () => typeof global !== 'undefined' && Object.prototype.toString.call(global) === '[object global]';
+const isNode = () => (typeof global !== 'undefined' && Object.prototype.toString.call(global) === '[object global]');
+const isDeno = () => typeof Deno !== 'undefined';
+
+const isNodeOrSimilar = () => isNode() || isDeno();
 
 const isReactNative = () => typeof navigator !== 'undefined' && navigator.product === 'ReactNative';
 
@@ -56,7 +59,7 @@ const getQueryString = (params = {}) => {
 
 module.exports = {
   isBrowser,
-  isNode,
+  isNodeOrSimilar,
   isReactNative,
   appendVezgoIframe,
   appendVezgoForm,

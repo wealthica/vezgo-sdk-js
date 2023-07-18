@@ -5,7 +5,7 @@ const { API_URL, CONNECT_URL } = require('./constants');
 const createResources = require('./resources');
 const {
   isBrowser,
-  isNode,
+  isNodeOrSimilar,
   isReactNative,
   appendVezgoIframe,
   appendVezgoForm,
@@ -27,7 +27,7 @@ class API {
     } = this.config;
 
     this.isBrowser = isBrowser();
-    this.isNode = isNode();
+    this.isNodeOrSimilar = isNodeOrSimilar();
     this.isReactNative = isReactNative();
     this.isClient = this.isBrowser || this.isReactNative;
 
@@ -36,7 +36,7 @@ class API {
       throw new Error('Please provide a valid Vezgo clientId.');
     }
 
-    if (this.isNode && (!secret || typeof secret !== 'string')) {
+    if (this.isNodeOrSimilar && (!secret || typeof secret !== 'string')) {
       throw new Error('Please provide a valid Vezgo secret.');
     }
 
@@ -71,7 +71,7 @@ class API {
   }
 
   login(loginName) {
-    if (this.isNode && (!loginName || typeof loginName !== 'string')) {
+    if (this.isNodeOrSimilar && (!loginName || typeof loginName !== 'string')) {
       throw new Error('Please provide a valid loginName.');
     }
 

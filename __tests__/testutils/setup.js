@@ -5,27 +5,27 @@ jest.mock('../../src/utils', () => {
 
   return {
     ...originalModule,
-    isNode: jest.fn(),
+    isNodeOrSimilar: jest.fn(),
     isBrowser: jest.fn(),
     isReactNative: jest.fn(),
   };
 });
 
 global.mockNode = () => {
-  utils.isNode.mockReturnValue(true);
+  utils.isNodeOrSimilar.mockReturnValue(true);
   utils.isBrowser.mockReturnValue(false);
   utils.isReactNative.mockReturnValue(false);
 };
 
 global.mockBrowser = () => {
-  utils.isNode.mockReturnValue(false);
+  utils.isNodeOrSimilar.mockReturnValue(false);
   utils.isBrowser.mockReturnValue(true);
   utils.isReactNative.mockReturnValue(false);
   global.window = { location: { origin: 'http://localhost' } };
 };
 
 global.mockReactNative = () => {
-  utils.isNode.mockReturnValue(false);
+  utils.isNodeOrSimilar.mockReturnValue(false);
   utils.isBrowser.mockReturnValue(false);
   utils.isReactNative.mockReturnValue(true);
 };
