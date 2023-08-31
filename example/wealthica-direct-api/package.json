@@ -1,0 +1,22 @@
+{
+  "name": "wealthica-direct-api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "server": "node server.js",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "apisauce": "^3.0.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "pinia": "^2.0.36",
+    "vue": "^3.3.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "vite": "^4.3.5"
+  }
+}
