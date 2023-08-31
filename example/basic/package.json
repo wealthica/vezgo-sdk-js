@@ -6,9 +6,10 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "NODE_TLS_REJECT_UNAUTHORIZED='0' node index.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
     "vezgo-sdk-js": "^1.0.8"

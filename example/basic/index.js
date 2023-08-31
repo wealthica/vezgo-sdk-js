@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 
 // Import published SDK version
 const Vezgo = require('vezgo-sdk-js');
@@ -10,6 +11,7 @@ const Vezgo = require('vezgo-sdk-js');
 // const Vezgo = require('../../src/index');
 
 const app = express();
+app.use(cors());
 const port = process.env.PORT || 3001;
 
 const vezgo = Vezgo.init({
@@ -44,12 +46,16 @@ app.get('/', (req, res) => {
 });
 
 app.post('/vezgo/auth', async (req, res) => {
-  // Replace with your own authentication
-  const authorization = req.get('Authorization');
-  const userId = authorization.replace('Bearer ', '');
+  try {
+    // Replace with your own authentication
+    const authorization = req.get('Authorization');
+    const userId = authorization.replace('Bearer ', '');
 
-  const user = vezgo.login(userId);
-  res.json({ token: await user.getToken() });
+    const user = vezgo.login(userId);
+    res.json({ token: await user.getToken() });
+  } catch (err) {
+    res.status(500).json({ error: err.message }).end();
+  }
 });
 
 app.listen(port, () => {
