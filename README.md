@@ -243,7 +243,9 @@ Connection response are provided via callbacks.
 This method accepts the same parameters as `user.getConnectData()` except for `redirectURI`, `origin` and `state`
 
 ```javascript
-user.connect().onConnection(account => {
+user.connect({
+  connectionType: 'GET' // For dev goals only. Alows use GET instead of POST which is not secure
+}).onConnection(account => {
   // Send the account to your server
   sendToServer('/some-route', account);
 }).onError(error => {
@@ -260,7 +262,9 @@ This method starts the Vezgo Connect process to re-connect an existing account t
 Connection response are provided via callbacks.
 
 ```javascript
-user.reconnect('ACCOUNT_ID').onConnection(account => {
+user.reconnect('ACCOUNT_ID', {
+  connectionType: 'GET' // For dev goals only. Alows use GET instead of POST which is not secure
+}).onConnection(account => {
   // Send the account to your server
   sendToServer('/some-route', account);
 }).onError(error => {

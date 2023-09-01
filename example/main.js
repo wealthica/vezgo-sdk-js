@@ -38,7 +38,9 @@ $(document).ready(function () {
     login();
 
     user
-      .connect()
+      .connect({
+        connectionType: constants.VEZGO_CONNECT_TYPE,
+      })
       .onConnection(function (account) {
         console.log("connection success", account);
         $("#response_heading").html(`Account connected successfully with ID: ${account}`);
@@ -62,7 +64,9 @@ $(document).ready(function () {
     login();
 
     user
-      .reconnect(accountId)
+      .reconnect(accountId, {
+        connectionType: constants.VEZGO_CONNECT_TYPE,
+      })
       .onConnection(function (account) {
         console.log("reconnection success", account);
         $("#response_heading").html(`Account reconnected successfully with ID: ${account}`);
