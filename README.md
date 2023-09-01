@@ -244,7 +244,7 @@ This method accepts the same parameters as `user.getConnectData()` except for `r
 
 ```javascript
 user.connect({
-  connectionType: 'GET' // For dev goals only. Alows use GET instead of POST which is not secure
+  // additional options
 }).onConnection(account => {
   // Send the account to your server
   sendToServer('/some-route', account);
@@ -263,7 +263,7 @@ Connection response are provided via callbacks.
 
 ```javascript
 user.reconnect('ACCOUNT_ID', {
-  connectionType: 'GET' // For dev goals only. Alows use GET instead of POST which is not secure
+  // additional options
 }).onConnection(account => {
   // Send the account to your server
   sendToServer('/some-route', account);
@@ -651,6 +651,20 @@ yarn build
 yarn build
 yarn test
 ```
+
+### Use GET method in Connect URL instead of POST
+
+Pass additional flag `connectionType: 'GET'` to use GET method in Connect URL instead of POST:
+
+```
+connect({ connectionType: 'GET' })
+reconnect(accountId, { connectionType: 'GET' })
+```
+
+That's useful for developing Connect URL when vite local server used.
+Token exposed in URL when GET method used what is not secure so this feature should be used only for development goals.
+
+```javascript
 
 ### Release
 ```
