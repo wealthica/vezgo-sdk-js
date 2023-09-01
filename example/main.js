@@ -18,6 +18,7 @@ function getSelectedAccountId() {
 // Function to handle user login
 function login() {
   vezgo = Vezgo.init({
+    connectURL: constants.VEZGO_CONNECT_URL,
     clientId: constants.VEZGO_CLIENT_ID,
     authEndpoint: "/vezgo/auth",
     auth: {

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const Vezgo = require('vezgo-sdk-js');
@@ -5,17 +6,20 @@ const Vezgo = require('vezgo-sdk-js');
 const app = express();
 const port = 3001;
 
-const VEZGO_CLIENT_ID = 'YOUR_CLIENT_ID';
-const VEZGO_CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
 
 const vezgo = Vezgo.init({
-  clientId: VEZGO_CLIENT_ID,
-  secret: VEZGO_CLIENT_SECRET,
+  clientId: process.env.VEZGO_CLIENT_ID,
+  secret: process.env.VEZGO_CLIENT_SECRET,
 });
 
 app.get('/assets/config.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
-  res.send(`var constants = { VEZGO_CLIENT_ID: '${VEZGO_CLIENT_ID}' };`);
+  res.send(`
+    var constants = {
+      VEZGO_CLIENT_ID: '${process.env.VEZGO_CLIENT_ID}',
+      VEZGO_CONNECT_URL: '${process.env.VEZGO_CONNECT_URL || 'https://connect.vezgo.com'}',
+    };
+  `);
 });
 
 app.get('/assets/vezgo.js', (req, res) => {
