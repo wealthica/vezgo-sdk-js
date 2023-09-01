@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const Vezgo = require('../src/index');
+const Vezgo = require('vezgo-sdk-js');
 
 const app = express();
 const port = 3001;
@@ -20,7 +20,17 @@ app.get('/assets/config.js', (req, res) => {
 
 app.get('/assets/vezgo.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
-  res.sendFile(path.join(__dirname, '../dist/vezgo.js'));
+  res.sendFile(path.join(__dirname, '/node_modules/vezgo-sdk-js/dist/vezgo.js'));
+});
+
+app.get('/renderjson.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.sendFile(path.join(__dirname, '/node_modules/renderjson/renderjson.js'));
+});
+
+app.get('/main.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.sendFile(path.join(__dirname, '/main.js'));
 });
 
 app.get('/', (req, res) => {
