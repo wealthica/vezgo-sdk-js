@@ -1,0 +1,14 @@
+**/.git/**
+**/__tests__/**
+**/__mocks__/**
+**/node_modules/**
+npm-debug.log
+tmp-*.json
+README.md
+docker-compose.*
+.prettierrc
+.eslintrc.js
+jest.config.js
+lambda.js
+.env.example
+dist

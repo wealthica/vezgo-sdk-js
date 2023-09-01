@@ -6,12 +6,16 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_TLS_REJECT_UNAUTHORIZED='0' node index.js"
+    "start": "forever -f -w index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
+    "helmet": "^7.0.0",
     "vezgo-sdk-js": "^1.0.8"
+  },
+  "devDependencies": {
+    "forever": "^4.0.3"
   }
 }

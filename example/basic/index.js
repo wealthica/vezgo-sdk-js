@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const helmet = require('helmet');
 
 // Import published SDK version
 const Vezgo = require('vezgo-sdk-js');
@@ -12,6 +13,105 @@ const Vezgo = require('vezgo-sdk-js');
 
 const app = express();
 app.use(cors());
+app.use(helmet({
+  // Don't enable HSTS in development
+  hsts: (app.get('env') === 'development') ? false : {
+    // Override Helmet default HSTS max age
+    maxAge: 60 * 60 * 24 * 365 * 2, // 2 years
+    includeSubDomains: true,
+    // TODO: Submit wealthica.com to HSTS preload list
+    preload: true,
+  },
+
+  // Only allow from 'self' & used sources now. Add more later if we use
+  // other sources (CDN, Userkom embed script, ...)
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'", 'connect.vezgo.localhost'],
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "'unsafe-eval'",
+        'cdnjs.cloudflare.com',
+        'unpkg.com',
+        'https://*.pusher.com',
+        '*.mxpnl.com',
+        'www.google-analytics.com',
+        '*.tractionboard.com',
+        'www.googletagmanager.com',
+        'tagmanager.google.com',
+        'connect.facebook.net', // from GTM
+        'http://static.ads-twitter.com', // from GTM
+        'analytics.twitter.com', // from GTM
+        'https://js.recurly.com',
+        'https://cdn.yodlee.com',
+        'https://cdn.onesignal.com',
+        'https://onesignal.com',
+        '*.getwisp.co',
+        '*.wisepops.com',
+        'https://desk.wealthica.com'
+      ],
+      styleSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        'fonts.googleapis.com',
+        'tagmanager.google.com',
+        'https://js.recurly.com',
+        'https://onesignal.com',
+      ],
+      imgSrc: [
+        "'self'",
+        'data:',
+        'blob:',
+        '*.walletconnect.com',
+        'https://*.gravatar.com',
+        'www.google-analytics.com',
+        'shield.sitelock.com',
+        'ssl.gstatic.com',
+        'https://wealthica.com',
+        'http://www.googletagmanager.com',
+        'www.facebook.com', // from GTM
+        'http://t.co', // twitter, from GTM
+        'https://stats.g.doubleclick.net', // GTM?
+        'https://yodlee-1.hs.llnwd.net', // Yodlee institution logo
+      ],
+      connectSrc: [
+        "'self'",
+        'blob:',
+        'https://wealthica.com',
+        'https://*.pusher.com',
+        'wss://*.pusher.com',
+        'https://*.gravatar.com',
+        '*.mixpanel.com',
+        'www.google-analytics.com',
+        'data:',
+        '*.amazonaws.com', // FIXME: Dangerous to allow anything .amazonaws.com
+        '*.tractionboard.com',
+        'https://www.iubenda.com',
+        'https://api.recurly.com',
+        'https://onesignal.com',
+        'https://desk.wealthica.com',
+        '*.walletconnect.org',
+        '*.walletconnect.com',
+      ],
+      fontSrc: ['data:', '*'],
+      objectSrc: ["'self'", 'blob:'],
+      mediaSrc: [
+        "'self'",
+      ],
+      frameSrc: [
+        "'self'",
+        'blob:',
+        'connect.vezgo.localhost',
+      ],
+      frameAncestors: ["'none'"],
+      formAction: ["'self'", 'connect.vezgo.localhost'],
+    },
+  },
+}));
+
+app.use(helmet.frameguard({ action: 'deny' }));
+app.use(helmet.referrerPolicy({ policy: 'strict-origin-when-cross-origin' }));
 const port = process.env.PORT || 3001;
 
 const vezgo = Vezgo.init({

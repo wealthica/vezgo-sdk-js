@@ -1,0 +1,10 @@
+version: '3'
+services:
+  server:
+    image: node:18
+    working_dir: /home/node/app
+    volumes:
+      - .:/home/node/app
+    command: npm run start
+    # ports:
+    #   - "4011:4001"
