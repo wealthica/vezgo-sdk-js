@@ -243,7 +243,9 @@ Connection response are provided via callbacks.
 This method accepts the same parameters as `user.getConnectData()` except for `redirectURI`, `origin` and `state`
 
 ```javascript
-user.connect().onConnection(account => {
+user.connect({
+  // additional options
+}).onConnection(account => {
   // Send the account to your server
   sendToServer('/some-route', account);
 }).onError(error => {
@@ -260,7 +262,9 @@ This method starts the Vezgo Connect process to re-connect an existing account t
 Connection response are provided via callbacks.
 
 ```javascript
-user.reconnect('ACCOUNT_ID').onConnection(account => {
+user.reconnect('ACCOUNT_ID', {
+  // additional options
+}).onConnection(account => {
   // Send the account to your server
   sendToServer('/some-route', account);
 }).onError(error => {
@@ -647,6 +651,20 @@ yarn build
 yarn build
 yarn test
 ```
+
+### Use GET method in Connect URL instead of POST
+
+Pass additional flag `connectionType: 'GET'` to use GET method in Connect URL instead of POST:
+
+```
+connect({ connectionType: 'GET' })
+reconnect(accountId, { connectionType: 'GET' })
+```
+
+That's useful for developing Connect URL when vite local server used.
+Token exposed in URL when GET method used what is not secure so this feature should be used only for development goals.
+
+```javascript
 
 ### Release
 ```

@@ -225,12 +225,12 @@ class API {
     return this; // return the instance so we can chain the callbacks
   }
 
-  reconnect(accountId) {
+  reconnect(accountId, options = {}) {
     if (!accountId || typeof accountId !== 'string') {
       throw new Error('Please provide a valid accountId.');
     }
 
-    this._connect({ accountId });
+    this._connect({ accountId, ...options });
 
     return this; // return the instance so we can chain the callbacks
   }
@@ -271,10 +271,16 @@ class API {
 
         this.iframe = appendVezgoIframe();
 
-        this.widget = window.open('', this.iframe.name);
-        this.form = appendVezgoForm({ url, token, iframe: this.iframe });
+        // GET is only for dev because it's not secure
+        if (options.connectionType === 'GET') {
+          this.widget = window.open(`${url}&token=${token}`, this.iframe.name);
+        } else {
+          this.widget = window.open('', this.iframe.name);
+          this.form = appendVezgoForm({ url, token, iframe: this.iframe });
 
-        this.form.submit();
+          this.form.submit();
+        }
+
         this.widget.focus();
 
         this._widgetActive = true;

@@ -4,6 +4,10 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [1.0.10]
+- Add `dotenv` to example app
+- Add support of connectionType: 'GET' for connect and reconnect methods for local development
+
 ## [1.0.8]
 - Add `features` flag to enable certain experimental features.
 - Allow passing query parameters to `vezgo.providers.getList()` call.
@@ -129,7 +133,10 @@ Note: Latest Vezgo Connect requires to be opened via `POST` request with `token`
 
 - Add browser auth parameters (`authEndpoint`, `auth { params, headers }`, `authorizer`) to `Vezgo.init()`
 
-[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.7...HEAD
+[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.10...HEAD
+[1.0.10]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.9...v1.0.10
+[1.0.9]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.8...v1.0.9
+[1.0.8]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.7...v1.0.8
 [1.0.7]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.6...v1.0.7
 [1.0.6]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.5...v1.0.6
 [1.0.5]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.4...v1.0.5
