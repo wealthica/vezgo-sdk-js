@@ -13,9 +13,6 @@ To get started and to receive your **Client ID** and **Client Secret**, [sign up
 ```
 # Clone the repo to your computer, and inside `vezgo-sdk-js`:
 
-yarn install
-yarn build
-
 cd example
 yarn install
 
