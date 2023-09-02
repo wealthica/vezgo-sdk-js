@@ -39,6 +39,8 @@ $(document).ready(function () {
 
     user
       .connect({
+        theme: constants.VEZGO_CLIENT_THEME,
+        providersPerLine: constants.VEZGO_CLIENT_PROVIDERS_PER_LINE,
         connectionType: constants.VEZGO_CONNECT_TYPE,
       })
       .onConnection(function (account) {
@@ -65,6 +67,8 @@ $(document).ready(function () {
 
     user
       .reconnect(accountId, {
+        theme: constants.VEZGO_CLIENT_THEME,
+        providersPerLine: constants.VEZGO_CLIENT_PROVIDERS_PER_LINE,
         connectionType: constants.VEZGO_CONNECT_TYPE,
       })
       .onConnection(function (account) {
