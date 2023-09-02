@@ -534,10 +534,10 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-vezgo-sdk-js@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/vezgo-sdk-js/-/vezgo-sdk-js-1.0.9.tgz#06d909e9a7469216a021fdad6c24870cc2876dff"
-  integrity sha512-1Xc7FJ2l6BzmsZJVQMdOtueVAflmtIy9qHTTv+GYm2e8mnVxmsV3i1qPkn0zfd+hXBms/3y6D00lnP6zKuY0bw==
+vezgo-sdk-js@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/vezgo-sdk-js/-/vezgo-sdk-js-1.0.10.tgz#3d1e99334c4f11c0986d250a473c3a7884aac5da"
+  integrity sha512-GXwzgA/mtgSGbEJ70NG0in0l6uIjdR5t4ZQmOTlZXrHRcSxiQJxv6bTyPcoqYci9khz8GPrZBVbw+dxRG69xJA==
   dependencies:
     apisauce "^2.1.1"
     core-js "^3.17.3"
