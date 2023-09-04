@@ -20,10 +20,13 @@ function login() {
   vezgo = Vezgo.init({
     connectURL: constants.VEZGO_CONNECT_URL,
     clientId: constants.VEZGO_CLIENT_ID,
+    baseURL: constants.VEZGO_API_URL || 'https://api.vezgo.com/v1',
     authEndpoint: "/vezgo/auth",
     auth: {
       headers: { Authorization: `Bearer ${$("#username").val()}` },
     },
+    // To enable "Demo" provider
+    demo: true
   });
   $("#result").html("");
   $("#response_heading").html(`Loading... `);
@@ -42,6 +45,9 @@ $(document).ready(function () {
         theme: constants.VEZGO_CLIENT_THEME,
         providersPerLine: constants.VEZGO_CLIENT_PROVIDERS_PER_LINE,
         connectionType: constants.VEZGO_CONNECT_TYPE,
+      })
+      .onEvent(function (event, data) {
+        console.log('event', event, data);
       })
       .onConnection(function (account) {
         console.log("connection success", account);
@@ -70,6 +76,9 @@ $(document).ready(function () {
         theme: constants.VEZGO_CLIENT_THEME,
         providersPerLine: constants.VEZGO_CLIENT_PROVIDERS_PER_LINE,
         connectionType: constants.VEZGO_CONNECT_TYPE,
+      })
+      .onEvent(function (event, data) {
+        console.log('event', event, data);
       })
       .onConnection(function (account) {
         console.log("reconnection success", account);
