@@ -20,6 +20,7 @@ function login() {
   vezgo = Vezgo.init({
     connectURL: constants.VEZGO_CONNECT_URL,
     clientId: constants.VEZGO_CLIENT_ID,
+    baseURL: process.env.VEZGO_API_URL || 'https://api.vezgo.com/v1',
     authEndpoint: "/vezgo/auth",
     auth: {
       headers: { Authorization: `Bearer ${$("#username").val()}` },
