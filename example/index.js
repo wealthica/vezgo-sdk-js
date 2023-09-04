@@ -12,6 +12,7 @@ const port = 3001;
 const vezgo = Vezgo.init({
   clientId: process.env.VEZGO_CLIENT_ID,
   secret: process.env.VEZGO_CLIENT_SECRET,
+  baseURL: process.env.VEZGO_API_URL || 'https://api.vezgo.com/v1'
 });
 
 app.get('/assets/config.js', (req, res) => {
@@ -49,12 +50,16 @@ app.get('/', (req, res) => {
 });
 
 app.post('/vezgo/auth', async (req, res) => {
-  // Replace with your own authentication
-  const authorization = req.get('Authorization');
-  const userId = authorization.replace('Bearer ', '');
-  const user = vezgo.login(userId);
+  try {
+    // Replace with your own authentication
+    const authorization = req.get('Authorization');
+    const userId = authorization.replace('Bearer ', '');
+    const user = vezgo.login(userId);
 
-  res.json({ token: await user.getToken() });
+    res.json({ token: await user.getToken() });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 app.listen(port, () => {

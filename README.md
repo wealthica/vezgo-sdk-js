@@ -268,7 +268,7 @@ user.reconnect('ACCOUNT_ID', {
 }).onError(error => {
   console.error('account connection error:', error)
 }).onEvent((name, data) => {
-  console.log('account connection event:', name, data);
+  console.log('event:', name, data);
 });
 ```
 
