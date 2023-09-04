@@ -1,7 +1,5 @@
 # Official Vezgo JS SDK for the Browser & NodeJS
 
-[![Build Status](https://semaphoreci.com/api/v1/wealthica/vezgo-sdk-js/branches/master/badge.svg)](https://semaphoreci.com/wealthica/vezgo-sdk-js)
-
 ## What is Vezgo? A Unified Cryptocurrency API.
 
 > *“We tried a few crypto data APIs to retrieve our users digital assets, Vezgo is the only one that actually works!”* — Wealth Tracking Dashboard Dev
