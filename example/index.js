@@ -21,6 +21,7 @@ app.get('/assets/config.js', (req, res) => {
     var constants = {
       VEZGO_CLIENT_ID: '${process.env.VEZGO_CLIENT_ID}',
       VEZGO_CONNECT_URL: '${process.env.VEZGO_CONNECT_URL || 'https://connect.vezgo.com'}',
+      VEZGO_API_URL: '${process.env.VEZGO_API_URL || 'https://api.vezgo.com/v1'}',
       VEZGO_CONNECT_TYPE: '${process.env.VEZGO_CONNECT_TYPE || 'POST'}',
       VEZGO_CLIENT_THEME: '${process.env.VEZGO_CLIENT_THEME || 'light'}',
       VEZGO_CLIENT_PROVIDERS_PER_LINE: ${process.env.VEZGO_CLIENT_PROVIDERS_PER_LINE || 2},
