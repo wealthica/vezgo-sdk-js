@@ -1,44 +1,48 @@
 require('dotenv').config();
-
 const express = require('express');
 const path = require('path');
-const cors = require('cors');
-
-// Import published SDK version
+// For local development replace vezgo-sdk-js vezgo ../lib/vezgo
+// const Vezgo = require('../lib/vezgo');
 const Vezgo = require('vezgo-sdk-js');
 
-// Or import from this local repo. Need to run `yarn build` in vezgo-sdk-js directory first
-// const Vezgo = require('../../src/index');
-
 const app = express();
-app.use(cors());
-const port = process.env.PORT || 3001;
+const port = 3001;
 
 const vezgo = Vezgo.init({
   clientId: process.env.VEZGO_CLIENT_ID,
   secret: process.env.VEZGO_CLIENT_SECRET,
-
-  // The following is for Vezgo developers only, remove if you are a Vezgo client
-  baseURL: process.env.VEZGO_API_URL,
-  connectURL: process.env.VEZGO_CONNECT_URL,
+  baseURL: process.env.VEZGO_API_URL || 'https://api.vezgo.com/v1',
 });
 
-// To pass some configurations to the frontend
 app.get('/assets/config.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
   res.send(`
-var constants = {
-  VEZGO_CLIENT_ID: '${process.env.VEZGO_CLIENT_ID}',
-  VEZGO_API_URL: '${process.env.VEZGO_API_URL || 'https://api.vezgo.com/v1'}',
-  VEZGO_CONNECT_URL: '${process.env.VEZGO_CONNECT_URL || 'https://connect.vezgo.com'}',
-};
-  `.trim());
+    var constants = {
+      VEZGO_CLIENT_ID: '${process.env.VEZGO_CLIENT_ID}',
+      VEZGO_CONNECT_URL: '${process.env.VEZGO_CONNECT_URL || 'https://connect.vezgo.com'}',
+      VEZGO_API_URL: '${process.env.VEZGO_API_URL || 'https://api.vezgo.com/v1'}',
+      VEZGO_CONNECT_TYPE: '${process.env.VEZGO_CONNECT_TYPE || 'POST'}',
+      VEZGO_CLIENT_THEME: '${process.env.VEZGO_CLIENT_THEME || 'light'}',
+      VEZGO_CLIENT_PROVIDERS_PER_LINE: ${process.env.VEZGO_CLIENT_PROVIDERS_PER_LINE || 2},
+    };
+  `);
 });
 
-// Serve the local build of the Vezgo Browser SDK
 app.get('/assets/vezgo.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
-  res.sendFile(path.join(__dirname, '../../dist/vezgo.js'));
+  // For local development replace vezgo-sdk-js vezgo ../dist/vezgo.js
+  // res.sendFile(path.join(__dirname, '../dist/vezgo.js'));
+  res.sendFile(path.join(__dirname, '/node_modules/vezgo-sdk-js/dist/vezgo.js'));
+});
+
+app.get('/renderjson.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.sendFile(path.join(__dirname, '/node_modules/renderjson/renderjson.js'));
+});
+
+app.get('/main.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.sendFile(path.join(__dirname, '/main.js'));
 });
 
 app.get('/', (req, res) => {
@@ -50,11 +54,11 @@ app.post('/vezgo/auth', async (req, res) => {
     // Replace with your own authentication
     const authorization = req.get('Authorization');
     const userId = authorization.replace('Bearer ', '');
-
     const user = vezgo.login(userId);
+
     res.json({ token: await user.getToken() });
-  } catch (err) {
-    res.status(500).json({ error: err.message }).end();
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
 });
 
