@@ -4,6 +4,9 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [1.0.13]
+- Added vezgo-direct-api example app
+
 ## [1.0.11]
 - Add VEZGO_CLIENT_THEME and VEZGO_CLIENT_PROVIDERS_PER_LINE configs to example app
 
@@ -136,8 +139,10 @@ Note: Latest Vezgo Connect requires to be opened via `POST` request with `token`
 
 - Add browser auth parameters (`authEndpoint`, `auth { params, headers }`, `authorizer`) to `Vezgo.init()`
 
-[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.11...HEAD
-[1.0.10]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.10...v1.0.11
+[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.13...HEAD
+[1.0.13]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.12...v1.0.13
+[1.0.12]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.11...v1.0.12
+[1.0.11]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.10...v1.0.11
 [1.0.10]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.9...v1.0.10
 [1.0.9]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.8...v1.0.9
 [1.0.8]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.7...v1.0.8

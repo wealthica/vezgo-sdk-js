@@ -1,18 +1,17 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-// For local development replace vezgo-sdk-js vezgo ../lib/vezgo
-// const Vezgo = require('../lib/vezgo');
+// For local development replace vezgo-sdk-js vezgo ../../lib/vezgo
+// const Vezgo = require('../../lib/vezgo');
 const Vezgo = require('vezgo-sdk-js');
 
 const app = express();
 const port = 3001;
 
-
 const vezgo = Vezgo.init({
   clientId: process.env.VEZGO_CLIENT_ID,
   secret: process.env.VEZGO_CLIENT_SECRET,
-  baseURL: process.env.VEZGO_API_URL || 'https://api.vezgo.com/v1'
+  baseURL: process.env.VEZGO_API_URL || 'https://api.vezgo.com/v1',
 });
 
 app.get('/assets/config.js', (req, res) => {
@@ -31,8 +30,8 @@ app.get('/assets/config.js', (req, res) => {
 
 app.get('/assets/vezgo.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
-  // For local development replace vezgo-sdk-js vezgo ../dist/vezgo.js
-  // res.sendFile(path.join(__dirname, '../dist/vezgo.js'));
+  // For local development replace vezgo-sdk-js vezgo ../../dist/vezgo.js
+  // res.sendFile(path.join(__dirname, '../../dist/vezgo.js'));
   res.sendFile(path.join(__dirname, '/node_modules/vezgo-sdk-js/dist/vezgo.js'));
 });
 

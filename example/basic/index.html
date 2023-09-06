@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Vezgo Example App</title>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.css"
+    rel="stylesheet"
+  />
+
+  <style>
+    .renderjson {
+      background-color: #ebebeb;
+    }
+
+    .backgroud-blue {
+      background-color: #7f39ff;
+    }
+
+    #connect,
+    #reconnect {
+      background: linear-gradient(234deg, #ff9c3a, #d145de 52%, #7f39ff);
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand mt-2 mt-lg-0" href="https://vezgo.com/">
+      <img
+        src="https://vezgo.com/assets/img/vezgo.a0b6eee0.svg"
+        alt="Vezgo Logo"
+        loading="lazy"
+      />
+    </a>
+  </div>
+</nav>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h1 class="mb-4 text-center font-serif">Vezgo Example App</h1>
+
+      <div class="mb-3">
+        <label for="username" class="form-label">Login Name: </label>
+        <input
+          type="text"
+          id="username"
+          class="form-control"
+          placeholder="Enter user's unique identification from your system e.g. email"
+        />
+      </div>
+
+      <div class="mb-3 d-grid gap-2">
+        <button id="connect" class="btn btn-primary">Connect</button>
+      </div>
+
+      <div class="mb-3 d-grid gap-2">
+        <button id="reconnect" class="btn btn-primary">Reconnect</button>
+      </div>
+
+      <div id="connection_error" class="mb-3 text-danger"></div>
+
+      <div class="d-flex justify-content-evenly mb-6">
+        <button id="get_accounts" class="btn btn-info backgroud-blue">
+          Get All Accounts List
+        </button>
+        <button
+          id="get_account_id_mod"
+          class="btn btn-info backgroud-blue"
+          data-mdb-toggle="modal"
+          data-mdb-target="#staticBackdrop"
+        >
+          Get Specific Account Info
+        </button>
+      </div>
+      <h6 id="response_heading" class="mb-4 text-center"></h6>
+      <div id="result" class="mt-4"></div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade modal-lg"
+  id="staticBackdrop"
+  data-mdb-backdrop="static"
+  data-mdb-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Enter Account Id</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-mdb-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="account_id_mod" class="form-label"> Account ID: </label>
+          <input
+            type="text"
+            id="account_id_mod"
+            class="form-control"
+            placeholder="Enter Account ID"
+          />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-mdb-dismiss="modal" id="get_account">
+          Get Account
+        </button>
+        <button
+          type="button"
+          class="btn btn-info"
+          data-mdb-dismiss="modal"
+          id="get_transactions"
+        >
+          Get Transactions
+        </button>
+        <button
+          type="button"
+          class="btn btn-warning"
+          data-mdb-dismiss="modal"
+          id="sync_account"
+        >
+          Sync Account
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-mdb-dismiss="modal"
+          id="remove_account"
+        >
+          Remove Account
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
+></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="/renderjson.js"></script>
+<!-- vezgo related scripts -->
+<script type="text/javascript" src="/assets/config.js"></script>
+<script type="text/javascript" src="/assets/vezgo.js"></script>
+<script type="text/javascript" src="/main.js"></script>
+</body>
+</html>
