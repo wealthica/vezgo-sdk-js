@@ -202,10 +202,19 @@ type Balance = {
   resource_type: string;
 }
 
+type Wallet = {
+  id: string;
+  name?: string | null;
+  address?: string | null;
+  fiat_ticker: string;
+  fiat_value?: number;
+}
+
 type Account = {
   id: string;
   provider: AccountProvider;
   balances: Balance[];
+  wallets: Wallet[];
   blockchain?: any;
   created_at: number;
   updated_at: number;
