@@ -432,7 +432,7 @@ const history = await user.history.getList({
 ]
 ```
 
-#### user.transactions.getList({ accountId, ticker, from, to, wallet, last, limit })
+#### user.transactions.getList({ accountId, ticker, from, to, wallet, last, limit, sort, types })
 
 This method retrieves the list of transactions for an account.
 
@@ -447,6 +447,8 @@ const transactions = await user.transactions.getList({
   wallet: 'bitcoin:cash:usd', // optional
   last: '603522490d2b02001233a5d6', // optional, blank string is allowed
   limit: 10, // optional
+  sort: 'asc', // optional, asc | desc
+  types: 'trade,deposit' // optional
 });
 ```
 
