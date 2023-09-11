@@ -98,11 +98,14 @@ type ConnectData = {
 
 type TransactionsOptions = {
   accountId: string;
+  ticker?: string;
   from?: string;
   to?: string;
-  wallet?: string;
   last?: string;
   limit?: number;
+  wallet?: string;
+  sort?: "asc" | "desc";
+  types?: string;
 }
 
 type TransactionOptions = {
