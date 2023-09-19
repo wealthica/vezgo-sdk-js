@@ -106,6 +106,7 @@ type TransactionsOptions = {
   wallet?: string;
   sort?: "asc" | "desc";
   types?: string;
+  exclude_fields?: string;
 }
 
 type TransactionOptions = {
