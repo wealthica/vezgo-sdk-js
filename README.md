@@ -191,6 +191,7 @@ const { url, token } = await user.getConnectData({
   origin: 'YOUR_SITE_ORIGIN',
   state: 'YOUR_APP_STATE', // optional
   lang: 'en', // optional (en | es | fr | it), 'en' by default
+  providerCategories: ['exchanges', 'blockchains', 'wallets'], // optional, by default all categories are shown
   providers: ['binance', 'coinbase', 'ethereum'], // optional, ignored if `provider` is also passed in.
   theme: 'light', // optional (light | dark), 'light' by default
   providersPerLine: 1, // optional (1 | 2), 2 by default
@@ -232,7 +233,7 @@ const user2 = vezgo.login('USER_ID_2');
 const { url: url2, token } = await user2.getConnectData();
 ```
 
-#### user.connect({ provider, providers, accountId, lang, theme, providersPerLine, syncNfts, features })
+#### user.connect({ provider, providerCategories, providers, accountId, lang, theme, providersPerLine, syncNfts, features })
 
 This method starts the Vezgo Connect process inside your webpage/app for user to connect their account.
 

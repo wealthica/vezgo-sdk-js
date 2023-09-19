@@ -178,6 +178,7 @@ class API {
       lang,
       redirectURI = this.config.redirectURI,
       syncNfts = true,
+      providerCategories,
       providers,
       theme,
       providersPerLine,
@@ -196,6 +197,7 @@ class API {
       origin,
       sync_nfts: syncNfts === false ? false : undefined, // only pass if it is false
       demo: this.config.demo ? true : undefined,
+      provider_categories: providerCategories || undefined,
       // 'provider' param in priority, skip 'providers' param if 'provider' is set
       providers: !provider && Array.isArray(providers) && providers.length ? providers.join(',') : undefined,
       theme: ['light', 'dark'].includes(theme) ? theme : 'light',
