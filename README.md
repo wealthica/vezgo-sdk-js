@@ -666,8 +666,6 @@ reconnect(accountId, { connectionType: 'GET' })
 That's useful for developing Connect URL when vite local server used.
 Token exposed in URL when GET method used what is not secure so this feature should be used only for development goals.
 
-```javascript
-
 ### Release
 ```
 npm version patch # or minor/major
