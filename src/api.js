@@ -178,6 +178,7 @@ class API {
       lang,
       redirectURI = this.config.redirectURI,
       syncNfts = true,
+      providerCategories,
       providers,
       theme,
       providersPerLine,
@@ -196,6 +197,8 @@ class API {
       origin,
       sync_nfts: syncNfts === false ? false : undefined, // only pass if it is false
       demo: this.config.demo ? true : undefined,
+      // 'provider' param in priority, skip 'provider_categories' param if 'provider' is set
+      provider_categories: !provider && Array.isArray(providerCategories) && providerCategories.length ? providerCategories.join(',') : undefined,
       // 'provider' param in priority, skip 'providers' param if 'provider' is set
       providers: !provider && Array.isArray(providers) && providers.length ? providers.join(',') : undefined,
       theme: ['light', 'dark'].includes(theme) ? theme : 'light',
@@ -263,10 +266,26 @@ class API {
       try {
         this._widgetOpened = true;
         const {
-          provider, providers, accountId, lang, theme, providersPerLine, syncNfts, features,
+          provider,
+          providers,
+          providerCategories,
+          accountId,
+          lang,
+          theme,
+          providersPerLine,
+          syncNfts,
+          features,
         } = options;
         const { url, token } = await this.getConnectData({
-          provider, providers, accountId, lang, theme, providersPerLine, syncNfts, features,
+          provider,
+          providers,
+          providerCategories,
+          accountId,
+          lang,
+          theme,
+          providersPerLine,
+          syncNfts,
+          features,
         });
 
         this.iframe = appendVezgoIframe();

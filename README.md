@@ -191,6 +191,7 @@ const { url, token } = await user.getConnectData({
   origin: 'YOUR_SITE_ORIGIN',
   state: 'YOUR_APP_STATE', // optional
   lang: 'en', // optional (en | es | fr | it), 'en' by default
+  providerCategories: ['exchanges', 'blockchains', 'wallets'], // optional, by default all categories are shown
   providers: ['binance', 'coinbase', 'ethereum'], // optional, ignored if `provider` is also passed in.
   theme: 'light', // optional (light | dark), 'light' by default
   providersPerLine: 1, // optional (1 | 2), 2 by default
@@ -232,7 +233,7 @@ const user2 = vezgo.login('USER_ID_2');
 const { url: url2, token } = await user2.getConnectData();
 ```
 
-#### user.connect({ provider, providers, accountId, lang, theme, providersPerLine, syncNfts, features })
+#### user.connect({ provider, providers, providerCategories, accountId, lang, theme, providersPerLine, syncNfts, features })
 
 This method starts the Vezgo Connect process inside your webpage/app for user to connect their account.
 
@@ -253,7 +254,7 @@ user.connect({
 });
 ```
 
-#### user.reconnect(accountId)
+#### user.reconnect(accountId, options)
 
 This method starts the Vezgo Connect process to re-connect an existing account that has expired/revoked credentials.
 
@@ -664,8 +665,6 @@ reconnect(accountId, { connectionType: 'GET' })
 
 That's useful for developing Connect URL when vite local server used.
 Token exposed in URL when GET method used what is not secure so this feature should be used only for development goals.
-
-```javascript
 
 ### Release
 ```
