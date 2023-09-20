@@ -4,6 +4,9 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [1.0.17]
+- Add support for provider_categories parameter in `user.connect()`, `user.reconnect()` and `user.getConnectData()`.
+
 ## [1.0.16]
 - Add support for exclude_fields parameter in `user.transactions.getList()`.
 
@@ -142,7 +145,8 @@ Note: Latest Vezgo Connect requires to be opened via `POST` request with `token`
 
 - Add browser auth parameters (`authEndpoint`, `auth { params, headers }`, `authorizer`) to `Vezgo.init()`
 
-[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.16...HEAD
+[Unreleased]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.17...HEAD
+[1.0.16]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.16...v1.0.17
 [1.0.16]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.15...v1.0.16
 [1.0.15]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.14...v1.0.15
 [1.0.14]: https://github.com/wealthica/vezgo-sdk-js/compare/v1.0.13...v1.0.14

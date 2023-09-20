@@ -45,6 +45,7 @@ $(document).ready(function () {
         theme: constants.VEZGO_CLIENT_THEME,
         providersPerLine: constants.VEZGO_CLIENT_PROVIDERS_PER_LINE,
         connectionType: constants.VEZGO_CONNECT_TYPE,
+        // providerCategories: 'exchanges,wallets',
       })
       .onEvent(function (event, data) {
         console.log('event', event, data);

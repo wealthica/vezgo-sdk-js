@@ -233,7 +233,7 @@ const user2 = vezgo.login('USER_ID_2');
 const { url: url2, token } = await user2.getConnectData();
 ```
 
-#### user.connect({ provider, providerCategories, providers, accountId, lang, theme, providersPerLine, syncNfts, features })
+#### user.connect({ provider, providers, providerCategories, accountId, lang, theme, providersPerLine, syncNfts, features })
 
 This method starts the Vezgo Connect process inside your webpage/app for user to connect their account.
 
@@ -254,7 +254,7 @@ user.connect({
 });
 ```
 
-#### user.reconnect(accountId)
+#### user.reconnect(accountId, options)
 
 This method starts the Vezgo Connect process to re-connect an existing account that has expired/revoked credentials.
 

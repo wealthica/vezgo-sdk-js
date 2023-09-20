@@ -265,10 +265,26 @@ class API {
       try {
         this._widgetOpened = true;
         const {
-          provider, providers, accountId, lang, theme, providersPerLine, syncNfts, features,
+          provider,
+          providers,
+          providerCategories,
+          accountId,
+          lang,
+          theme,
+          providersPerLine,
+          syncNfts,
+          features,
         } = options;
         const { url, token } = await this.getConnectData({
-          provider, providers, accountId, lang, theme, providersPerLine, syncNfts, features,
+          provider,
+          providers,
+          providerCategories,
+          accountId,
+          lang,
+          theme,
+          providersPerLine,
+          syncNfts,
+          features,
         });
 
         this.iframe = appendVezgoIframe();
