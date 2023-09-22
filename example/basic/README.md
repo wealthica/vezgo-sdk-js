@@ -11,12 +11,12 @@ To get started and to receive your **Client ID** and **Client Secret**, [sign up
 ## Instructions
 
 ```
-# Clone the repo to your computer, and inside `vezgo-sdk-js`:
+# Clone the repo to your computer, and then run the next commands inside `vezgo-sdk-js`:
 
-cd example
+cd example/basic
 yarn install
 
-# Edit `example/index.js` to set your `VEZGO_CLIENT_ID` and `VEZGO_CLIENT_SECRET`, then:
+# Copy `example/basic/.env.example` to `example/basic/.env` and set your `VEZGO_CLIENT_ID` and `VEZGO_CLIENT_SECRET`, then:
 
 yarn start
 
