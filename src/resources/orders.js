@@ -1,4 +1,4 @@
-const { getQueryString } = require("../utils");
+const { getQueryString } = require('../utils');
 
 class Orders {
   constructor(api) {
@@ -8,8 +8,8 @@ class Orders {
   async getList(options = {}) {
     const { accountId, ...params } = options;
 
-    if (!accountId || typeof accountId !== "string") {
-      throw new Error("Please provide a valid Vezgo account id.");
+    if (!accountId || typeof accountId !== 'string') {
+      throw new Error('Please provide a valid Vezgo account id.');
     }
 
     let url = `/accounts/${accountId}/orders`;
@@ -25,11 +25,11 @@ class Orders {
   async getOne(options = {}) {
     const { accountId, orderId, ...params } = options;
 
-    if (!accountId || typeof accountId !== "string") {
-      throw new Error("Please provide a valid Vezgo account id.");
+    if (!accountId || typeof accountId !== 'string') {
+      throw new Error('Please provide a valid Vezgo account id.');
     }
-    if (!orderId || typeof orderId !== "string") {
-      throw new Error("Please provide a valid Vezgo order id.");
+    if (!orderId || typeof orderId !== 'string') {
+      throw new Error('Please provide a valid Vezgo order id.');
     }
 
     let url = `/accounts/${accountId}/orders/${orderId}`;
