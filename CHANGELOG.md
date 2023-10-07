@@ -4,6 +4,9 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [1.2.0]
+- Added support for fetching orders
+
 ## [1.1.0]
 - Rework TypeScript headers (not likely but could be breaking change depending on how you use TypeScript)
 

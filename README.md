@@ -559,6 +559,134 @@ const transaction = await user.transactions.getOne({
 }
 ```
 
+#### user.orders.getList({ accountId, from, to, last, limit, sort })
+
+This method retrieves the list of orders for an account.
+
+Returns data within the last 1 year by default.
+
+```javascript
+const transactions = await user.transactions.getList({
+  accountId: "651538b55e8e333d9c7cdc0d",
+  from: "2020-08-31", // optional
+  to: "2021-08-31", // optional
+  last: "603522490d2b02001233a5d6", // optional, blank string is allowed
+  limit: 10, // optional
+  sort: "asc", // optional, asc | desc
+});
+```
+
+```json
+[
+  {
+    "wallet": "binance:cash:usd",
+    "order_id": "823874",
+    "order_status": "filled",
+    "type": "MARKET",
+    "time_in_force": "GTC",
+    "side": "sell",
+    "base_ticker": "TRX",
+    "quote_ticker": "USDT",
+    "order_quantity": 1000,
+    "order_price": 0,
+    "filled_price": 87.62,
+    "filled_quantity": 1000,
+    "average_execution_price": 0.08762,
+    "misc": {
+      "fee": "0.00000000",
+      "fee_currency": "USDT",
+      "trade_id": 45973,
+      "client_order_id": "iuO5N3C6FVDk8Wah1HD61a",
+      "stop_price": "0.00000000",
+      "last_event_timestamp": 1696335257294,
+      "last_executed_price": "0.08762000",
+      "last_executed_quantity": "1000.00000000",
+      "trailing_time": null
+    },
+    "id": "651c05bad9b09e73c20e5a05",
+    "account": "651538b55e8e333d9c7cdc0d",
+    "resource_type": "order",
+    "order_creation_time": 1696335257294,
+    "updated_at": 1696343148933
+  },
+  {
+    "wallet": "binance:cash:usd",
+    "order_id": "3944",
+    "order_status": "filled",
+    "type": "MARKET",
+    "time_in_force": "GTC",
+    "side": "sell",
+    "base_ticker": "TRX",
+    "quote_ticker": "USDT",
+    "order_quantity": 1000,
+    "filled_price": 88.33,
+    "filled_quantity": 1000,
+    "average_execution_price": 0.08832999999999999,
+    "misc": {
+      "fee": "0.00000000",
+      "fee_currency": "USDT",
+      "trade_id": 266,
+      "client_order_id": "egqq1TAZylB5umBrNMNfTp",
+      "stop_price": "0.00000000",
+      "last_event_timestamp": 1696431328092,
+      "last_executed_price": "0.08833000",
+      "last_executed_quantity": "1000.00000000",
+      "trailing_time": null
+    },
+    "order_price": 0,
+    "id": "651c05bad9b09e73c20e5a05",
+    "account": "651538b55e8e333d9c7cdc0d",
+    "resource_type": "order",
+    "order_creation_time": 1696431328092,
+    "updated_at": 1696431339336
+  }
+]
+```
+
+#### user.orders.getOne({ accountId, orderId })
+
+This method retrieves a single order.
+
+```javascript
+const order = await user.orders.getOne({
+  accountId: "603522490d2b02001233a5d6",
+  orderId: "651538b55e8e333d9c7cdc0d",
+});
+```
+
+```json
+{
+  "wallet": "binance:cash:usd",
+  "order_id": "823874",
+  "order_status": "filled",
+  "type": "MARKET",
+  "time_in_force": "GTC",
+  "side": "sell",
+  "base_ticker": "TRX",
+  "quote_ticker": "USDT",
+  "order_quantity": 1000,
+  "order_price": 0,
+  "filled_price": 87.62,
+  "filled_quantity": 1000,
+  "average_execution_price": 0.08762,
+  "misc": {
+    "fee": "0.00000000",
+    "fee_currency": "USDT",
+    "trade_id": 45973,
+    "client_order_id": "iuO5N3C6FVDk8Wah1HD61a",
+    "stop_price": "0.00000000",
+    "last_event_timestamp": 1696335257294,
+    "last_executed_price": "0.08762000",
+    "last_executed_quantity": "1000.00000000",
+    "trailing_time": null
+  },
+  "id": "651c05bad9b09e73c20e5a05",
+  "account": "651538b55e8e333d9c7cdc0d",
+  "resource_type": "order",
+  "order_creation_time": 1696335257294,
+  "updated_at": 1696343148933
+}
+```
 ### Data APIs
 
 These methods provide general Vezgo information and do not require logging in a user.
