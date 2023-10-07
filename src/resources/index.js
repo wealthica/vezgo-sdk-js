@@ -5,6 +5,7 @@ const RESOURCES = {
   providers: require('./providers'),
   teams: require('./teams'),
   transactions: require('./transactions'),
+  orders: require('./orders'),
 };
 
 module.exports = function createResources(api, resources) {
