@@ -209,6 +209,8 @@ interface Provider {
   name?: string;
   /** The provider's human-friendly name, to be used for display purpose. */
   display_name?: string;
+  /** Alternate names that can be used in place of the provider's unique name in Connect URL  */
+  alternate_names?: string[];
   /** The logo URL for the provider. */
   logo?: string;
   /** The provider's authentication type. */

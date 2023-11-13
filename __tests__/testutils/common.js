@@ -131,6 +131,17 @@ module.exports.testAutoRefreshBehavior = function ({ isBrowser } = {}) {
 
 module.exports.testGetConnectDataBehavior = function ({ isBrowser } = {}) {
   describe('.getConnectData()', () => {
+    beforeEach(() => {
+      this.apiMock.onGet('/providers').reply(200, [
+        { name: 'someprovider' },
+        { name: 'alternateprovider', alternate_names: ['alternate1', 'alternate2'] },
+      ]);
+    });
+
+    afterEach(() => {
+      this.apiMock.reset();
+    });
+
     test('should return the correct url and token', async () => {
       const { url, token } = await this.user.getConnectData();
       const expectedUrl = isBrowser
@@ -139,11 +150,19 @@ module.exports.testGetConnectDataBehavior = function ({ isBrowser } = {}) {
 
       expect(url).toBe(expectedUrl);
       expect(token).toBe(this.token);
+      expect(this.apiMock.history.get).toHaveLength(0);
     });
 
     test('should return preselected url if `provider` is passed in', async () => {
-      const { url } = await this.user.getConnectData({ provider: 'someprovider' });
+      let { url } = await this.user.getConnectData({ provider: 'someprovider' });
       expect(url).toContain('https://connect.vezgo.com/connect/someprovider?');
+      expect(this.apiMock.history.get).toHaveLength(1);
+
+      // should return the last alternate provider name if available
+      // Also test cached providers being used
+      ({ url } = await this.user.getConnectData({ provider: 'alternateprovider' }));
+      expect(url).toContain('https://connect.vezgo.com/connect/alternate2?');
+      expect(this.apiMock.history.get).toHaveLength(1);
     });
 
     test('should return reconnect url if `accountId` is passed in', async () => {
