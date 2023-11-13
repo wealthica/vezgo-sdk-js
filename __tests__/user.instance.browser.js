@@ -10,6 +10,7 @@ describe('Vezgo User instance (Browser)', () => {
     this.token = generateToken();
     this.authMock = new MockAdapter(this.user.authApi.axiosInstance);
     this.authMock.onPost('/vezgo/auth').reply(200, { token: this.token });
+    this.apiMock = new MockAdapter(this.user.api.axiosInstance);
   });
 
   describe('.reconnect()', () => {

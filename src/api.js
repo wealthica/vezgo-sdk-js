@@ -186,6 +186,31 @@ class API {
     } = options;
     const { clientId, connectURL } = this.config;
 
+    let slug = provider;
+    if (provider && !accountId) {
+      // Get providers list if not cached
+      if (!this.cachedProviders) {
+        try {
+          this.cachedProviders = await this.providers.getList();
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error(error);
+          throw new Error('Failed to fetch providers list.');
+        }
+      }
+
+      // Find provider definition
+      const providerDef = this.cachedProviders.find((item) => item.name === provider);
+      if (!providerDef) {
+        throw new Error('Provider not found.');
+      }
+
+      // Use the last alternate name as slug if available
+      if (providerDef.alternate_names) {
+        slug = providerDef.alternate_names[providerDef.alternate_names.length - 1];
+      }
+    }
+
     // Get a token with at least 10 minutes left
     const token = await this.getToken({ minimumLifetime: 600 });
 
@@ -212,7 +237,7 @@ class API {
     ));
     const queryString = new URLSearchParams(query).toString();
 
-    let url = provider ? `${connectURL}/connect/${provider}` : `${connectURL}/connect`;
+    let url = slug ? `${connectURL}/connect/${slug}` : `${connectURL}/connect`;
 
     // Return reconnect url if accountId is passed in
     if (accountId) {
