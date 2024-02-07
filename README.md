@@ -566,7 +566,7 @@ This method retrieves the list of orders for an account.
 Returns data within the last 1 year by default.
 
 ```javascript
-const transactions = await user.transactions.getList({
+const orders = await user.orders.getList({
   accountId: "651538b55e8e333d9c7cdc0d",
   from: "2020-08-31", // optional
   to: "2021-08-31", // optional
