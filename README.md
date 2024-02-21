@@ -199,6 +199,7 @@ const { url, token } = await user.getConnectData({
   providersPerLine: 1, // optional (1 | 2), 2 by default
   syncNfts: false, // optional, whether to show "Sync NFTs" checkbox. true by default (enabling sync_nfts feature on your account is done separately)
   features: 'feature1,feature2', // optional, a comma-separated list of features. undefined by default
+  multiWallet: true // optional, allows to connect multiple wallets in one take and return list of connected account and list of errors
 });
 // {
 //   url: "https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&origin=YOUR_SITE_ORIGIN&state=YOUR_APP_STATE&lang=en&theme=light&providersPerLine=2",
@@ -235,7 +236,7 @@ const user2 = vezgo.login('USER_ID_2');
 const { url: url2, token } = await user2.getConnectData();
 ```
 
-#### user.connect({ provider, providers, providerCategories, accountId, lang, theme, providersPerLine, syncNfts, features })
+#### user.connect({ provider, providers, providerCategories, accountId, lang, theme, providersPerLine, syncNfts, features, multiWallet })
 
 This method starts the Vezgo Connect process inside your webpage/app for user to connect their account.
 
@@ -246,9 +247,19 @@ This method accepts the same parameters as `user.getConnectData()` except for `r
 ```javascript
 user.connect({
   // additional options
-}).onConnection(account => {
+}).onConnection((account, message) => {
   // Send the account to your server
   sendToServer('/some-route', account);
+
+  // if multiwallet=true account and message wil contains list of accounts and message divided by semocolon
+  account(account.split(';').map((acc, key) => {
+    // Send the account to your server
+    if(acc) {
+      sendToServer('/some-route', acc);
+    } else {
+      console.error(account.split(';')[key]);
+    }
+  }));
 }).onError(error => {
   console.error('account connection error:', error)
 }).onEvent((name, data) => {
@@ -265,7 +276,7 @@ Connection response are provided via callbacks.
 ```javascript
 user.reconnect('ACCOUNT_ID', {
   // additional options
-}).onConnection(account => {
+}).onConnection((account, message) => {
   // Send the account to your server
   sendToServer('/some-route', account);
 }).onError(error => {

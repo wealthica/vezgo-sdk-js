@@ -183,6 +183,7 @@ class API {
       theme,
       providersPerLine,
       features,
+      multiWallet,
     } = options;
     const { clientId, connectURL } = this.config;
 
@@ -229,6 +230,7 @@ class API {
       theme: ['light', 'dark'].includes(theme) ? theme : 'light',
       providers_per_line: (providersPerLine && ['1', '2'].includes(providersPerLine.toString())) ? providersPerLine.toString() : '2',
       features,
+      multi_wallet: multiWallet,
     };
 
     // Cleanup blank params
@@ -300,6 +302,7 @@ class API {
           providersPerLine,
           syncNfts,
           features,
+          multiWallet,
         } = options;
         const { url, token } = await this.getConnectData({
           provider,
@@ -311,6 +314,7 @@ class API {
           providersPerLine,
           syncNfts,
           features,
+          multiWallet,
         });
 
         this.iframe = appendVezgoIframe();
@@ -356,7 +360,7 @@ class API {
     switch (result.event) {
       case 'success': {
         // Connection success
-        this._triggerCallback(CALLBACK_CONNECTION, result.account);
+        this._triggerCallback(CALLBACK_CONNECTION, result.account, result.message);
         break;
       }
 
@@ -423,7 +427,7 @@ class API {
     if (this.form) this.form.remove();
   }
 
-  _triggerCallback(callback, payload = {}) {
+  _triggerCallback(callback, payload = {}, extraPayload = {}) {
     // onConnection and onError callbacks are only triggered once per widget session.
     if ([CALLBACK_CONNECTION, CALLBACK_ERROR].includes(callback)) {
       // Mark widget as inactive so it's cleaned up by the doneWatcher.
@@ -432,7 +436,7 @@ class API {
       if (this._widgetOpened) {
         this._widgetOpened = false;
 
-        if (this[callback]) this[callback](payload);
+        if (this[callback]) this[callback](payload, extraPayload);
       }
 
       return;

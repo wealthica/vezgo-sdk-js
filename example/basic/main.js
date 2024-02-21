@@ -42,18 +42,35 @@ $(document).ready(function () {
 
     user
       .connect({
+        // provider: 'binance',
+        // providers: ['metamask', 'demo', 'coinbase'],
         theme: constants.VEZGO_CLIENT_THEME,
         providersPerLine: constants.VEZGO_CLIENT_PROVIDERS_PER_LINE,
         connectionType: constants.VEZGO_CONNECT_TYPE,
         // providerCategories: ['exchanges', 'wallets'],
+        // multiWallet: true
       })
       .onEvent(function (event, data) {
         console.log('event', event, data);
       })
-      .onConnection(function (account) {
-        console.log("connection success", account);
-        $("#response_heading").html(`Account connected successfully with ID: ${account}`);
-        $("#account_id_mod").val(account);
+      .onConnection(function (account, message) {
+        const accounts = account.split(';');
+        const messages = message.split(';');
+
+        console.log("connected accounts", account.split(';').join(', '));
+        console.log("connected messages", message.split(';').join(', '));
+
+        const rows = accounts.map(function (acc, key) {
+          return `<tr><td>${ key + 1 }</td><td>${ acc ? acc : '-' }</td><td>${ messages[key] }</td></tr>`;
+        }).join('');
+
+
+        $("#response_heading").html("Accounts connected:");
+        const head = `<thead><tr><th><strong>№</strong></th><th><strong>Account ID</strong></th><th><strong>Status</strong></th></tr></thead>`;
+
+        $("#result").html(`<table class="table border">${head}<tbody>${rows}</tbody></table>`);
+
+        $("#account_id_mod").val(accounts);
       })
       .onError(function (error) {
         console.log("connection error", error);
