@@ -250,22 +250,36 @@ user.connect({
 }).onConnection((account, message) => {
   // Send the account to your server
   sendToServer('/some-route', account);
-
-  // if multiwallet=true account and message wil contains list of accounts and message divided by semocolon
-  account(account.split(';').map((acc, key) => {
-    // Send the account to your server
-    if(acc) {
-      sendToServer('/some-route', acc);
-    } else {
-      console.error(account.split(';')[key]);
-    }
-  }));
 }).onError(error => {
   console.error('account connection error:', error)
 }).onEvent((name, data) => {
   console.log('account connection event:', name, data);
 });
 ```
+
+In multiWallet mode
+
+```javascript
+user.connect({
+  // additional options
+}).onConnection((accounts, messages, wallets) => {
+  // Send the account to your server
+  accounts.map(async (account, key) => {
+    // Send the account to your server
+    if(account) {
+      await sendToServer('/some-route', account);
+    } else {
+      console.error(messages[key]);
+    }
+  });
+}).onError(error => {
+  console.error('account connection error:', error)
+}).onEvent((name, data) => {
+  console.log('account connection event:', name, data);
+});
+```
+
+
 
 #### user.reconnect(accountId, options)
 
