@@ -361,21 +361,19 @@ class API {
       case 'success': {
         // Connection success
 
-        if (result.accounts) {
+        if (result.result) {
           // multi wallet
           this._triggerCallback(
-            CALLBACK_CONNECTION,
-            result.accounts,
-            result.messages,
-            result.wallets,
+            CALLBACK_CONNECTION, result.result,
           );
         } else if (result.account) {
           // single wallet
           this._triggerCallback(
-            CALLBACK_CONNECTION,
-            result.account,
-            result.message,
-            result.wallet,
+            CALLBACK_CONNECTION, {
+              account: result.account,
+              message: result.message,
+              wallet: result.wallet,
+            },
           );
         }
 
@@ -445,7 +443,7 @@ class API {
     if (this.form) this.form.remove();
   }
 
-  _triggerCallback(callback, payload, payload2, payload3) {
+  _triggerCallback(callback, payload) {
     // onConnection and onError callbacks are only triggered once per widget session.
     if ([CALLBACK_CONNECTION, CALLBACK_ERROR].includes(callback)) {
       // Mark widget as inactive so it's cleaned up by the doneWatcher.
@@ -454,7 +452,18 @@ class API {
       if (this._widgetOpened) {
         this._widgetOpened = false;
 
-        if (this[callback]) this[callback](payload, payload2, payload3);
+        if (this[callback]) {
+          if (payload.result) {
+            // multi wallet
+            this[callback](payload.result);
+          } else if (payload.account) {
+            // single account
+            this[callback](payload.account, payload.message, payload.wallet);
+          } else {
+            // error
+            this[callback](payload);
+          }
+        }
       }
 
       return;

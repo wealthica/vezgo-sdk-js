@@ -54,27 +54,26 @@ $(document).ready(() => {
       .onEvent((event, data) => {
         console.log('event', event, data);
       })
-      .onConnection((account, message, wallet) => {
-        let accounts; let messages; let
-          wallets;
+      .onConnection((result, message, wallet) => {
+        let accounts;
 
         if (multiWallet) {
-          accounts = account;
-          messages = message;
-          wallets = wallet;
+          accounts = result.accounts;
+          // eslint-disable-next-line no-param-reassign
+          message = result.message;
         } else {
-          accounts = [account];
-          messages = [message];
-          wallets = [wallet];
+          accounts = [{
+            account: result,
+            message,
+            wallet,
+          }];
         }
 
-        console.log('connected accounts', accounts);
-        console.log('connected messages', message);
-        console.log('connected wallets', wallets);
+        console.log('connection result', result, message, wallet);
 
-        const rows = accounts.map((acc, key) => `<tr><td>${key + 1}</td><td>${acc || '-'}</td><td>${wallets[key] || '-'}</td><td>${messages[key]}</td></tr>`).join('');
+        const rows = accounts.map((acc, key) => `<tr><td>${key + 1}</td><td>${acc.account || '-'}</td><td>${acc.wallet || '-'}</td><td>${acc.message}</td></tr>`).join('');
 
-        $('#response_heading').html('Accounts connected:');
+        $('#response_heading').html(message);
         const head = '<thead><tr><th><strong>№</strong></th><th><strong>Account ID</strong></th><th><strong>Wallet</strong></th><th><strong>Status</strong></th></tr></thead>';
 
         $('#result').html(`<table class="table border">${head}<tbody>${rows}</tbody></table>`);

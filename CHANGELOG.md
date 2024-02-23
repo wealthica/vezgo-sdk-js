@@ -6,7 +6,7 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 
 ## [1.1.2]
-- Add support for `multiWallet` flag which allows to connect multiple wallets in one take and return list of connected `accounts`, `messages` and `wallets`
+- Add support for `multiWallet` flag which allows to connect multiple wallets in one take and return list of connected `accounts`
 
 ## [1.1.1]
 - Added support for fetching orders

@@ -262,9 +262,10 @@ In multiWallet mode
 ```javascript
 user.connect({
   // additional options
-}).onConnection((accounts, messages, wallets) => {
+}).onConnection((result) => {
+  console.log(result.message)
   // Send the account to your server
-  accounts.map(async (account, key) => {
+  result.accounts.map(async (account, key) => {
     // Send the account to your server
     if(account) {
       await sendToServer('/some-route', account);
