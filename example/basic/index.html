@@ -39,42 +39,45 @@
 </nav>
 <div class="container mt-5">
   <div class="row justify-content-center">
-    <div class="col-md-6">
-      <h1 class="mb-4 text-center font-serif">Vezgo Example App</h1>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <h1 class="mb-4 text-center font-serif">Vezgo Example App</h1>
 
-      <div class="mb-3">
-        <label for="username" class="form-label">Login Name: </label>
-        <input
-          type="text"
-          id="username"
-          class="form-control"
-          placeholder="Enter user's unique identification from your system e.g. email"
-        />
+        <div class="mb-3">
+          <label for="username" class="form-label">Login Name: </label>
+          <input
+            type="text"
+            id="username"
+            class="form-control"
+            placeholder="Enter user's unique identification from your system e.g. email"
+          />
+        </div>
+
+        <div class="mb-3 d-grid gap-2">
+          <button id="connect" class="btn btn-primary">Connect</button>
+        </div>
+
+        <div class="mb-3 d-grid gap-2">
+          <button id="reconnect" class="btn btn-primary">Reconnect</button>
+        </div>
+
+        <div id="connection_error" class="mb-3 text-danger"></div>
+
+        <div class="d-flex justify-content-evenly mb-6">
+          <button id="get_accounts" class="btn btn-info backgroud-blue">
+            Get All Accounts List
+          </button>
+          <button
+            id="get_account_id_mod"
+            class="btn btn-info backgroud-blue"
+            data-mdb-toggle="modal"
+            data-mdb-target="#staticBackdrop"
+          >
+            Get Specific Account Info
+          </button>
+        </div>
       </div>
 
-      <div class="mb-3 d-grid gap-2">
-        <button id="connect" class="btn btn-primary">Connect</button>
-      </div>
-
-      <div class="mb-3 d-grid gap-2">
-        <button id="reconnect" class="btn btn-primary">Reconnect</button>
-      </div>
-
-      <div id="connection_error" class="mb-3 text-danger"></div>
-
-      <div class="d-flex justify-content-evenly mb-6">
-        <button id="get_accounts" class="btn btn-info backgroud-blue">
-          Get All Accounts List
-        </button>
-        <button
-          id="get_account_id_mod"
-          class="btn btn-info backgroud-blue"
-          data-mdb-toggle="modal"
-          data-mdb-target="#staticBackdrop"
-        >
-          Get Specific Account Info
-        </button>
-      </div>
       <h6 id="response_heading" class="mb-4 text-center"></h6>
       <div id="result" class="mt-4"></div>
     </div>

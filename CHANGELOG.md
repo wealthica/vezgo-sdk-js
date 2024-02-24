@@ -4,8 +4,13 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
-## [1.2.0]
+
+## [1.1.2]
+- Add support for `multiWallet` flag which allows to connect multiple wallets in one take and return list of connected `accounts`
+
+## [1.1.1]
 - Added support for fetching orders
+- Support `alternate_names` if available in providers list
 
 ## [1.1.0]
 - Rework TypeScript headers (not likely but could be breaking change depending on how you use TypeScript)
