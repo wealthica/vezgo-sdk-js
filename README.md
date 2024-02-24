@@ -247,7 +247,7 @@ This method accepts the same parameters as `user.getConnectData()` except for `r
 ```javascript
 user.connect({
   // additional options
-}).onConnection((account, message) => {
+}).onConnection((account) => {
   // Send the account to your server
   sendToServer('/some-route', account);
 }).onError(error => {
@@ -263,7 +263,8 @@ In multiWallet mode
 user.connect({
   // additional options
 }).onConnection((result) => {
-  console.log(result.message)
+  console.log(result.message);
+
   // Send the account to your server
   result.accounts.map(async (account, key) => {
     // Send the account to your server
@@ -291,7 +292,7 @@ Connection response are provided via callbacks.
 ```javascript
 user.reconnect('ACCOUNT_ID', {
   // additional options
-}).onConnection((account, message) => {
+}).onConnection((account) => {
   // Send the account to your server
   sendToServer('/some-route', account);
 }).onError(error => {

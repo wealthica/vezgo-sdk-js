@@ -360,22 +360,7 @@ class API {
     switch (result.event) {
       case 'success': {
         // Connection success
-
-        if (result.result) {
-          // multi wallet
-          this._triggerCallback(
-            CALLBACK_CONNECTION, result.result,
-          );
-        } else if (result.account) {
-          // single wallet
-          this._triggerCallback(
-            CALLBACK_CONNECTION, {
-              account: result.account,
-              message: result.message,
-              wallet: result.wallet,
-            },
-          );
-        }
+        this._triggerCallback(CALLBACK_CONNECTION, result.account);
 
         break;
       }
@@ -452,18 +437,7 @@ class API {
       if (this._widgetOpened) {
         this._widgetOpened = false;
 
-        if (this[callback]) {
-          if (payload.result) {
-            // multi wallet
-            this[callback](payload.result);
-          } else if (payload.account) {
-            // single account
-            this[callback](payload.account, payload.message, payload.wallet);
-          } else {
-            // error
-            this[callback](payload);
-          }
-        }
+        if (this[callback]) this[callback](payload);
       }
 
       return;
