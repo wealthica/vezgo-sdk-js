@@ -4,6 +4,8 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [1.1.3]
+- Update basic example to display network in list of connected wallets in multi wallet mode
 
 ## [1.1.2]
 - Add support for `multiWallet` flag which allows to connect multiple wallets in one take and return list of connected `accounts`

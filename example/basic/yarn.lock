@@ -539,10 +539,10 @@
   "resolved" "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
   "version" "1.1.2"
 
-"vezgo-sdk-js@^1.1.1":
-  "integrity" "sha512-Svi78inhRMUepFP2bMZVA0VvfxEz2I5zeH71zRTCQFNhU4UsHVq2m1uxq7ryWThP4/GzR0Y3/bVSGknlrP40Pw=="
-  "resolved" "https://registry.npmjs.org/vezgo-sdk-js/-/vezgo-sdk-js-1.1.1.tgz"
-  "version" "1.1.1"
+"vezgo-sdk-js@^1.1.2":
+  "integrity" "sha512-zeyxhalHiobnA1AaPxYYwX8kEJbSG/uZA/XbwFPwATxM0xK+woaAbY+e7qpWJvV0kNbgm0FM7j9jLEVsnbmLFg=="
+  "resolved" "https://registry.npmjs.org/vezgo-sdk-js/-/vezgo-sdk-js-1.1.2.tgz"
+  "version" "1.1.2"
   dependencies:
     "apisauce" "^2.1.1"
     "core-js" "^3.17.3"
