@@ -199,7 +199,7 @@ const { url, token } = await user.getConnectData({
   providersPerLine: 1, // optional (1 | 2), 2 by default
   syncNfts: false, // optional, whether to show "Sync NFTs" checkbox. true by default (enabling sync_nfts feature on your account is done separately)
   features: 'feature1,feature2', // optional, a comma-separated list of features. undefined by default
-  multiWallet: true // optional, allows to connect multiple wallets in one take and return list of connected account and list of errors
+  multiWallet: true // optional, allows to connect multiple wallets in one take and return list of connected account and list of errors, also this mode allows to select multiple networks for wallets
 });
 // {
 //   url: "https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&origin=YOUR_SITE_ORIGIN&state=YOUR_APP_STATE&lang=en&theme=light&providersPerLine=2",
