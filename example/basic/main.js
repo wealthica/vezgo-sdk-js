@@ -67,7 +67,7 @@ $(document).ready(() => {
         if (multiWallet) {
           console.log('connection result', account);
 
-          const rows = accounts.map((acc, key) => `<tr><td>${key + 1}</td><td>${acc.account || '-'}</td><td>${acc.wallet || '-'}</td><td>${acc.message}</td></tr>`).join('');
+          const rows = accounts.map((acc, key) => `<tr><td>${key + 1}</td><td>${acc.account || '-'}</td><td>${acc.wallet || '-'} ${acc.network ? `(${acc.network})` : ''}</td><td>${acc.message}</td></tr>`).join('');
 
           $('#response_heading').html(message);
           const head = '<thead><tr><th><strong>№</strong></th><th><strong>Account ID</strong></th><th><strong>Wallet</strong></th><th><strong>Status</strong></th></tr></thead>';
