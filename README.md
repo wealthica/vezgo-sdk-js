@@ -115,7 +115,7 @@ const vezgo = Vezgo.init({
   }
 });
 
-// Log in to create a Vezgo User instance
+// Log in to create a Vezgo User instance (loginName is not require for client-side)
 const user = vezgo.login();
 
 // Call user APIs

@@ -12,6 +12,6 @@
     "dotenv": "^16.3.1",
     "express": "^4.17.1",
     "renderjson": "^1.4.0",
-    "vezgo-sdk-js": "^1.1.3"
+    "vezgo-sdk-js": "^1.1.4"
   }
 }
