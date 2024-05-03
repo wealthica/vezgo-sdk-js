@@ -9,7 +9,8 @@ declare var Vezgo: {
 interface APIInterface {
   constructor(config: APIConfig)
   __init(): APIInterface
-  login(loginName: string): APIUserInterface
+  /** loginName required only for server-side login **/
+  login(loginName?: string): APIUserInterface
   getToken(options: TokenOptions): Promise<string>
   fetchToken(): Promise<string>
   authApi: ApisauceInstance
@@ -89,7 +90,8 @@ type TransactionOptions = {
 
 type APIConfig = {
   clientId: string;
-  secret: string;
+  /** secret required only for server-side **/
+  secret?: string;
   baseURL?: string;
   connectURL?: string;
   redirectURI?: string;

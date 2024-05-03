@@ -4,6 +4,9 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [1.1.4]
+- Fix required params in ts interface
+
 ## [1.1.3]
 - Update basic example to display network in list of connected wallets in multi wallet mode
 

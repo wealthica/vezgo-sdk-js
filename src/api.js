@@ -77,7 +77,7 @@ class API {
 
     const { baseURL } = this.config;
 
-    // Create new user instance, without loginName so it does not recursively loop on init
+    // Create new user instance, without loginName, so it does not recursively loop on init
     const user = new API({ ...this.config, loginName: null });
     user._init();
 
