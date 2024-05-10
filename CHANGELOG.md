@@ -4,6 +4,9 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [1.1.5]
+- Bumped apisauce package to 3.0.1 to get rid of CSRF vulnerability in axios.
+
 ## [1.1.4]
 - Fix required params in ts interface
 
