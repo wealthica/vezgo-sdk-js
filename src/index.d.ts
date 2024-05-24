@@ -17,8 +17,8 @@ interface APIInterface {
   api: ApisauceInstance
   getTeam(): string;
   getConnectData(options: ConnectDataOptions): Promise<ConnectData>
-  connect(options?: APIConfig): APIInterface
-  reconnect(accountId: string): APIUserInterface
+  connect(options?: ConnectOptions): APIInterface
+  reconnect(accountId: string, options?: ConnectOptions): APIUserInterface
   onConnection(callback: Function): APIInterface
   onError(callback: Function): APIInterface
   onEvent(callback: Function): APIInterface
@@ -102,20 +102,44 @@ type APIConfig = {
     headers?: object;
     params?: object;
   }
+  hideWalletConnectWallets: boolean | undefined;
 }
 
 type TokenOptions = {
   minimumLifetime: number;
 }
 
+type ConnectOptions = {
+  provider: string;
+  accountId: string;
+  lang: string;
+  providerCategories: string;
+  providers: Array<string> | undefined;
+  theme: string | undefined;
+  providersPerLine: number | undefined;
+  syncNfts: boolean | undefined;
+  features: string | undefined;
+  multiWallet: boolean | undefined;
+  hideWalletConnectWallets: boolean | undefined;
+}
+
+
 type ConnectDataOptions = {
   provider: string;
   accountId: string;
-  state: string;
-  origin: string | undefined;
   lang: string;
-  redirectURI: string;
+  providerCategories: string;
   providers: Array<string> | undefined;
+  theme: string | undefined;
+  providersPerLine: number | undefined;
+  syncNfts: boolean | undefined;
+  features: string | undefined;
+  multiWallet: boolean | undefined;
+  hideWalletConnectWallets: boolean | undefined;
+
+  origin: string | undefined;
+  state: string;
+  redirectURI: Array<string> | undefined;
 }
 
 type ConnectData = {

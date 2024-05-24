@@ -184,6 +184,7 @@ class API {
       providersPerLine,
       features,
       multiWallet,
+      hideWalletConnectWallets,
     } = options;
     const { clientId, connectURL } = this.config;
 
@@ -231,6 +232,7 @@ class API {
       providers_per_line: (providersPerLine && ['1', '2'].includes(providersPerLine.toString())) ? providersPerLine.toString() : '2',
       features,
       multi_wallet: multiWallet,
+      hide_wallet_connect_wallets: hideWalletConnectWallets,
     };
 
     // Cleanup blank params
@@ -303,6 +305,7 @@ class API {
           syncNfts,
           features,
           multiWallet,
+          hideWalletConnectWallets,
         } = options;
         const { url, token } = await this.getConnectData({
           provider,
@@ -315,6 +318,7 @@ class API {
           syncNfts,
           features,
           multiWallet,
+          hideWalletConnectWallets,
         });
 
         this.iframe = appendVezgoIframe();
