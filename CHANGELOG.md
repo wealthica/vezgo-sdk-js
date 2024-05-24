@@ -4,6 +4,9 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [1.1.6]
+- Add support for `hideWalletConnectWallets` to allow hiding WalletConnect wallets list in Vezgo Connect flow.
+
 ## [1.1.5]
 - Bumped apisauce package to 3.0.1 to get rid of CSRF vulnerability in axios.
 

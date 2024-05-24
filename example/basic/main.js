@@ -50,6 +50,7 @@ $(document).ready(() => {
         connectionType: constants.VEZGO_CONNECT_TYPE,
         // providerCategories: ['exchanges', 'wallets'],
         multiWallet,
+        // hideWalletConnectWallets: true,
       })
       .onEvent((event, data) => {
         console.log('event', event, data);
