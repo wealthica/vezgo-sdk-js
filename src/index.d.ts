@@ -110,37 +110,39 @@ type TokenOptions = {
 }
 
 type ConnectOptions = {
-  provider: string;
-  accountId: string;
-  lang: string;
-  providerCategories: string;
-  providers: Array<string> | undefined;
-  theme: string | undefined;
-  providersPerLine: number | undefined;
-  syncNfts: boolean | undefined;
-  features: string | undefined;
-  multiWallet: boolean | undefined;
-  hideWalletConnectWallets: boolean | undefined;
+  provider?: string;
+  accountId?: string;
+  state?: string;
+  origin?: string;
+  lang?: string;
+  redirectURI?: string;
+  syncNfts?: boolean;
+  providerCategories?: string[];
+  providers?: string[];
+  theme?: 'light' | 'dark';
+  providersPerLine?: '1' | '2';
+  features?: any;
+  multiWallet?: boolean;
+  hideWalletConnectWallets?: boolean;
 }
 
 
 type ConnectDataOptions = {
-  provider: string;
-  accountId: string;
-  lang: string;
-  providerCategories: string;
-  providers: Array<string> | undefined;
-  theme: string | undefined;
-  providersPerLine: number | undefined;
-  syncNfts: boolean | undefined;
-  features: string | undefined;
-  multiWallet: boolean | undefined;
-  hideWalletConnectWallets: boolean | undefined;
-
-  origin: string | undefined;
-  state: string;
-  redirectURI: Array<string> | undefined;
-}
+  provider?: string;
+  accountId?: string;
+  state?: string;
+  origin?: string;
+  lang?: string;
+  redirectURI?: string;
+  syncNfts?: boolean;
+  providerCategories?: string[];
+  providers?: string[];
+  theme?: 'light' | 'dark';
+  providersPerLine?: '1' | '2';
+  features?: any;
+  multiWallet?: boolean;
+  hideWalletConnectWallets?: boolean;
+};
 
 type ConnectData = {
   url: string;
