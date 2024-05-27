@@ -102,7 +102,7 @@ type APIConfig = {
     headers?: object;
     params?: object;
   }
-  hideWalletConnectWallets: boolean | undefined;
+  hideWalletConnectWallets?: boolean;
 }
 
 type TokenOptions = {
