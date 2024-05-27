@@ -57,7 +57,7 @@ interface HistoryInterface {
   getList(options: HistoryListOptions): Promise<HistoryEntry[]> | Promise<never>
 }
 
-type HistoryListOptions = {
+export type HistoryListOptions = {
   accountId: string;
   from?: string;
   to?: string;
@@ -70,7 +70,7 @@ interface TransactionsInterface {
   getOne(options: TransactionOptions): Promise<Transaction> | Promise<never>
 }
 
-type TransactionsOptions = {
+export type TransactionsOptions = {
   accountId: string;
   ticker?: string;
   from?: string;
@@ -83,12 +83,12 @@ type TransactionsOptions = {
   exclude_fields?: string;
 }
 
-type TransactionOptions = {
+export type TransactionOptions = {
   accountId: string;
   txId: string;
 }
 
-type APIConfig = {
+export type APIConfig = {
   clientId: string;
   /** secret required only for server-side **/
   secret?: string;
@@ -105,11 +105,11 @@ type APIConfig = {
   hideWalletConnectWallets?: boolean;
 }
 
-type TokenOptions = {
+export type TokenOptions = {
   minimumLifetime: number;
 }
 
-type ConnectOptions = {
+export type ConnectOptions = {
   provider?: string;
   accountId?: string;
   state?: string;
@@ -127,7 +127,7 @@ type ConnectOptions = {
 }
 
 
-type ConnectDataOptions = {
+export type ConnectDataOptions = {
   provider?: string;
   accountId?: string;
   state?: string;
@@ -144,7 +144,7 @@ type ConnectDataOptions = {
   hideWalletConnectWallets?: boolean;
 };
 
-type ConnectData = {
+export type ConnectData = {
   url: string;
   token: string;
 }
