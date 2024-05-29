@@ -4,6 +4,9 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [1.1.7]
+- Allow copy/write to clipboard for WalletConnect widget in Widget Mode.
+
 ## [1.1.6]
 - Add support for `hideWalletConnectWallets` to allow hiding WalletConnect wallets list in Vezgo Connect flow.
 
