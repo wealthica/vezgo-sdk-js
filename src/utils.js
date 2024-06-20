@@ -15,6 +15,8 @@ function appendVezgoIframe() {
   const iframe = document.createElement('iframe');
   iframe.name = name;
   iframe.frameBorder = 0;
+  // Require for Copy function in WalletConnect in Widget Mode
+  iframe.allow = 'clipboard-read *; clipboard-write *';
 
   iframe.setAttribute('style', [
     'width:100%; height:100%;',
