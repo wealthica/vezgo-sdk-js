@@ -36,7 +36,7 @@
   "dependencies": {
     "apisauce": "^3.0.1",
     "core-js": "^3.17.3",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.2",
     "regenerator-runtime": "^0.13.9"
   },
   "devDependencies": {
