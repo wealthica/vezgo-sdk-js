@@ -211,6 +211,11 @@ module.exports.testGetConnectDataBehavior = function ({ isBrowser } = {}) {
       expect(url).toContain('providers_per_line=1');
     });
 
+    test('should use custom `disabledProviders` if passed in', async () => {
+      const { url } = await this.user.getConnectData({ disabledProviders: ['demo', 'binance'] });
+      expect(url).toContain('disabled_providers=demo%2Cbinance');
+    });
+
     test('should use `state` if passed in', async () => {
       const { url } = await this.user.getConnectData({ state: 'eyJzb21lIjoiZGF0YSIsIm90aGVyIjoxfQ==' });
       expect(url).toContain('state=eyJzb21lIjoiZGF0YSIsIm90aGVyIjoxfQ%3D%3D');

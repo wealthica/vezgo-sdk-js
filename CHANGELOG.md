@@ -4,6 +4,9 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [1.0.3]
+- Add `disabledProviders` providers array support for `user.connect()`, `user.reconnect()` & `user.getConnectUrl()`.
+
 ## [1.1.8]
 - Upgrade jsonwebtoken dependency to 9
 

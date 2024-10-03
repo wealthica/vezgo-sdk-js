@@ -172,6 +172,7 @@ class API {
   async getConnectData(options = {}) {
     const {
       provider,
+      disabledProviders,
       accountId,
       state,
       origin = this.isBrowser ? window.location.origin : undefined,
@@ -228,6 +229,7 @@ class API {
       provider_categories: !provider && Array.isArray(providerCategories) && providerCategories.length ? providerCategories.join(',') : undefined,
       // 'provider' param in priority, skip 'providers' param if 'provider' is set
       providers: !provider && Array.isArray(providers) && providers.length ? providers.join(',') : undefined,
+      disabled_providers: disabledProviders && Array.isArray(disabledProviders) && disabledProviders.length ? disabledProviders.join(',') : undefined,
       theme: ['light', 'dark'].includes(theme) ? theme : 'light',
       providers_per_line: (providersPerLine && ['1', '2'].includes(providersPerLine.toString())) ? providersPerLine.toString() : '2',
       features,
@@ -297,6 +299,7 @@ class API {
         const {
           provider,
           providers,
+          disabledProviders,
           providerCategories,
           accountId,
           lang,
@@ -310,6 +313,7 @@ class API {
         const { url, token } = await this.getConnectData({
           provider,
           providers,
+          disabledProviders,
           providerCategories,
           accountId,
           lang,
