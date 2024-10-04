@@ -115,6 +115,7 @@ type ConnectOptions = {
   lang: string;
   providerCategories: string;
   providers: Array<string> | undefined;
+  disabledProviders: Array<string> | undefined;
   theme: string | undefined;
   providersPerLine: number | undefined;
   syncNfts: boolean | undefined;
@@ -130,6 +131,7 @@ type ConnectDataOptions = {
   lang: string;
   providerCategories: string;
   providers: Array<string> | undefined;
+  disabledProviders: Array<string> | undefined;
   theme: string | undefined;
   providersPerLine: number | undefined;
   syncNfts: boolean | undefined;
