@@ -44,7 +44,7 @@ $(document).ready(() => {
     user
       .connect({
         // provider: 'binance',
-        providers: ['metamask', 'demo', 'coinbase'],
+        // providers: ['metamask', 'demo', 'coinbase'],
         // disabledProviders: ['binance', 'metamask'],
         theme: constants.VEZGO_CLIENT_THEME,
         providersPerLine: constants.VEZGO_CLIENT_PROVIDERS_PER_LINE,
