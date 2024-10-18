@@ -4,6 +4,9 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [1.1.10]
+- Update readme for basic example
+
 ## [1.1.9]
 - Add `disabledProviders` providers array support for `user.connect()`, `user.reconnect()` & `user.getConnectUrl()`.
 
