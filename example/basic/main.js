@@ -41,18 +41,21 @@ $(document).ready(() => {
     login();
     const multiWallet = window.location.search.includes('multi_wallet=true');
 
-    user
-      .connect({
-        // provider: 'binance',
-        // providers: ['metamask', 'demo', 'coinbase'],
-        // disabledProviders: ['binance', 'metamask'],
-        theme: constants.VEZGO_CLIENT_THEME,
-        providersPerLine: constants.VEZGO_CLIENT_PROVIDERS_PER_LINE,
-        connectionType: constants.VEZGO_CONNECT_TYPE,
-        // providerCategories: ['exchanges', 'wallets'],
-        multiWallet,
-        // hideWalletConnectWallets: true,
-      })
+    user.connect({
+      // provider: 'binance',
+      // providers: ['metamask', 'demo', 'coinbase'],
+      // disabledProviders: ['binance', 'metamask'],
+      theme: constants.VEZGO_CLIENT_THEME,
+      providersPerLine: constants.VEZGO_CLIENT_PROVIDERS_PER_LINE,
+      // providerCategories: ['exchanges', 'wallets'],
+      // hideWalletConnectWallets: true,
+
+      // Enable from the query param flag multi_wallet=true
+      multiWallet,
+
+      // For DEV goals
+      connectionType: constants.VEZGO_CONNECT_TYPE,
+    })
       .onEvent((event, data) => {
         console.log('event', event, data);
       })
