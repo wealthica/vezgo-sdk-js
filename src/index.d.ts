@@ -15,7 +15,7 @@ interface APIInterface {
   fetchToken(): Promise<string>
   authApi: ApisauceInstance
   api: ApisauceInstance
-  getTeam(): string;
+  getTeam(): Promise<Team>;
   getConnectData(options: ConnectDataOptions): Promise<ConnectData>
   connect(options?: ConnectOptions): APIInterface
   reconnect(accountId: string, options?: ConnectOptions): APIUserInterface
@@ -102,7 +102,7 @@ type APIConfig = {
     headers?: object;
     params?: object;
   }
-  hideWalletConnectWallets: boolean | undefined;
+  hideWalletConnectWallets?: boolean;
 }
 
 type TokenOptions = {
@@ -147,6 +147,31 @@ type ConnectDataOptions = {
 type ConnectData = {
   url: string;
   token: string;
+}
+
+type Team = {
+  name: string,
+  redirect_uris: string[],
+  deactivated: boolean,
+  features: string[],
+  instructions: string[],
+  preferences: Preference,
+  logo?: string,
+  coinbase_client_id?: string,
+}
+
+type Preference = {
+  providers: {
+    ledger?: PreferenceSub,
+    metamask?: PreferenceSub,
+    trezor?: PreferenceSub,
+    walletconnect?: PreferenceSub,
+  }
+}
+
+type PreferenceSub = {
+  disallow?: string[],
+  allow?: string[],
 }
 
 /*
