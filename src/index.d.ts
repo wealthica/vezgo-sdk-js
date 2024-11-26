@@ -162,10 +162,7 @@ type Team = {
 
 type Preference = {
   providers: {
-    ledger?: PreferenceSub,
-    metamask?: PreferenceSub,
-    trezor?: PreferenceSub,
-    walletconnect?: PreferenceSub,
+    [key: string]: PreferenceSub,
   }
 }
 
