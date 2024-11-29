@@ -186,6 +186,7 @@ class API {
       features,
       multiWallet,
       hideWalletConnectWallets,
+      providersPreferences,
     } = options;
     const { clientId, connectURL } = this.config;
 
@@ -235,6 +236,7 @@ class API {
       features,
       multi_wallet: multiWallet,
       hide_wallet_connect_wallets: hideWalletConnectWallets,
+      providers_preferences: JSON.stringify(providersPreferences),
     };
 
     // Cleanup blank params
@@ -309,6 +311,7 @@ class API {
           features,
           multiWallet,
           hideWalletConnectWallets,
+          providersPreferences,
         } = options;
         const { url, token } = await this.getConnectData({
           provider,
@@ -323,6 +326,7 @@ class API {
           features,
           multiWallet,
           hideWalletConnectWallets,
+          providersPreferences,
         });
 
         this.iframe = appendVezgoIframe();

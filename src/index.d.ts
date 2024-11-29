@@ -109,6 +109,14 @@ type TokenOptions = {
   minimumLifetime: number;
 }
 
+type ProvidersPreferences = {
+  [key: string]: {
+    disallow?: Array<string>;
+    allow?: Array<string>;
+    no_manual_input?: boolean;
+  };
+}
+
 type ConnectOptions = {
   provider: string;
   accountId: string;
@@ -122,6 +130,7 @@ type ConnectOptions = {
   features: string | undefined;
   multiWallet: boolean | undefined;
   hideWalletConnectWallets: boolean | undefined;
+  providersPreferences?: ProvidersPreferences;
 }
 
 
@@ -138,6 +147,7 @@ type ConnectDataOptions = {
   features: string | undefined;
   multiWallet: boolean | undefined;
   hideWalletConnectWallets: boolean | undefined;
+  providersPreferences?: ProvidersPreferences;
 
   origin: string | undefined;
   state: string;
