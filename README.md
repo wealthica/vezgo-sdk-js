@@ -171,7 +171,7 @@ token = await user.getToken(); // fetches and returns a new token
 token = await user.getToken({ minimumLifeTime: 600 }); // fetches and returns another new token
 ```
 
-#### user.getConnectData({ provider, disabledProviders, redirectURI, state, lang, theme, providersPerLine })
+#### user.getConnectData(options)
 
 This method returns a Vezgo Connect URL and authentication token for user to connect an account.
 
@@ -202,6 +202,16 @@ const { url, token } = await user.getConnectData({
   features: 'feature1,feature2', // optional, a comma-separated list of features. undefined by default
   multiWallet: true, // optional, allows to connect multiple wallets in one take and return list of connected account and list of errors, also this mode allows to select multiple networks for wallets
   hideWalletConnectWallets: true, // optional, hides WalletConnect wallets from the list of providers
+  // optional, session-based providers preferences. If provided, will override providers preferences set in the app / team.
+  providersPreferences: {
+    metamask: {
+      allow: ['ethereum', 'fantom'],
+      no_manual_input: true,
+    },
+    walletconnect: {
+      disallow: ['cronos'],
+    },
+  },
 });
 // {
 //   url: "https://connect.vezgo.com/connect/coinbase?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&origin=YOUR_SITE_ORIGIN&state=YOUR_APP_STATE&lang=en&theme=light&providersPerLine=2",
@@ -238,13 +248,13 @@ const user2 = vezgo.login('USER_ID_2');
 const { url: url2, token } = await user2.getConnectData();
 ```
 
-#### user.connect({ provider, providers, disabledProviders, providerCategories, accountId, lang, theme, providersPerLine, syncNfts, features, multiWallet, hideWalletConnectWallets })
+#### user.connect(options)
 
 This method starts the Vezgo Connect process inside your webpage/app for user to connect their account.
 
 Connection response are provided via callbacks.
 
-This method accepts the same parameters as `user.getConnectData()` except for `redirectURI`, `origin` and `state`
+This method accepts the same options as `user.getConnectData()` except for `redirectURI`, `origin` and `state`.
 
 ```javascript
 user.connect({
@@ -288,6 +298,8 @@ user.connect({
 #### user.reconnect(accountId, options)
 
 This method starts the Vezgo Connect process to re-connect an existing account that has expired/revoked credentials.
+
+This method accepts the same options as `user.connect()`.
 
 Connection response are provided via callbacks.
 

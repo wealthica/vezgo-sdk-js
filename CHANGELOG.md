@@ -6,9 +6,10 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [1.1.10]
 - Update readme for basic example
+- Add `providersPreferences` support for `user.connect()`, `user.reconnect()` & `user.getConnectData()`
 
 ## [1.1.9]
-- Add `disabledProviders` providers array support for `user.connect()`, `user.reconnect()` & `user.getConnectUrl()`.
+- Add `disabledProviders` providers array support for `user.connect()`, `user.reconnect()` & `user.getConnectData()`.
 
 ## [1.1.8]
 - Upgrade jsonwebtoken dependency to 9
@@ -76,8 +77,8 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 - Bugfix: remove iFrame on close widget instead of hiding
 
 ## [1.0.3]
-- Add `theme` (light | dark) support for `user.connect()`, `user.reconnect()` & `user.getConnectUrl()`.
-- Add `providersPerLine` (1 | 2) support for `user.connect()`, `user.reconnect()` & `user.getConnectUrl()`.
+- Add `theme` (light | dark) support for `user.connect()`, `user.reconnect()` & `user.getConnectData()`.
+- Add `providersPerLine` (1 | 2) support for `user.connect()`, `user.reconnect()` & `user.getConnectData()`.
 
 ## [1.0.2]
 - Add keywords
@@ -90,7 +91,7 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 Note: Latest Vezgo Connect requires to be opened via `POST` request with `token` in the form data.
 
 - Add `user.getConnectData()` to get Vezgo Connect URL and authorization token.
-- Delete `user.getConnectUrl()`.
+- Delete `user.getConnectData()`.
 - `user.connect()` and `user.reconnect()` updated accordingly.
 
 ## [0.0.16]
@@ -102,7 +103,7 @@ Note: Latest Vezgo Connect requires to be opened via `POST` request with `token`
 
 ## [0.0.14]
 
-- Add `lang: 'es'` support for `user.connect()`, `user.reconnect()` & `user.getConnectUrl()`.
+- Add `lang: 'es'` support for `user.connect()`, `user.reconnect()` & `user.getConnectData()`.
 
 ## [0.0.13]
 
@@ -115,7 +116,7 @@ Note: Latest Vezgo Connect requires to be opened via `POST` request with `token`
 ### Added
 
 - Add `user.accounts.sync()` to trigger an account sync.
-- Add `providers` parameter to `user.connect()` & `user.getConnectUrl()` to control the list of providers in Vezgo Connect.
+- Add `providers` parameter to `user.connect()` & `user.getConnectData()` to control the list of providers in Vezgo Connect.
 
 ## [0.0.11]
 
@@ -152,7 +153,7 @@ Note: Latest Vezgo Connect requires to be opened via `POST` request with `token`
 
 ### Changed
 
-- Make `origin` parameter optional in NodeJS for `user.getConnectUrl()`.
+- Make `origin` parameter optional in NodeJS for `user.getConnectData()`.
 
 ## [0.0.5]
 
