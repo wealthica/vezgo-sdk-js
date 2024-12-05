@@ -4,6 +4,9 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [1.1.13]
+- Added React/Typescript example app
+
 ## [1.1.12]
 - Update typescript types
 - Export typescript types and interfaces
