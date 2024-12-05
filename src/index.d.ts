@@ -1,76 +1,76 @@
 import { ApisauceInstance } from "apisauce";
 
-export = Vezgo
+export = Vezgo;
 
-declare var Vezgo: {
+export declare var Vezgo: {
   init(config: APIConfig): APIInterface;
 };
 
-interface APIInterface {
-  constructor(config: APIConfig)
-  __init(): APIInterface
+export interface APIInterface {
+  constructor(config: APIConfig);
+  __init(): APIInterface;
   /** loginName required only for server-side login **/
-  login(loginName?: string): APIUserInterface
-  getToken(options: TokenOptions): Promise<string>
-  fetchToken(): Promise<string>
-  authApi: ApisauceInstance
-  api: ApisauceInstance
+  login(loginName?: string): APIUserInterface;
+  getToken(options?: TokenOptions): Promise<string>;
+  fetchToken(): Promise<string>;
+  authApi: ApisauceInstance;
+  api: ApisauceInstance;
   getTeam(): Promise<Team>;
-  getConnectData(options: ConnectDataOptions): Promise<ConnectData>
-  connect(options?: ConnectOptions): APIInterface
-  reconnect(accountId: string, options?: ConnectOptions): APIUserInterface
-  onConnection(callback: Function): APIInterface
-  onError(callback: Function): APIInterface
-  onEvent(callback: Function): APIInterface
-  providers: ProvidersInterface
-  teams: TeamsInterface
+  getConnectData(options: ConnectDataOptions): Promise<ConnectData>;
+  connect(options?: ConnectOptions): APIInterface;
+  reconnect(accountId: string, options?: ConnectOptions): APIUserInterface;
+  onConnection(callback: Function): APIInterface;
+  onError(callback: Function): APIInterface;
+  onEvent(callback: Function): APIInterface;
+  providers: ProvidersInterface;
+  teams: TeamsInterface;
 }
 
-interface ProvidersInterface {
-  constructor(api: APIInterface)
-  getList(): Promise<Provider[]>
-  getOne(id: string): Promise<Provider>
+export interface ProvidersInterface {
+  constructor(api: APIInterface);
+  getList(): Promise<Provider[]>;
+  getOne(id: string): Promise<Provider>;
 }
 
-interface TeamsInterface {
-  constructor(api: APIInterface)
-  info(): Promise<{}>
+export interface TeamsInterface {
+  constructor(api: APIInterface);
+  info(): Promise<{}>;
 }
 
-interface APIUserInterface extends APIInterface {
-  userApi: ApisauceInstance
-  accounts: AccountsInterface
-  history: HistoryInterface
-  transactions: TransactionsInterface
+export interface APIUserInterface extends APIInterface {
+  userApi: ApisauceInstance;
+  accounts: AccountsInterface;
+  history: HistoryInterface;
+  transactions: TransactionsInterface;
 }
 
-interface AccountsInterface {
-  constructor(api: APIUserInterface)
-  getList(): Promise<Account[]> | Promise<never>
-  getOne(id: string, params?: {}): Promise<Account> | Promise<never>
-  sync(id): Promise<Account> | Promise<never>
-  remove(id): Promise<void> | Promise<never>
+export interface AccountsInterface {
+  constructor(api: APIUserInterface);
+  getList(): Promise<Account[]> | Promise<never>;
+  getOne(id: string, params?: {}): Promise<Account> | Promise<never>;
+  sync(id): Promise<Account> | Promise<never>;
+  remove(id): Promise<void> | Promise<never>;
 }
 
-interface HistoryInterface {
-  constructor(api: APIUserInterface)
-  getList(options: HistoryListOptions): Promise<HistoryEntry[]> | Promise<never>
+export interface HistoryInterface {
+  constructor(api: APIUserInterface);
+  getList(options: HistoryListOptions): Promise<HistoryEntry[]> | Promise<never>;
 }
 
-type HistoryListOptions = {
+export type HistoryListOptions = {
   accountId: string;
   from?: string;
   to?: string;
   wallet?: string;
+};
+
+export interface TransactionsInterface {
+  constructor(api: APIUserInterface);
+  getList(options: TransactionsOptions): Promise<Transaction[]> | Promise<never>;
+  getOne(options: TransactionOptions): Promise<Transaction> | Promise<never>;
 }
 
-interface TransactionsInterface {
-  constructor(api: APIUserInterface)
-  getList(options: TransactionsOptions): Promise<Transaction[]> | Promise<never>
-  getOne(options: TransactionOptions): Promise<Transaction> | Promise<never>
-}
-
-type TransactionsOptions = {
+export type TransactionsOptions = {
   accountId: string;
   ticker?: string;
   from?: string;
@@ -81,14 +81,14 @@ type TransactionsOptions = {
   sort?: "asc" | "desc";
   types?: string;
   exclude_fields?: string;
-}
+};
 
-type TransactionOptions = {
+export type TransactionOptions = {
   accountId: string;
   txId: string;
-}
+};
 
-type APIConfig = {
+export type APIConfig = {
   clientId: string;
   /** secret required only for server-side **/
   secret?: string;
@@ -96,90 +96,90 @@ type APIConfig = {
   connectURL?: string;
   redirectURI?: string;
   loginName?: string | null;
-  demo?: boolean,
-  authEndpoint?: string
+  demo?: boolean;
+  authEndpoint?: string;
   auth?: {
     headers?: object;
     params?: object;
-  }
+  };
   hideWalletConnectWallets?: boolean;
-}
+};
 
-type TokenOptions = {
+export type TokenOptions = {
   minimumLifetime: number;
-}
+};
 
-type ProvidersPreferences = {
+export type ProvidersPreferences = {
   [key: string]: {
     disallow?: Array<string>;
     allow?: Array<string>;
     no_manual_input?: boolean;
   };
-}
+};
 
-type ConnectOptions = {
-  provider: string;
-  accountId: string;
-  lang: string;
-  providerCategories: string;
-  providers: Array<string> | undefined;
-  disabledProviders: Array<string> | undefined;
-  theme: string | undefined;
-  providersPerLine: number | undefined;
-  syncNfts: boolean | undefined;
-  features: string | undefined;
-  multiWallet: boolean | undefined;
-  hideWalletConnectWallets: boolean | undefined;
+export type ConnectOptions = {
+  provider?: string;
+  accountId?: string;
+  lang?: string;
+  providerCategories?: string;
+  providers?: Array<string>;
+  disabledProviders?: Array<string>;
+  theme?: string;
+  providersPerLine?: string;
+  syncNfts?: boolean;
+  features?: string;
+  multiWallet?: boolean;
+  hideWalletConnectWallets?: boolean;
+  connectionType?: string;
   providersPreferences?: ProvidersPreferences;
-}
+};
 
-
-type ConnectDataOptions = {
-  provider: string;
+export type ConnectDataOptions = {
+  provider?: string;
   accountId: string;
-  lang: string;
-  providerCategories: string;
-  providers: Array<string> | undefined;
-  disabledProviders: Array<string> | undefined;
-  theme: string | undefined;
-  providersPerLine: number | undefined;
-  syncNfts: boolean | undefined;
-  features: string | undefined;
-  multiWallet: boolean | undefined;
-  hideWalletConnectWallets: boolean | undefined;
+  lang?: string;
+  providerCategories?: string;
+  providers?: Array<string>;
+  disabledProviders: Array<string>;
+  theme?: string;
+  providersPerLine?: string;
+  syncNfts?: boolean;
+  features?: string;
+  multiWallet?: boolean;
+  hideWalletConnectWallets?: boolean;
   providersPreferences?: ProvidersPreferences;
 
-  origin: string | undefined;
+  origin?: string;
   state: string;
-  redirectURI: Array<string> | undefined;
-}
+  redirectURI?: Array<string>;
+};
 
-type ConnectData = {
+export type ConnectData = {
   url: string;
   token: string;
-}
+};
 
-type Team = {
-  name: string,
-  redirect_uris: string[],
-  deactivated: boolean,
-  features: string[],
-  instructions: string[],
-  preferences: Preference,
-  logo?: string,
-  coinbase_client_id?: string,
-}
+export type Team = {
+  name: string;
+  redirect_uris: string[];
+  deactivated: boolean;
+  features: string[];
+  instructions: string[];
+  preferences: Preference;
+  logo?: string;
+  coinbase_client_id?: string;
+};
 
-type Preference = {
+export type Preference = {
   providers: {
-    [key: string]: PreferenceSub,
-  }
-}
+    [key: string]: PreferenceSub; // Allow any string as a key
+  };
+};
 
-type PreferenceSub = {
-  disallow?: string[],
-  allow?: string[],
-}
+export type PreferenceSub = {
+  disallow?: string[];
+  allow?: string[];
+};
 
 /*
  * ---------------------------------------------------------------
@@ -189,7 +189,7 @@ type PreferenceSub = {
  * ---------------------------------------------------------------
  */
 
-interface Account {
+export interface Account {
   /** The Vezgo account identifier. */
   id?: string;
   /** Resource type for this object (which is `account`). */
@@ -222,7 +222,7 @@ interface Account {
 }
 
 /** The last sync status on fetching investments (account balances). */
-declare enum Status {
+export declare enum Status {
   Ok = "ok",
   Error = "error",
   Syncing = "syncing",
@@ -230,7 +230,7 @@ declare enum Status {
 }
 
 /** Detailed status of the last sync. May not be initially when adding the institution until the first sync is completed. */
-interface SyncStatusDetails {
+export interface SyncStatusDetails {
   /** Status on fetching wallets for the last sync. */
   wallets?: "ok" | "error" | "syncing" | "retry";
   /** Status on fetching balances for the last sync. */
@@ -240,7 +240,7 @@ interface SyncStatusDetails {
 }
 
 /** Sync error information */
-interface Error {
+export interface Error {
   /**
    * Name of the sync error.
    *
@@ -262,7 +262,7 @@ interface Error {
   message: string;
 }
 
-interface Provider {
+export interface Provider {
   /** Resource type for this object (which is "provider"). */
   resource_type?: string;
   /** The provider's unique name that is used as identification within the Vezgo system. */
@@ -306,7 +306,7 @@ interface Provider {
   };
 }
 
-interface Wallet {
+export interface Wallet {
   /** Unique identifier for a wallet within an account. */
   id?: string;
   /** Wallet name, for display purpose. Not always available. */
@@ -319,7 +319,7 @@ interface Wallet {
   fiat_ticker?: string;
 }
 
-interface Balance {
+export interface Balance {
   /** Resource type for this object (which is "balance"). */
   resource_type?: string;
   /** Ticker symbol for the asset reported by this balance. */
@@ -356,7 +356,7 @@ interface Balance {
   misc?: object | null;
 }
 
-interface Transaction {
+export interface Transaction {
   /** The Vezgo transaction identifier. */
   id?: string;
   /** Resource type for this object (which is "transaction"). */
@@ -457,7 +457,7 @@ interface Transaction {
  * * `bonus` - (Usually 1-part) transactions with bonus (airdrop/referral bonus/etc).
  * * `other` - Other transactions not matching any of the above types.
  */
-declare enum TransactionType {
+export declare enum TransactionType {
   Deposit = "deposit",
   Withdrawal = "withdrawal",
   Trade = "trade",
@@ -513,7 +513,7 @@ declare enum TransactionType {
  * * `fork` - Occurrence of a blockchain fork
  * * `mining` - Earning currency through mining
  */
-declare enum TransactionSubtype {
+export declare enum TransactionSubtype {
   OnchainDeposit = "onchain_deposit",
   OffchainDeposit = "offchain_deposit",
   FiatDeposit = "fiat_deposit",
@@ -547,7 +547,7 @@ declare enum TransactionSubtype {
 }
 
 /** Miscellaneous information for the transaction. */
-interface Misc {
+export interface Misc {
   /** Original transaction id if it comes from an exchange, or transaction hash if from a blockchain. */
   origin_id?: string;
   /** Original transaction type as seen in the blockchain/exchange. */
@@ -558,7 +558,7 @@ interface Misc {
   incomplete?: ("fiat_value" | "amount" | "ticker" | "fees")[];
 }
 
-interface TransactionPart {
+export interface TransactionPart {
   /** The Vezgo transaction part identifier. This field is optional. */
   id?: string;
   /** The financial direction for this transaction part. */
@@ -587,7 +587,7 @@ interface TransactionPart {
   other_parties?: string[];
 }
 
-interface TransactionFee {
+export interface TransactionFee {
   /** The Vezgo transaction fee identifier. If this is the same as a transaction part, it means the fee is applied to that part. */
   id?: string;
   /** Resource type for this object (which is `transaction_fee`). */
@@ -610,7 +610,7 @@ interface TransactionFee {
   fiat_asset_is_verified?: boolean | null;
 }
 
-interface HistoryEntry {
+export interface HistoryEntry {
   /** The Vezgo history entry identifier. */
   id?: string;
   /**
