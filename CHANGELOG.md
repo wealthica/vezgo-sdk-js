@@ -4,7 +4,11 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
-## [1.1.10]
+## [1.1.12]
+- Update typescript types
+- Export typescript types and interfaces
+
+## [1.1.11]
 - Update readme for basic example
 - Add `providersPreferences` support for `user.connect()`, `user.reconnect()` & `user.getConnectData()`
 
