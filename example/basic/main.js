@@ -49,6 +49,10 @@ $(document).ready(() => {
       providersPerLine: constants.VEZGO_CLIENT_PROVIDERS_PER_LINE,
       // providerCategories: ['exchanges', 'wallets'],
       // hideWalletConnectWallets: true,
+      // providersPreferences: {
+      //   metamask: { no_manual_input: true, allow: ['ethereum', 'fantom'] },
+      //   walletconnect: { no_manual_input: false, allow: ['ethereum', 'fantom'] },
+      // },
 
       // Enable from the query param flag multi_wallet=true
       multiWallet,
