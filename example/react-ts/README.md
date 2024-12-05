@@ -57,5 +57,5 @@ npm run dev
 
 What's next:
 1. Integrate Vezgo Widget to your application following the documentation https://vezgo.com/docs/get-started
-2. Subscribe to Advanced Plan to get unlimited access to the Vezgo API https://portal.vezgo.com/subscribe?plan=launch_and_scale
+2. Subscribe to Advanced Plan to get unlimited access to the Vezgo API https://portal.vezgo.com/select-plan
 3. Contact hello@vezgo.com for any questions or support
