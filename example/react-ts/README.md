@@ -42,6 +42,7 @@ cp .env.example .env
 ```
 VEZGO_CLIENT_ID=your_client_id
 VEZGO_CLIENT_SECRET=your_client_secret
+NEXT_PUBLIC_VEZGO_CLIENT_ID
 ```
 
 7. Run project:
