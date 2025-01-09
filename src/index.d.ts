@@ -121,7 +121,7 @@ export type ConnectOptions = {
   provider?: string;
   accountId?: string;
   lang?: string;
-  providerCategories?: string;
+  providerCategories?: Array<string>;
   providers?: Array<string>;
   disabledProviders?: Array<string>;
   theme?: string;
