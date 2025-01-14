@@ -20,11 +20,11 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <nav className="navbar navbar-expand-lg bg-dark">
+        <nav className="navbar navbar-expand-lg bg-light">
           <div className="container-fluid">
             <a className="navbar-brand mt-2 mt-lg-0" href="https://vezgo.com/">
               <img
-                src="https://vezgo.com/assets/img/vezgo.a0b6eee0.svg"
+                src="https://vezgo.com/assets/img/vezgo.34e746ec.svg"
                 alt="Vezgo Logo"
                 loading="lazy"
               />
