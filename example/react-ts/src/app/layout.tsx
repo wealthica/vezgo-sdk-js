@@ -24,7 +24,7 @@ export default function RootLayout({
           <div className="container-fluid">
             <a className="navbar-brand mt-2 mt-lg-0" href="https://vezgo.com/">
               <img
-                src="https://vezgo.com/assets/img/vezgo.34e746ec.svg"
+                src="https://vezgo.com/vezgo.svg"
                 alt="Vezgo Logo"
                 loading="lazy"
               />
