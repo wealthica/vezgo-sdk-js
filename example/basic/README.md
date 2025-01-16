@@ -14,7 +14,7 @@ To get started and to receive your **Client ID** and **Client Secret**, [sign up
 
 2. Clone the repo `vezgo-sdk-js` to your computer
 ```
-    git clone https://github.com/wealthica/vezgo-sdk-js.git
+git clone https://github.com/wealthica/vezgo-sdk-js.git
 ```
 
 3. Go to example directory
@@ -51,7 +51,7 @@ npm start
 ```
 or
 ```
-yarn install
+yarn start
 ```
 
 8. Go to http://localhost:3001 in your browser to try the Vezgo Example App
