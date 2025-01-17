@@ -1,10 +1,8 @@
 # Wealthica Direct API example
 
-NOTE: this is a work in progress.
-
 ## Overview
 
-This app shows an example Vezgo integration, using Wealthica Direct API to connect accounts instead of going through the Vezgo Connect UI.
+This app shows an example Vezgo integration, using Wealthica Direct API to connect accounts instead of going through the Vezgo Connect UI. Available only for Enterprise plan.
 
 To get started and to receive your **Client ID** and **Client Secret**, [sign up on the portal](https://portal.vezgo.com/sign-up). If you already have an account, [log in to the portal](https://portal.vezgo.com/sign-in).
 
