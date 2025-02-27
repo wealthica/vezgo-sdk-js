@@ -1,5 +1,5 @@
-const Vezgo = require('../src');
-const API = require('../src/api');
+import Vezgo from '../src/index';
+import API from '../src/api';
 
 describe('Vezgo.init()', () => {
   test('should return a Vezgo instance', () => {

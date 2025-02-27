@@ -1,10 +1,10 @@
 // This file contains common reusable tests
-const MockAdapter = require('axios-mock-adapter');
-const Vezgo = require('../../src');
-const { countRequests, generateToken } = require('./helpers');
+import MockAdapter from 'axios-mock-adapter';
+import Vezgo from '../../src';
+import { countRequests, generateToken } from './helpers';
 
 // Setting up resource tests
-module.exports.setupResource = function ({ isUser } = {}) {
+export const setupResource = function ({ isUser } = {}) {
   beforeEach(() => {
     this.vezgo = Vezgo.init({ clientId: 'test', secret: 'test' });
     this.user = this.vezgo.login('test');
@@ -21,7 +21,7 @@ module.exports.setupResource = function ({ isUser } = {}) {
   });
 };
 
-module.exports.shouldValidateResourceId = function ({ message, isUser, calls } = {}) {
+export const shouldValidateResourceId = function ({ message, isUser, calls } = {}) {
   test('should validate id', async () => {
     for (let i = 0; i < calls.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop
@@ -32,7 +32,7 @@ module.exports.shouldValidateResourceId = function ({ message, isUser, calls } =
   });
 };
 
-module.exports.shouldHandleResourceEndpointError = function ({ mockCall, methodCall } = {}) {
+export const shouldHandleResourceEndpointError = function ({ mockCall, methodCall } = {}) {
   test('should handle API error', async () => {
     mockCall().reply(400);
     await expect(methodCall).rejects.toThrow('400');
@@ -41,7 +41,7 @@ module.exports.shouldHandleResourceEndpointError = function ({ mockCall, methodC
   });
 };
 
-module.exports.shouldHandleTokenError = function ({ methodCall } = {}) {
+export const shouldHandleTokenError = function ({ methodCall } = {}) {
   test('should handle token error', async () => {
     this.apiMock.onPost('/auth/token').reply(400);
     await expect(methodCall).rejects.toThrow('400');
@@ -51,7 +51,7 @@ module.exports.shouldHandleTokenError = function ({ methodCall } = {}) {
   });
 };
 
-module.exports.testGetTokenBehavior = function ({ isBrowser } = {}) {
+export const testGetTokenBehavior = function ({ isBrowser } = {}) {
   describe('.getToken()', () => {
     test('should fetch a new token if the existing one is about to expire', async () => {
       const mockObject = isBrowser ? this.authMock : this.apiMock;
@@ -88,7 +88,7 @@ module.exports.testGetTokenBehavior = function ({ isBrowser } = {}) {
   });
 };
 
-module.exports.testAutoRefreshBehavior = function ({ isBrowser } = {}) {
+export const testAutoRefreshBehavior = function ({ isBrowser } = {}) {
   describe('when making API calls', () => {
     beforeEach(() => {
       const userApiMock = new MockAdapter(this.user.userApi.axiosInstance);
@@ -129,7 +129,7 @@ module.exports.testAutoRefreshBehavior = function ({ isBrowser } = {}) {
   });
 };
 
-module.exports.testGetConnectDataBehavior = function ({ isBrowser } = {}) {
+export const testGetConnectDataBehavior = function ({ isBrowser } = {}) {
   describe('.getConnectData()', () => {
     beforeEach(() => {
       this.apiMock.onGet('/providers').reply(200, [
@@ -265,4 +265,14 @@ module.exports.testGetConnectDataBehavior = function ({ isBrowser } = {}) {
       expect(mockObject.history.post).toHaveLength(1);
     });
   });
+};
+
+export default {
+  setupResource,
+  shouldValidateResourceId,
+  shouldHandleResourceEndpointError,
+  shouldHandleTokenError,
+  testGetTokenBehavior,
+  testAutoRefreshBehavior,
+  testGetConnectDataBehavior,
 };

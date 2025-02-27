@@ -1,8 +1,8 @@
-const Vezgo = require('../src');
+import Vezgo from '../src/index';
 
 describe('Vezgo User instance (ReactNative)', () => {
   beforeEach(() => {
-    mockReactNative();
+    global.mockReactNative();
     this.user = Vezgo.init({ clientId: 'test' }).login();
   });
 

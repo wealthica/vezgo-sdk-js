@@ -1,7 +1,7 @@
-const Vezgo = require('../src');
-const Team = require('../src/resources/teams');
+import Vezgo from '../src';
+import Team from '../src/resources/teams';
 
-jest.mock('../src/resources/teams');
+vi.mock('../src/resources/teams');
 
 describe('Vezgo instance', () => {
   describe('.login()', () => {
@@ -33,7 +33,7 @@ describe('Vezgo instance', () => {
       vezgo.getTeam();
       const teams = Team.mock.instances[0];
       expect(teams).toBeDefined();
-      expect(teams.info).toHaveBeenCalled();
+      expect(vezgo.teams.info).toHaveBeenCalled();
     });
   });
 });
