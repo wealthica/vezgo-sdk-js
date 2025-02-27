@@ -12,4 +12,4 @@ class Teams {
   }
 }
 
-module.exports = Teams;
+export default Teams;

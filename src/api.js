@@ -1,15 +1,15 @@
 /* global window */
-const { create } = require('apisauce');
-const jwt = require('jsonwebtoken');
-const { API_URL, CONNECT_URL } = require('./constants');
-const createResources = require('./resources');
-const {
+import { create } from 'apisauce';
+import jwt from 'jsonwebtoken';
+import { API_URL, CONNECT_URL } from './constants';
+import createResources from './resources';
+import {
   isBrowser,
   isNodeOrSimilar,
   isReactNative,
   appendVezgoIframe,
   appendVezgoForm,
-} = require('./utils');
+} from './utils';
 
 const CALLBACK_CONNECTION = '_onConnection';
 const CALLBACK_ERROR = '_onError';
@@ -472,4 +472,4 @@ class API {
   }
 }
 
-module.exports = API;
+export default API;

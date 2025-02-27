@@ -1,4 +1,4 @@
-const { getQueryString } = require('../utils');
+import { getQueryString } from '../utils';
 
 class History {
   constructor(api) {
@@ -23,4 +23,4 @@ class History {
   }
 }
 
-module.exports = History;
+export default History;

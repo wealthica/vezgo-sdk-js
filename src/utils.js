@@ -59,7 +59,7 @@ const getQueryString = (params = {}) => {
   return searchParams.toString();
 };
 
-module.exports = {
+export {
   isBrowser,
   isNodeOrSimilar,
   isReactNative,

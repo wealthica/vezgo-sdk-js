@@ -1,4 +1,4 @@
-const { getQueryString } = require('../utils');
+import { getQueryString } from '../utils';
 
 class Providers {
   constructor(api) {
@@ -28,4 +28,4 @@ class Providers {
   }
 }
 
-module.exports = Providers;
+export default Providers;
