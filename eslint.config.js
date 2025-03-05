@@ -1,8 +1,8 @@
 module.exports = [
-    {
-      ignores: ['lib/*', 'node_modules/*'],
-      rules: {
-        quotes: ['error', 'single'],
-      },
+  {
+    ignores: ['lib/*', 'node_modules/*', 'example/*'],
+    rules: {
+      quotes: ['error', 'single'],
     },
-  ];
+  },
+];

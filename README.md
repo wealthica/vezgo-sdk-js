@@ -31,7 +31,7 @@ Get in touch at [hello@vezgo.com](mailto:hello@vezgo.com) for bug reports, reque
 ```javascript
 import Vezgo from 'vezgo-sdk-js';
 // React Native or some other build systems
-// import Vezgo from 'vezgo-sdk-js/dist/vezgo.es5';
+// import Vezgo from 'vezgo-sdk-js/dist/vezgo.es';
 
 (async () => {
   // Create a Vezgo SDK instance

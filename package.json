@@ -1,18 +1,15 @@
 {
   "name": "vezgo-sdk-js",
-  "version": "1.1.13",
+  "version": "2.0.0",
   "description": "Official Vezgo JS SDK for the Browser & NodeJS",
   "author": "Wealthica Financial Technology Inc. <hello@wealthica.com> (https://wealthica.com/)",
   "license": "MIT",
-  "main": "lib/vezgo.cjs.js",
-  "module": "lib/vezgo.es.js",
-  "types": "lib/index.d.ts",
-  "exports": {
-    "import": "./lib/vezgo.es.js",
-    "require": "./lib/vezgo.cjs.js",
-    "types": "./lib/index.d.ts"
-  },
-  "files": [ "lib"],
+  "main": "dist/vezgo.cjs.js",
+  "module": "dist/vezgo.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "lib"
+  ],
   "keywords": [
     "vezgo",
     "zabo",
@@ -28,14 +25,17 @@
     "api"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "rm -rf dist && yarn build:node && yarn build:browser",
+    "build:browser": "vite build --config vite.config.browser.mjs",
+    "build:node": "vite build --config vite.config.node.mjs",
     "prepublishOnly": "npm run build",
-    "test": "vitest",
+    "test": "vitest run",
     "watch:test": "vitest --watch",
     "lint": "eslint .",
     "lint-fix": "eslint --fix ."
   },
   "dependencies": {
+    "@rollup/plugin-commonjs": "^28.0.2",
     "apisauce": "^3.0.1",
     "jwt-decode": "^4.0.0"
   },
@@ -50,10 +50,11 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.1",
     "jsonwebtoken": "^8.5.1",
-    "vite": "^5.2.11",
+    "vite": "^6.2.0",
     "vite-plugin-commonjs": "^0.10.1",
-    "vite-plugin-node-polyfills": "^0.22.0",
+    "vite-plugin-node-polyfills": "^0.23.0",
     "vite-plugin-static-copy": "^1.0.5",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "prettier": "^2.7.1"
   }
 }

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import Vezgo from "vezgo-sdk-js";
 
+// For local development
+// import Vezgo from "../../../../../../../dist/vezgo.es";
+
 const vezgo = Vezgo.init({
   clientId: process.env.VEZGO_CLIENT_ID || "",
   secret: process.env.VEZGO_CLIENT_SECRET,
