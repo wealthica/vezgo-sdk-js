@@ -7,7 +7,7 @@ export default defineConfig({
   ],
   build: {
     emptyOutDir: false,
-    target: 'esnext',
+    target: 'es2015',
     lib: {
       entry: './src/index.js',
       name: 'Vezgo',
