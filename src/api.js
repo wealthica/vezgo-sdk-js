@@ -1,15 +1,16 @@
 /* global window */
-const { create } = require('apisauce');
-const jwt = require('jsonwebtoken');
-const { API_URL, CONNECT_URL } = require('./constants');
-const createResources = require('./resources');
-const {
+import apisauce from 'apisauce';
+
+import jsonwebtoken from 'jsonwebtoken';
+import { API_URL, CONNECT_URL } from './constants';
+import createResources from './resources';
+import {
   isBrowser,
   isNodeOrSimilar,
   isReactNative,
   appendVezgoIframe,
   appendVezgoForm,
-} = require('./utils');
+} from './utils';
 
 const CALLBACK_CONNECTION = '_onConnection';
 const CALLBACK_ERROR = '_onError';
@@ -21,10 +22,7 @@ class API {
     this.config.baseURL = this.config.baseURL || API_URL;
     this.config.connectURL = this.config.connectURL || CONNECT_URL;
 
-    const {
-      clientId,
-      secret,
-    } = this.config;
+    const { clientId, secret } = this.config;
 
     this.isBrowser = isBrowser();
     this.isNodeOrSimilar = isNodeOrSimilar();
@@ -47,7 +45,7 @@ class API {
         params: auth.params || {},
         headers: auth.headers || {},
       };
-      this.authApi = create({ headers: this.config.auth.headers });
+      this.authApi = apisauce.create({ headers: this.config.auth.headers });
     }
 
     this._token = {};
@@ -60,7 +58,7 @@ class API {
     const { loginName, baseURL } = this.config;
 
     // Data & token endpoints do not require authentication
-    this.api = create({ baseURL });
+    this.api = apisauce.create({ baseURL });
 
     const dataResources = createResources(this, ['providers', 'teams']);
     Object.assign(this, dataResources);
@@ -82,7 +80,7 @@ class API {
     user._init();
 
     // Initiate user api & resource helpers
-    user.userApi = create({ baseURL });
+    user.userApi = apisauce.create({ baseURL });
     user.userApi.addAsyncRequestTransform(async (request) => {
       // Set token (guaranteed to have > 10 secs left) to Authorization header
       request.headers.Authorization = `Bearer ${await user.getToken()}`;
@@ -119,25 +117,17 @@ class API {
       throw response.originalError;
     }
 
-    const { token } = (response.data || response);
-    const payload = jwt.decode(token);
+    const { token } = response.data || response;
+    const payload = jsonwebtoken.decode(token);
     this._token = { token, payload };
 
     return this._token.token;
   }
 
   _fetchTokenNode() {
-    const {
-      clientId,
-      secret,
-      loginName,
-    } = this.config;
+    const { clientId, secret, loginName } = this.config;
 
-    return this.api.post(
-      '/auth/token',
-      { clientId, secret },
-      { headers: { loginName } },
-    );
+    return this.api.post('/auth/token', { clientId, secret }, { headers: { loginName } });
   }
 
   _fetchTokenClient() {
@@ -227,12 +217,22 @@ class API {
       sync_nfts: syncNfts === false ? false : undefined, // only pass if it is false
       demo: this.config.demo ? true : undefined,
       // 'provider' param in priority, skip 'provider_categories' param if 'provider' is set
-      provider_categories: !provider && Array.isArray(providerCategories) && providerCategories.length ? providerCategories.join(',') : undefined,
+      provider_categories:
+        !provider && Array.isArray(providerCategories) && providerCategories.length
+          ? providerCategories.join(',')
+          : undefined,
       // 'provider' param in priority, skip 'providers' param if 'provider' is set
-      providers: !provider && Array.isArray(providers) && providers.length ? providers.join(',') : undefined,
-      disabled_providers: disabledProviders && Array.isArray(disabledProviders) && disabledProviders.length ? disabledProviders.join(',') : undefined,
+      providers:
+        !provider && Array.isArray(providers) && providers.length ? providers.join(',') : undefined,
+      disabled_providers:
+        disabledProviders && Array.isArray(disabledProviders) && disabledProviders.length
+          ? disabledProviders.join(',')
+          : undefined,
       theme: ['light', 'dark'].includes(theme) ? theme : 'light',
-      providers_per_line: (providersPerLine && ['1', '2'].includes(providersPerLine.toString())) ? providersPerLine.toString() : '2',
+      providers_per_line:
+        providersPerLine && ['1', '2'].includes(providersPerLine.toString())
+          ? providersPerLine.toString()
+          : '2',
       features,
       multi_wallet: multiWallet,
       hide_wallet_connect_wallets: hideWalletConnectWallets,
@@ -240,9 +240,9 @@ class API {
     };
 
     // Cleanup blank params
-    Object.keys(query).forEach((key) => (
-      [undefined, null, ''].includes(query[key]) && delete query[key]
-    ));
+    Object.keys(query).forEach(
+      (key) => [undefined, null, ''].includes(query[key]) && delete query[key]
+    );
     const queryString = new URLSearchParams(query).toString();
 
     let url = slug ? `${connectURL}/connect/${slug}` : `${connectURL}/connect`;
@@ -365,7 +365,7 @@ class API {
     // Skip if not a Vezgo message
     if (!result.vezgo) return;
 
-    if (origin !== this.config.connectURL && !(/\.vezgo\.com$/).test(new URL(origin).hostname)) {
+    if (origin !== this.config.connectURL && !/\.vezgo\.com$/.test(new URL(origin).hostname)) {
       throw new Error(`Calling Vezgo from unauthorized origin ${origin}`);
     }
 
@@ -472,4 +472,4 @@ class API {
   }
 }
 
-module.exports = API;
+export default API;

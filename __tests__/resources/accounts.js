@@ -1,4 +1,4 @@
-const c = require('../testutils/common');
+import c from '../testutils/common';
 
 describe('Vezgo Accounts resource', () => {
   c.setupResource.bind(this)({ isUser: true });

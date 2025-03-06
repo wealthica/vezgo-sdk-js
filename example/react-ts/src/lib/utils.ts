@@ -1,4 +1,7 @@
-import Vezgo from "vezgo-sdk-js/dist/vezgo.es5";
+import Vezgo from "vezgo-sdk-js/dist/vezgo.es";
+
+// For local development
+// import Vezgo from "../../../../dist/vezgo.es";
 
 export const vezgoInit = (username?: string) => {
   const vezgo = Vezgo.init({

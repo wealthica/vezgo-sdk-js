@@ -1,5 +1,5 @@
-const c = require('../testutils/common');
-const h = require('../testutils/helpers');
+import c from '../testutils/common';
+import h from '../testutils/helpers';
 
 describe('Vezgo Transactions resource', () => {
   c.setupResource.bind(this)({ isUser: true });

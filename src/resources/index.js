@@ -1,16 +1,24 @@
-/* eslint-disable global-require */
+import accounts from './accounts';
+import history from './history';
+import providers from './providers';
+import teams from './teams';
+import transactions from './transactions';
+import orders from './orders';
+
 const RESOURCES = {
-  accounts: require('./accounts'),
-  history: require('./history'),
-  providers: require('./providers'),
-  teams: require('./teams'),
-  transactions: require('./transactions'),
-  orders: require('./orders'),
+  accounts,
+  history,
+  providers,
+  teams,
+  transactions,
+  orders,
 };
 
-module.exports = function createResources(api, resources) {
+function createResources(api, resources) {
   return resources.reduce((res, resource) => {
     res[resource] = new RESOURCES[resource](api);
     return res;
   }, {});
 };
+
+export default createResources;

@@ -1,16 +1,19 @@
-const utils = require('../../src/utils');
+import { vi } from 'vitest';
 
-jest.mock('../../src/utils', () => {
-  const originalModule = jest.requireActual('../../src/utils');
+vi.mock('./src/utils', async (importOriginal) => {
+  const originalModule = await importOriginal();
 
   return {
     ...originalModule,
-    isNodeOrSimilar: jest.fn(),
-    isBrowser: jest.fn(),
-    isReactNative: jest.fn(),
+    isNodeOrSimilar: vi.fn(),
+    isBrowser: vi.fn(),
+    isReactNative: vi.fn(),
   };
 });
 
+const utils = await import('./src/utils');
+
+// Define global mocks
 global.mockNode = () => {
   utils.isNodeOrSimilar.mockReturnValue(true);
   utils.isBrowser.mockReturnValue(false);
@@ -31,6 +34,6 @@ global.mockReactNative = () => {
 };
 
 // Mock NodeJS environment by default
-global.beforeEach(() => {
+beforeEach(() => {
   global.mockNode();
 });

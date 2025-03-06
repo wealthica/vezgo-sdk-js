@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Account, APIUserInterface, Transaction } from "vezgo-sdk-js";
+
+// For local development
+// import { Account, APIUserInterface, Transaction } from "../../../../dist/vezgo.es";
+
 import Modal from "./components/Modal";
 import JsonView from "react18-json-view";
 import "react18-json-view/src/style.css";

@@ -1,10 +1,7 @@
-require('core-js/stable');
-require('regenerator-runtime/runtime');
-
-const API = require('./api');
+import API from './api';
 
 class Vezgo {
-  // eslint-disable-next-line class-methods-use-this
+   
   init(config = {}) {
     const api = new API(config);
 
@@ -12,4 +9,4 @@ class Vezgo {
   }
 }
 
-module.exports = new Vezgo();
+export default new Vezgo();

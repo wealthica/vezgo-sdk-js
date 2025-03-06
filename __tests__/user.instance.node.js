@@ -1,7 +1,7 @@
-const MockAdapter = require('axios-mock-adapter');
-const Vezgo = require('../src');
-const c = require('./testutils/common');
-const { generateToken } = require('./testutils/helpers');
+import MockAdapter from 'axios-mock-adapter';
+import Vezgo from '../src';
+import c from './testutils/common';
+import { generateToken } from './testutils/helpers';
 
 describe('Vezgo User instance (NodeJS)', () => {
   beforeEach(() => {
