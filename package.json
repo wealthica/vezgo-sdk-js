@@ -35,7 +35,6 @@
     "lint-fix": "eslint --fix ."
   },
   "dependencies": {
-    "@rollup/plugin-commonjs": "^28.0.2",
     "apisauce": "^3.0.1",
     "jwt-decode": "^4.0.0"
   },
@@ -51,7 +50,6 @@
     "eslint-plugin-import": "^2.29.1",
     "jsonwebtoken": "^8.5.1",
     "vite": "^6.2.0",
-    "vite-plugin-commonjs": "^0.10.1",
     "vite-plugin-node-polyfills": "^0.23.0",
     "vite-plugin-static-copy": "^1.0.5",
     "vitest": "^1.6.0",
