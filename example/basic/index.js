@@ -34,7 +34,7 @@ app.get('/assets/vezgo.js', (req, res) => {
   // For local development replace vezgo-sdk-js vezgo ../../lib/vezgo.js
   // res.sendFile(path.join(__dirname, '../../dist/vezgo.umd.js'));
 
-  res.sendFile(path.join(__dirname, '/node_modules/vezgo-sdk-js/dist/vezgo.umd'));
+  res.sendFile(path.join(__dirname, '/node_modules/vezgo-sdk-js/dist/vezgo.umd.js'));
 });
 
 app.get('/renderjson.js', (req, res) => {
