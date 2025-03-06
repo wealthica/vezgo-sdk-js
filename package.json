@@ -8,7 +8,7 @@
   "module": "dist/vezgo.es.js",
   "types": "dist/index.d.ts",
   "files": [
-    "lib"
+    "dist"
   ],
   "keywords": [
     "vezgo",
