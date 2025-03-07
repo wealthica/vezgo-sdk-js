@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: 'Vezgo Example App using React/TS',
@@ -32,7 +33,7 @@ export default function RootLayout({
           </div>
         </nav>
         {children}
-        <script
+        <Script
           type="text/javascript"
           src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
         />
