@@ -4,6 +4,15 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [2.0.3]
+- Fix listing jsonwebtoken dependency
+
+## [2.0.2]
+- Fix lib paths
+
+## [2.0.0]
+- Vite Build
+
 ## [1.1.13]
 - Added React/Typescript example app
 
