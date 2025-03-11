@@ -13,7 +13,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react18-json-view": "^0.2.8",
-    "vezgo-sdk-js": "^2.0.2"
+    "vezgo-sdk-js": "^2.0.3"
   },
   "devDependencies": {
     "@types/node": "^20",
