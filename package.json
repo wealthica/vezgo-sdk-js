@@ -1,6 +1,6 @@
 {
   "name": "vezgo-sdk-js",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Official Vezgo JS SDK for the Browser & NodeJS",
   "author": "Wealthica Financial Technology Inc. <hello@wealthica.com> (https://wealthica.com/)",
   "license": "MIT",
@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "apisauce": "^3.0.1",
-    "jwt-decode": "^4.0.0"
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.24.6",
@@ -48,7 +48,6 @@
     "eslint": "^9.3.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.1",
-    "jsonwebtoken": "^8.5.1",
     "vite": "^6.2.0",
     "vite-plugin-node-polyfills": "^0.23.0",
     "vite-plugin-static-copy": "^1.0.5",
