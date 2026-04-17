@@ -1,4 +1,5 @@
 import API from './api';
+export { DuplicateConnectionError } from './errors';
 
 class Vezgo {
    

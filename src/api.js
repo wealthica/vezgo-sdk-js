@@ -383,6 +383,13 @@ class API {
         break;
       }
 
+      case 'ERROR': {
+        // Structured error event with a typed payload (e.g. DUPLICATE_CONNECTION).
+        // result.data = { type, existing_institution_id, error, ... }
+        this._triggerCallback(CALLBACK_ERROR, result.data);
+        break;
+      }
+
       case 'close': {
         // Widget closed by user action, close right away
         this._closeWidgetWithError(400, 'Connection closed');

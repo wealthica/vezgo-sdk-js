@@ -316,6 +316,69 @@ user.reconnect('ACCOUNT_ID', {
 });
 ```
 
+### Handling Duplicate Connections
+
+When a user tries to connect an account that is already linked, Vezgo signals a `DUPLICATE_CONNECTION` conflict. The response always includes `existing_institution_id` — the Vezgo account ID of the already-linked connection — so you can surface or redirect to it in your UI.
+
+#### Via Vezgo Connect (widget)
+
+The `onError` callback receives an error object with `type: 'DUPLICATE_CONNECTION'` and `existing_institution_id`:
+
+```javascript
+user.connect({
+  // options
+}).onError((error) => {
+  if (error && error.type === 'DUPLICATE_CONNECTION') {
+    console.log('Already linked account ID:', error.existing_institution_id);
+    // e.g. highlight or navigate to the existing account in your UI
+    return;
+  }
+
+  console.error('Connection error:', error);
+});
+```
+
+The same check applies in `user.reconnect()`:
+
+```javascript
+user.reconnect('ACCOUNT_ID').onError((error) => {
+  if (error && error.type === 'DUPLICATE_CONNECTION') {
+    console.log('Already linked account ID:', error.existing_institution_id);
+    return;
+  }
+
+  console.error('Reconnection error:', error);
+});
+```
+
+#### Via direct API (409 Conflict)
+
+When an API call returns **409 Conflict**, the SDK throws a `DuplicateConnectionError`. Import the class to handle it by type:
+
+```javascript
+import Vezgo, { DuplicateConnectionError } from 'vezgo-sdk-js';
+
+try {
+  await user.accounts.sync('ACCOUNT_ID');
+} catch (err) {
+  if (err instanceof DuplicateConnectionError) {
+    console.log(err.message);                        // human-readable description
+    console.log(err.existing_institution_id);        // ID of the already-linked account
+    // e.g. redirect the user to the existing account
+    return;
+  }
+
+  throw err;
+}
+```
+
+`DuplicateConnectionError` properties:
+
+| Property | Description |
+|---|---|
+| `message` | Human-readable conflict description from the API (e.g. `"This connection is already linked to your account."`) |
+| `existing_institution_id` | Vezgo account ID of the already-linked connection |
+
 ### User APIs
 
 These methods return user data and thus require a Vezgo SDK User instance. They automatically fetch a new token if necessary so you would not be bothered with tokens logic.

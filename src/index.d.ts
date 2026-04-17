@@ -6,6 +6,13 @@ export declare var Vezgo: {
   init(config: APIConfig): APIInterface;
 };
 
+export declare class DuplicateConnectionError extends Error {
+  name: 'DuplicateConnectionError';
+  /** The Vezgo account ID of the already-linked connection that caused the conflict. */
+  existing_institution_id: string;
+  constructor(data: { message?: string; existing_institution_id?: string });
+}
+
 export interface APIInterface {
   constructor(config: APIConfig);
   __init(): APIInterface;

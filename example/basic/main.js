@@ -91,6 +91,15 @@ $(document).ready(() => {
       })
       .onError((error) => {
         console.log('connection error', error);
+
+        if (error && error.type === 'DUPLICATE_CONNECTION') {
+          const msg = `This connection is already linked. Existing account ID: ${error.existing_institution_id}`;
+          $('#response_heading').html(msg);
+          $('#connection_error strong').text(msg);
+          $('#account_id_mod').val(error.existing_institution_id);
+          return;
+        }
+
         $('#response_heading').html(`Error connecting account: ${JSON.stringify(error)}`);
         $('#connection_error strong').text(error.message);
       });
@@ -122,6 +131,15 @@ $(document).ready(() => {
       })
       .onError((error) => {
         console.log('reconnection error', error);
+
+        if (error && error.type === 'DUPLICATE_CONNECTION') {
+          const msg = `This connection is already linked. Existing account ID: ${error.existing_institution_id}`;
+          $('#response_heading').html(msg);
+          $('#connection_error strong').text(msg);
+          $('#account_id_mod').val(error.existing_institution_id);
+          return;
+        }
+
         $('#response_heading').html(`Error reconnecting account: ${JSON.stringify(error)}`);
         $('#connection_error strong').text(error.message);
       });

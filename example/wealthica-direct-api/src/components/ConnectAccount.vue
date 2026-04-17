@@ -205,7 +205,9 @@ function onInstitutionError(institution, error) {
   }
 
   if (error.status === 409) {
-    errorMessage.value = "Account can't be connected while syncing. Please try again later.";
+    const existingId = error.data?.existing_institution_id;
+    errorMessage.value = error.data?.message || 'This connection is already linked to your account.';
+    if (existingId) errorMessage.value += ` Existing account ID: ${existingId}`;
     store.institution = null;
     return;
   }
