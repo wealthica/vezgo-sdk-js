@@ -4,6 +4,9 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [2.0.4] - 2026-04-20
+- Add `DUPLICATE_CONNECTION` error handling: new `DuplicateConnectionError` class (exported from package root) thrown on 409 responses from accounts endpoints, and Connect widget `ERROR` events now route to `onError` with `{ type: 'DUPLICATE_CONNECTION', existing_institution_id }`.
+
 ## [2.0.3]
 - Fix listing jsonwebtoken dependency
 
