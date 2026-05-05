@@ -46,6 +46,16 @@ class Accounts {
     return response.data;
   }
 
+  async getKYCData(id) {
+    if (!id || typeof id !== 'string') throw new Error('Please provide a valid Vezgo account id.');
+
+    const response = await this.api.get(`/accounts/${id}/kyc-data`);
+    if (response.status === 404) return null;
+    throwOnError(response);
+
+    return response.data;
+  }
+
   async remove(id) {
     if (!id || typeof id !== 'string') throw new Error('Please provide a valid Vezgo account id.');
 

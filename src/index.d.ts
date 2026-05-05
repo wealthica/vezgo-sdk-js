@@ -57,6 +57,7 @@ export interface AccountsInterface {
   getOne(id: string, params?: {}): Promise<Account> | Promise<never>;
   sync(id): Promise<Account> | Promise<never>;
   remove(id): Promise<void> | Promise<never>;
+  getKYCData(id: string): Promise<KYCData | null> | Promise<never>;
 }
 
 export interface HistoryInterface {
@@ -69,6 +70,17 @@ export type HistoryListOptions = {
   from?: string;
   to?: string;
   wallet?: string;
+};
+
+export type KYCData = {
+  /** Account holder's email as reported by the provider, when available. */
+  email?: string | null;
+  /** Account holder's full name as reported by the provider, when available. */
+  name?: string | null;
+  /** Provider-specific KYC fields. Shape varies by provider. */
+  misc: { [key: string]: unknown };
+  /** ISO 8601 timestamp of the sync that captured this KYC snapshot. */
+  fetched_at: string;
 };
 
 export interface TransactionsInterface {
