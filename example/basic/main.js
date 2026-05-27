@@ -219,6 +219,32 @@ $(document).ready(() => {
     }
   });
 
+  // Get KYC data button click handler
+  $('#get_kyc_data').click(async () => {
+    accountId = getSelectedAccountId();
+    if (!accountId) {
+      alert('Must enter an Account ID first.');
+      return;
+    }
+    login();
+
+    try {
+      // Get KYC data by accountId. Resolves to null when no data has been captured yet (404).
+      const kyc = await user.accounts.getKYCData(accountId);
+
+      if (kyc === null) {
+        $('#response_heading').html(`No KYC data found for account ID: ${accountId}`);
+        return;
+      }
+
+      $('#response_heading').html(`KYC data for account with ID: ${accountId}`);
+      printResult(kyc);
+    } catch (err) {
+      $('#response_heading').html('');
+      $('#result').html(`Error:<br><code>${err}</code>`);
+    }
+  });
+
   // Sync account button click handler
   $('#sync_account').click(async () => {
     accountId = getSelectedAccountId();

@@ -4,6 +4,9 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [2.0.5] - 2026-05-05
+- Add `accounts.getKYCData(id)` for the new `GET /accounts/:id/kyc-data` endpoint. Returns the KYC payload on success, or `null` if no data has been captured yet for the account (404). Throws on 403 (KYC feature not enabled for the team) and other errors.
+
 ## [2.0.4] - 2026-04-20
 - Add `DUPLICATE_CONNECTION` error handling: new `DuplicateConnectionError` class (exported from package root) thrown on 409 responses from accounts endpoints, and Connect widget `ERROR` events now route to `onError` with `{ type: 'DUPLICATE_CONNECTION', existing_institution_id }`.
 

@@ -13,6 +13,7 @@ describe('Vezgo Accounts resource', () => {
     expect(this.user.accounts).toHaveProperty('getOne');
     expect(this.user.accounts).toHaveProperty('sync');
     expect(this.user.accounts).toHaveProperty('remove');
+    expect(this.user.accounts).toHaveProperty('getKYCData');
   });
 
   describe('.getList()', () => {
@@ -96,6 +97,50 @@ describe('Vezgo Accounts resource', () => {
 
     c.shouldHandleTokenError.bind(this)({
       methodCall: () => this.user.accounts.sync('test'),
+    });
+  });
+
+  describe('.getKYCData()', () => {
+    test('should GET /accounts/:id/kyc-data', async () => {
+      const payload = {
+        email: 'user@example.com',
+        name: 'John Doe',
+        misc: { country_code: 'US' },
+        fetched_at: '2026-04-28T10:00:00.000Z',
+      };
+      this.userApiMock.onGet().reply(200, payload);
+      const kyc = await this.user.accounts.getKYCData('test');
+      expect(kyc).toEqual(payload);
+      expect(this.userApiMock.history.get[0].url).toBe('/accounts/test/kyc-data');
+    });
+
+    test('should return null when no KYC data exists (404)', async () => {
+      this.userApiMock.onGet().reply(404, { message: 'No KYC data found for this institution' });
+      const kyc = await this.user.accounts.getKYCData('test');
+      expect(kyc).toBeNull();
+    });
+
+    test('should throw when KYC feature is not enabled (403)', async () => {
+      this.userApiMock.onGet().reply(403, { message: 'KYC data feature not enabled' });
+      await expect(this.user.accounts.getKYCData('test')).rejects.toThrow('403');
+    });
+
+    c.shouldValidateResourceId.bind(this)({
+      message: 'account id',
+      isUser: true,
+      calls: [
+        () => this.user.accounts.getKYCData(),
+        () => this.user.accounts.getKYCData(1),
+      ],
+    });
+
+    c.shouldHandleResourceEndpointError.bind(this)({
+      mockCall: () => this.userApiMock.onGet('/accounts/test/kyc-data'),
+      methodCall: () => this.user.accounts.getKYCData('test'),
+    });
+
+    c.shouldHandleTokenError.bind(this)({
+      methodCall: () => this.user.accounts.getKYCData('test'),
     });
   });
 
