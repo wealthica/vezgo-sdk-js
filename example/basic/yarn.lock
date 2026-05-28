@@ -562,10 +562,10 @@ vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-vezgo-sdk-js@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.npmjs.org/vezgo-sdk-js/-/vezgo-sdk-js-2.0.5.tgz"
-  integrity sha512-nX0lYYibdQjIR312wK7qMvYgki1R7l6nrjYcfRFYWB0Nf3OR+vCrkZytjbz70HWeKb79yc3rQU8T8z0JYjbcUg==
+vezgo-sdk-js@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npmjs.org/vezgo-sdk-js/-/vezgo-sdk-js-2.0.6.tgz"
+  integrity sha512-Dq6HgBzf28MX9OgDuyEC8QU3YvJpyomn0Y1xJzxofQvh0GDuCzbLJ9qCfpLHfribdsfG62XjosXq8DdVlsNzEQ==
   dependencies:
     apisauce "^3.0.1"
     jsonwebtoken "^9.0.2"
