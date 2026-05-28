@@ -1,8 +1,7 @@
 import API from './api';
-export { DuplicateConnectionError } from './errors';
+import { DuplicateConnectionError } from './errors';
 
 class Vezgo {
-   
   init(config = {}) {
     const api = new API(config);
 
@@ -10,4 +9,7 @@ class Vezgo {
   }
 }
 
-export default new Vezgo();
+const vezgo = new Vezgo();
+vezgo.DuplicateConnectionError = DuplicateConnectionError;
+
+export default vezgo;

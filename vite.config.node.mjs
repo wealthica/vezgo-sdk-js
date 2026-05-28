@@ -32,6 +32,7 @@ export default defineConfig({
           format: 'cjs',
           dir: 'dist',
           entryFileNames: 'vezgo.cjs.js',
+          exports: 'default',
         },
       ]
     },

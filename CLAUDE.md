@@ -58,14 +58,37 @@ Two Vite configs produce three outputs:
 
 ## Release Process
 
-Published to npm as `vezgo-sdk-js` (see `name` in `package.json`).
+Published to npm as `vezgo-sdk-js` (see `name` in `package.json`). Releases can be cut from either `master` or a feature branch — the steps below assume you're already on the branch that has the change committed.
 
 ```bash
+# 1. Use Node 22 (engines: node >= 18; Node 22 is what CI/release tooling uses)
+nvm use 22
+
+# 2. Bump version — creates a "X.Y.Z" commit and a matching "vX.Y.Z" tag
 npm version patch        # or minor / major
-git push && git push --tags
-npm publish              # `prepublishOnly` runs the build automatically
+
+# 3. Push the version-bump commit and the tag
+git push origin <current-branch>
+git push origin --tags
+
+# 4. Confirm you're logged in to npm (the publish account must have access to the `vezgo-sdk-js` package)
+npm whoami               # if this errors, run:
+npm login                # follow the browser/OTP prompt
+
+# 5. Publish — `prepublishOnly` runs `npm run build` automatically before upload
+npm publish
+
+# 6. Verify the version-specific page is live
+open https://www.npmjs.com/package/vezgo-sdk-js/v/<version>
 ```
 
-Verify the new version is live on https://www.npmjs.com/package/vezgo-sdk-js.
+There is no separate staging environment — every published version is immediately available to all consumers. The standard local-verification path is:
 
-There is no separate staging environment for this package — every published version is available to all consumers. Test changes locally with `npm link` or by pointing a consumer at a tarball before publishing.
+```bash
+cd example/basic
+rm -rf node_modules
+npm install              # installs the just-published version via the `^` range in package.json
+npm start                # visit http://localhost:3001 and exercise the change
+```
+
+If the release was cut from a feature branch, remember to merge that branch back into `master` once verified so master and npm stay in sync.

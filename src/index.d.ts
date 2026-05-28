@@ -4,9 +4,10 @@ export = Vezgo;
 
 export declare var Vezgo: {
   init(config: APIConfig): APIInterface;
+  DuplicateConnectionError: typeof DuplicateConnectionError;
 };
 
-export declare class DuplicateConnectionError extends Error {
+declare class DuplicateConnectionError extends Error {
   name: 'DuplicateConnectionError';
   /** The Vezgo account ID of the already-linked connection that caused the conflict. */
   existing_institution_id: string;

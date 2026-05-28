@@ -116,4 +116,59 @@ describe('Vezgo User instance (Browser)', () => {
   c.testGetTokenBehavior.bind(this)({ isBrowser: true });
   c.testAutoRefreshBehavior.bind(this)({ isBrowser: true });
   c.testGetConnectDataBehavior.bind(this)({ isBrowser: true });
+
+  describe('Connect widget message handling', () => {
+    beforeEach(() => {
+      this.onConnection = vi.fn();
+      this.onError = vi.fn();
+      this.onEvent = vi.fn();
+      this.user.onConnection(this.onConnection);
+      this.user.onError(this.onError);
+      this.user.onEvent(this.onEvent);
+      // Simulate an open widget so _triggerCallback actually invokes the callbacks.
+      this.user._widgetOpened = true;
+      this.user._widgetActive = true;
+    });
+
+    const send = (payload) => this.user._onMessage({
+      origin: 'https://connect.vezgo.com',
+      data: JSON.stringify(payload),
+    });
+
+    test('ERROR/DUPLICATE_CONNECTION calls onError and marks the widget inactive', () => {
+      const data = { type: 'DUPLICATE_CONNECTION', existing_institution_id: 'abc' };
+      send({ vezgo: true, event: 'ERROR', data });
+      expect(this.onError).toHaveBeenCalledWith(data);
+      expect(this.onEvent).not.toHaveBeenCalled();
+      expect(this.user._widgetActive).toBe(false);
+    });
+
+    test('ERROR/INVALID_CREDENTIALS calls onEvent and keeps the widget open', () => {
+      const data = { type: 'INVALID_CREDENTIALS', error: { name: 'LoginFailedError' } };
+      send({ vezgo: true, event: 'ERROR', data });
+      expect(this.onEvent).toHaveBeenCalledWith('ERROR', data);
+      expect(this.onError).not.toHaveBeenCalled();
+      expect(this.user._widgetActive).toBe(true);
+    });
+
+    test('ERROR/SECURITY_QUESTION_REQUIRED calls onEvent and keeps the widget open', () => {
+      const data = { type: 'SECURITY_QUESTION_REQUIRED' };
+      send({ vezgo: true, event: 'ERROR', data });
+      expect(this.onEvent).toHaveBeenCalledWith('ERROR', data);
+      expect(this.onError).not.toHaveBeenCalled();
+      expect(this.user._widgetActive).toBe(true);
+    });
+
+    test('legacy lowercase error event still calls onError and closes the widget', () => {
+      send({ vezgo: true, event: 'error', error: { message: 'boom' } });
+      expect(this.onError).toHaveBeenCalledWith({ message: 'boom' });
+      expect(this.user._widgetActive).toBe(false);
+    });
+
+    test('messages without vezgo flag are ignored', () => {
+      send({ event: 'ERROR', data: { type: 'INVALID_CREDENTIALS' } });
+      expect(this.onError).not.toHaveBeenCalled();
+      expect(this.onEvent).not.toHaveBeenCalled();
+    });
+  });
 });
