@@ -16,6 +16,22 @@ const CALLBACK_CONNECTION = '_onConnection';
 const CALLBACK_ERROR = '_onError';
 const CALLBACK_EVENT = '_onEvent';
 
+// ERROR types from the Connect widget that should terminate the flow (close the widget and call
+// onError). Any ERROR type not in this list is forwarded to onEvent as a notification, leaving the
+// widget open so the user can recover in-place (e.g. retry credentials, answer a 2FA question).
+const TERMINAL_ERROR_TYPES = [
+  'DUPLICATE_CONNECTION',
+  'CLIENT_ID_REQUIRED',
+  'WRONG_CLIENT_ID',
+  'INVALID_ORIGIN',
+  'TOKEN_REQUIRED',
+  'WRONG_REDIRECT_URI',
+  'INVALID_ACCOUNT_ID',
+  'PAGE_NOT_FOUND',
+  'SESSION_EXPIRED',
+  'INVALID_TOKEN',
+];
+
 class API {
   constructor(config) {
     this.config = { ...config };
@@ -386,7 +402,14 @@ class API {
       case 'ERROR': {
         // Structured error event with a typed payload (e.g. DUPLICATE_CONNECTION).
         // result.data = { type, existing_institution_id, error, ... }
-        this._triggerCallback(CALLBACK_ERROR, result.data);
+        // Only types in TERMINAL_ERROR_TYPES close the widget — non-terminal ones (e.g.
+        // INVALID_CREDENTIALS, SECURITY_QUESTION_REQUIRED) are notifications; the widget UI
+        // continues to let the user recover in-place.
+        if (TERMINAL_ERROR_TYPES.includes(result.data && result.data.type)) {
+          this._triggerCallback(CALLBACK_ERROR, result.data);
+        } else {
+          this._triggerCallback(CALLBACK_EVENT, result);
+        }
         break;
       }
 
