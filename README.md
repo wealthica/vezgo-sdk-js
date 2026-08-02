@@ -316,6 +316,55 @@ user.reconnect('ACCOUNT_ID', {
 });
 ```
 
+#### user.transfer(accountId, options)
+
+**Restricted availability — enterprise feature, enabled per team by Vezgo.**
+
+This method starts the Vezgo Connect widget in **transfer mode** for a previously connected
+MetaMask wallet account, letting the user send crypto on-chain (native coins and ERC-20 tokens).
+The user reviews the transfer and confirms it with two MetaMask prompts (a gas-less EIP-712
+authorization, then the broadcast). Vezgo never holds funds and never sees the private key.
+
+```javascript
+user.transfer('ACCOUNT_ID', {
+  // All options are optional — omit to let the user fill the form in the widget
+  token: 'ETH',   // predefined token — symbol for native, contract address for ERC-20
+  to: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e', // predefined destination address
+  amount: '0.25', // predefined amount — decimal string
+  lock: true,     // make the predefined fields read-only
+  waitForCompletion: false, // see below
+}).onTransfer((transfer) => {
+  // Fires once per widget session:
+  // - default: at broadcast (transfer.status === 'pending', tx_hash populated)
+  // - waitForCompletion: true — at the final status (confirmed/failed/dropped)
+  console.log(transfer.id, transfer.status, transfer.tx_hash, transfer.explorer_url);
+}).onError((error) => {
+  console.error('transfer error:', error);
+}).onEvent((name, data) => {
+  // Progress events: TRANSFER_PREPARED, TRANSFER_AUTHORIZED, TRANSFER_BROADCAST
+});
+```
+
+#### user.transfers.getList({ accountId })
+
+Lists an account's transfers, most recent first.
+
+```javascript
+const transfers = await user.transfers.getList({ accountId: 'ACCOUNT_ID' });
+```
+
+#### user.transfers.getOne({ accountId, transferId })
+
+Returns one transfer with its live on-chain status. Status transitions are forward-only, so the
+first terminal status (`confirmed` / `failed` / `dropped` / `expired`) you observe is final.
+
+```javascript
+const transfer = await user.transfers.getOne({
+  accountId: 'ACCOUNT_ID',
+  transferId: 'TRANSFER_ID',
+});
+```
+
 ### Handling Duplicate Connections
 
 When a user tries to connect an account that is already linked, Vezgo signals a `DUPLICATE_CONNECTION` conflict. The response always includes `existing_institution_id` — the Vezgo account ID of the already-linked connection — so you can surface or redirect to it in your UI.

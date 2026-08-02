@@ -15,6 +15,7 @@ import {
 const CALLBACK_CONNECTION = '_onConnection';
 const CALLBACK_ERROR = '_onError';
 const CALLBACK_EVENT = '_onEvent';
+const CALLBACK_TRANSFER = '_onTransfer';
 
 // ERROR types from the Connect widget that should terminate the flow (close the widget and call
 // onError). Any ERROR type not in this list is forwarded to onEvent as a notification, leaving the
@@ -30,6 +31,7 @@ const TERMINAL_ERROR_TYPES = [
   'PAGE_NOT_FOUND',
   'SESSION_EXPIRED',
   'INVALID_TOKEN',
+  'TRANSFERS_NOT_ENABLED',
 ];
 
 class API {
@@ -104,7 +106,7 @@ class API {
       return request;
     });
 
-    const userResources = createResources(user, ['accounts', 'history', 'transactions']);
+    const userResources = createResources(user, ['accounts', 'history', 'transactions', 'transfers']);
     Object.assign(user, userResources);
 
     user.config.loginName = loginName;
@@ -193,6 +195,12 @@ class API {
       multiWallet,
       hideWalletConnectWallets,
       providersPreferences,
+      transfer,
+      token: transferToken,
+      to: transferTo,
+      amount: transferAmount,
+      lock: transferLock,
+      waitForCompletion,
     } = options;
     const { clientId, connectURL } = this.config;
 
@@ -253,6 +261,13 @@ class API {
       multi_wallet: multiWallet,
       hide_wallet_connect_wallets: hideWalletConnectWallets,
       providers_preferences: JSON.stringify(providersPreferences),
+      // Transfer mode (user.transfer) — namespaced to avoid clashing with the
+      // widget's own `token` (auth JWT) query param.
+      transfer_token: transfer ? transferToken : undefined,
+      transfer_to: transfer ? transferTo : undefined,
+      transfer_amount: transfer ? transferAmount : undefined,
+      transfer_lock: transfer && transferLock ? 'true' : undefined,
+      wait_for_completion: transfer && waitForCompletion ? 'true' : undefined,
     };
 
     // Cleanup blank params
@@ -265,7 +280,7 @@ class API {
 
     // Return reconnect url if accountId is passed in
     if (accountId) {
-      url = `${connectURL}/reconnect/${accountId}`;
+      url = transfer ? `${connectURL}/transfer/${accountId}` : `${connectURL}/reconnect/${accountId}`;
     }
 
     return { url: `${url}?${queryString}`, token };
@@ -285,6 +300,27 @@ class API {
     this._connect({ accountId, ...options });
 
     return this; // return the instance so we can chain the callbacks
+  }
+
+  // Opens the Connect widget in transfer mode for a connected wallet account.
+  // Options: token / to / amount (predefine), lock (make predefined fields
+  // read-only), waitForCompletion (widget waits for the final on-chain status
+  // and onTransfer fires then, instead of at broadcast).
+  transfer(accountId, options = {}) {
+    if (!accountId || typeof accountId !== 'string') {
+      throw new Error('Please provide a valid accountId.');
+    }
+
+    this._connect({ accountId, transfer: true, ...options });
+
+    return this; // return the instance so we can chain the callbacks
+  }
+
+  onTransfer(callback) {
+    if (typeof callback !== 'function') throw new Error('Callback must be a function.');
+    this[CALLBACK_TRANSFER] = callback.bind(this);
+
+    return this; // chaining support
   }
 
   onConnection(callback) {
@@ -314,6 +350,8 @@ class API {
     (async () => {
       try {
         this._widgetOpened = true;
+        this._transferDelivered = false;
+        this._transferCallbackFired = false;
         const {
           provider,
           providers,
@@ -328,8 +366,14 @@ class API {
           multiWallet,
           hideWalletConnectWallets,
           providersPreferences,
+          transfer,
+          token,
+          to,
+          amount,
+          lock,
+          waitForCompletion,
         } = options;
-        const { url, token } = await this.getConnectData({
+        const { url, token: sessionToken } = await this.getConnectData({
           provider,
           providers,
           disabledProviders,
@@ -343,16 +387,22 @@ class API {
           multiWallet,
           hideWalletConnectWallets,
           providersPreferences,
+          transfer,
+          token,
+          to,
+          amount,
+          lock,
+          waitForCompletion,
         });
 
         this.iframe = appendVezgoIframe();
 
         // GET is only for dev because it's not secure
         if (options.connectionType === 'GET') {
-          this.widget = window.open(`${url}&token=${token}`, this.iframe.name);
+          this.widget = window.open(`${url}&token=${sessionToken}`, this.iframe.name);
         } else {
           this.widget = window.open('', this.iframe.name);
-          this.form = appendVezgoForm({ url, token, iframe: this.iframe });
+          this.form = appendVezgoForm({ url, token: sessionToken, iframe: this.iframe });
 
           this.form.submit();
         }
@@ -413,7 +463,24 @@ class API {
         break;
       }
 
+      case 'transfer': {
+        // Transfer notification from the widget. Fired at broadcast by
+        // default, or at the final on-chain status in waitForCompletion mode.
+        // Does NOT close the widget — the user may still be watching the
+        // pending/confirmed screen.
+        this._transferDelivered = true;
+        this._triggerCallback(CALLBACK_TRANSFER, result.data && result.data.transfer);
+        break;
+      }
+
       case 'close': {
+        if (this._transferDelivered) {
+          // Transfer flow completed and already reported via onTransfer —
+          // this close is a clean exit, not an error.
+          this._widgetActive = false;
+          break;
+        }
+
         // Widget closed by user action, close right away
         this._closeWidgetWithError(400, 'Connection closed');
         break;
@@ -479,6 +546,17 @@ class API {
       if (this._widgetOpened) {
         this._widgetOpened = false;
 
+        if (this[callback]) this[callback](payload);
+      }
+
+      return;
+    }
+
+    if (callback === CALLBACK_TRANSFER) {
+      // Triggered at most once per widget session; the widget stays open so
+      // the user can keep watching the transfer status.
+      if (!this._transferCallbackFired) {
+        this._transferCallbackFired = true;
         if (this[callback]) this[callback](payload);
       }
 

@@ -27,9 +27,11 @@ export interface APIInterface {
   getConnectData(options: ConnectDataOptions): Promise<ConnectData>;
   connect(options?: ConnectOptions): APIInterface;
   reconnect(accountId: string, options?: ConnectOptions): APIUserInterface;
+  transfer(accountId: string, options?: TransferConnectOptions): APIUserInterface;
   onConnection(callback: Function): APIInterface;
   onError(callback: Function): APIInterface;
   onEvent(callback: Function): APIInterface;
+  onTransfer(callback: (transfer: Transfer) => void): APIInterface;
   providers: ProvidersInterface;
   teams: TeamsInterface;
 }
@@ -50,6 +52,7 @@ export interface APIUserInterface extends APIInterface {
   accounts: AccountsInterface;
   history: HistoryInterface;
   transactions: TransactionsInterface;
+  transfers: TransfersInterface;
 }
 
 export interface AccountsInterface {
@@ -89,6 +92,75 @@ export interface TransactionsInterface {
   getList(options: TransactionsOptions): Promise<Transaction[]> | Promise<never>;
   getOne(options: TransactionOptions): Promise<Transaction> | Promise<never>;
 }
+
+/** Options for `user.transfer()` — opens the Connect widget in transfer mode. */
+export type TransferConnectOptions = {
+  /** Predefine the token — 'ETH'-style native symbol or an ERC-20 contract address. */
+  token?: string;
+  /** Predefine the destination address. */
+  to?: string;
+  /** Predefine the amount — decimal string, e.g. '0.25'. */
+  amount?: string;
+  /** Make the predefined fields read-only in the widget. Default false. */
+  lock?: boolean;
+  /**
+   * When true, the widget waits for the final on-chain status and onTransfer
+   * fires at that point. Default false — onTransfer fires at broadcast.
+   */
+  waitForCompletion?: boolean;
+  lang?: string;
+  theme?: "light" | "dark";
+};
+
+export interface TransfersInterface {
+  constructor(api: APIUserInterface);
+  getList(options: TransfersListOptions): Promise<Transfer[]> | Promise<never>;
+  getOne(options: TransferOptions): Promise<Transfer> | Promise<never>;
+}
+
+export type TransfersListOptions = {
+  accountId: string;
+  limit?: number;
+  cursor?: string;
+};
+
+export type TransferOptions = {
+  accountId: string;
+  transferId: string;
+};
+
+/** A wallet transfer initiated through the Connect widget's transfer mode. */
+export type Transfer = {
+  id: string;
+  /** The Vezgo account (connection) the transfer belongs to. */
+  account: string;
+  status: "created" | "authorized" | "pending" | "confirmed" | "failed" | "dropped" | "expired";
+  chain_id: number;
+  token: {
+    type: "native" | "erc20";
+    symbol: string;
+    /** ERC-20 contract address; null for native. */
+    contract: string | null;
+    decimals: number;
+  };
+  from_address: string;
+  to_address: string;
+  /** Amount as a string in the smallest on-chain unit — never parse as float. */
+  amount: string;
+  /** Human-readable decimal amount, e.g. '0.25'. */
+  amount_display: string;
+  tx_hash: string | null;
+  explorer_url: string | null;
+  failure_reason: string | null;
+  created_at: number | null;
+  broadcast_at: number | null;
+  confirmed_at: number | null;
+  block_number: number | null;
+  gas_used: string | null;
+  effective_gas_price: string | null;
+  /** Id of the synced transaction (Transactions API); null until confirmed and synced. */
+  transaction: string | null;
+};
 
 export type TransactionsOptions = {
   accountId: string;

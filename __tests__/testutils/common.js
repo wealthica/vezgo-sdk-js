@@ -173,6 +173,37 @@ export const testGetConnectDataBehavior = function ({ isBrowser } = {}) {
       expect(url).toContain('https://connect.vezgo.com/reconnect/someaccount?');
     });
 
+    test('should return transfer url and predefine params if `transfer` is passed in', async () => {
+      const { url } = await this.user.getConnectData({
+        accountId: 'someaccount',
+        transfer: true,
+        token: 'ETH',
+        to: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+        amount: '0.001',
+        lock: true,
+        waitForCompletion: true,
+      });
+      expect(url).toContain('https://connect.vezgo.com/transfer/someaccount?');
+      expect(url).toContain('transfer_token=ETH');
+      expect(url).toContain('transfer_to=0x742d35Cc6634C0532925a3b844Bc454e4438f44e');
+      expect(url).toContain('transfer_amount=0.001');
+      expect(url).toContain('transfer_lock=true');
+      expect(url).toContain('wait_for_completion=true');
+    });
+
+    test('should not pass transfer params without `transfer` mode', async () => {
+      const { url } = await this.user.getConnectData({
+        accountId: 'someaccount',
+        token: 'ETH',
+        to: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+        amount: '0.001',
+      });
+      expect(url).toContain('https://connect.vezgo.com/reconnect/someaccount?');
+      expect(url).not.toContain('transfer_token');
+      expect(url).not.toContain('transfer_to');
+      expect(url).not.toContain('transfer_amount');
+    });
+
     test('should use `redirectURI` if passed to the method or Vezgo.init()', async () => {
       if (isBrowser) {
         this.user = Vezgo.init({ clientId: 'test', redirectURI: 'http://testuri' }).login();

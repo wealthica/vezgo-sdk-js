@@ -19,6 +19,51 @@ describe('Vezgo User instance (Browser)', () => {
     });
   });
 
+  describe('.transfer()', () => {
+    test('should require accountId', () => {
+      expect(() => this.user.transfer()).toThrow(/accountId/);
+    });
+
+    test('should support onTransfer callback registration', () => {
+      expect(() => this.user.onTransfer('not a function')).toThrow(/function/);
+      expect(this.user.onTransfer(() => {})).toBe(this.user);
+    });
+
+    test('should fire onTransfer once, keep the widget open, and treat close as clean', () => {
+      const onTransfer = vi.fn();
+      const onError = vi.fn();
+      this.user.onTransfer(onTransfer).onError(onError);
+
+      // Simulate an open transfer widget session
+      this.user._widgetOpened = true;
+      this.user._widgetActive = true;
+      this.user._transferDelivered = false;
+      this.user._transferCallbackFired = false;
+
+      const send = (event, data) => this.user._onMessage({
+        origin: 'https://connect.vezgo.com',
+        data: JSON.stringify({ vezgo: true, event, data }),
+      });
+
+      const transfer = { id: 'tr_test', status: 'pending', tx_hash: '0xhash' };
+      send('transfer', { transfer });
+
+      expect(onTransfer).toHaveBeenCalledTimes(1);
+      expect(onTransfer).toHaveBeenCalledWith(transfer);
+      // Widget must stay open — the user may be watching the pending screen
+      expect(this.user._widgetActive).toBe(true);
+
+      // At most once per session
+      send('transfer', { transfer });
+      expect(onTransfer).toHaveBeenCalledTimes(1);
+
+      // Close after a delivered transfer is a clean exit, not an error
+      send('close');
+      expect(this.user._widgetActive).toBe(false);
+      expect(onError).not.toHaveBeenCalled();
+    });
+  });
+
   describe('.fetchToken()', () => {
     test('should call default authEndpoint', async () => {
       const resultToken = await this.user.fetchToken();

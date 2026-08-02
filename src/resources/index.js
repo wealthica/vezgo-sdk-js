@@ -3,6 +3,7 @@ import history from './history';
 import providers from './providers';
 import teams from './teams';
 import transactions from './transactions';
+import transfers from './transfers';
 import orders from './orders';
 
 const RESOURCES = {
@@ -11,6 +12,7 @@ const RESOURCES = {
   providers,
   teams,
   transactions,
+  transfers,
   orders,
 };
 
