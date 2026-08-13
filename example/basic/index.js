@@ -14,6 +14,9 @@ const vezgo = Vezgo.init({
   secret: process.env.VEZGO_CLIENT_SECRET,
   baseURL: process.env.VEZGO_API_URL || 'https://api.vezgo.com/v1',
 });
+// Widget feature flags. 'predictions' is required for prediction-market providers
+// (e.g. Polymarket) to be returned by the API. 'none' sends no features.
+const connectFeatures = process.env.VEZGO_CLIENT_FEATURES || 'predictions';
 
 app.get('/assets/config.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
@@ -25,6 +28,7 @@ app.get('/assets/config.js', (req, res) => {
       VEZGO_CONNECT_TYPE: '${process.env.VEZGO_CONNECT_TYPE || 'POST'}',
       VEZGO_CLIENT_THEME: '${process.env.VEZGO_CLIENT_THEME || 'light'}',
       VEZGO_CLIENT_PROVIDERS_PER_LINE: ${process.env.VEZGO_CLIENT_PROVIDERS_PER_LINE || 2},
+      VEZGO_CLIENT_FEATURES: '${connectFeatures === 'none' ? '' : connectFeatures}',
     };
   `);
 });

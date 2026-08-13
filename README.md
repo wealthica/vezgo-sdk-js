@@ -193,13 +193,16 @@ const { url, token } = await user.getConnectData({
   origin: 'YOUR_SITE_ORIGIN',
   state: 'YOUR_APP_STATE', // optional
   lang: 'en', // optional (en | es | fr | it), 'en' by default
-  providerCategories: ['exchanges', 'blockchains', 'wallets'], // optional, by default all categories are shown
+  providerCategories: ['exchanges', 'blockchains', 'wallets', 'predictions'], // optional, by default all categories are shown
   providers: ['binance', 'coinbase', 'ethereum'], // optional, ignored if `provider` is also passed in.
   disabledProviders: ['binance', 'ethereum'], // optional, custom disabled.
   theme: 'light', // optional (light | dark), 'light' by default
   providersPerLine: 1, // optional (1 | 2), 2 by default
   syncNfts: false, // optional, whether to show "Sync NFTs" checkbox. true by default (enabling sync_nfts feature on your account is done separately)
-  features: 'feature1,feature2', // optional, a comma-separated list of features. undefined by default
+  // optional, a comma-separated list of features. undefined by default.
+  // Use 'predictions' to show prediction-market providers (e.g. Polymarket),
+  // which the API hides unless the feature is requested.
+  features: 'predictions',
   multiWallet: true, // optional, allows to connect multiple wallets in one take and return list of connected account and list of errors, also this mode allows to select multiple networks for wallets
   hideWalletConnectWallets: true, // optional, hides WalletConnect wallets from the list of providers
   // optional, session-based providers preferences. If provided, will override providers preferences set in the app / team.

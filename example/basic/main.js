@@ -42,6 +42,9 @@ $(document).ready(() => {
     const multiWallet = window.location.search.includes('multi_wallet=true');
 
     user.connect({
+      // Feature flags forwarded to the widget. 'predictions' unlocks prediction-market
+      // providers (e.g. Polymarket), which the API hides unless the feature is requested.
+      features: constants.VEZGO_CLIENT_FEATURES || undefined,
       // provider: 'binance',
       // providers: ['metamask', 'demo', 'coinbase'],
       // disabledProviders: ['binance', 'metamask'],
