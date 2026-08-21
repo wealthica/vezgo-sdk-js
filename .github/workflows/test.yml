@@ -3,6 +3,7 @@ name: Tests and quality checks
 on:
   push:
     branches: [ master ]
+  pull_request:
 
 jobs:
   test:
@@ -12,16 +13,22 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          # Node 18 is EOL and the build toolchain (vite 8 / vitest 4 / eslint 10)
+          # requires >= 20.19. This is the toolchain's runtime only — the published
+          # bundles still target node18 (see vite.config.node.mjs).
+          node-version: 22
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
+
+      - name: Run lint
+        run: yarn lint
 
       - name: Run tests
         run: yarn test

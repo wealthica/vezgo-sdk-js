@@ -1,17 +1,9 @@
 import {defineConfig} from 'vite';
-import {viteStaticCopy} from 'vite-plugin-static-copy';
 
+// Note: src/index.d.ts is copied to dist/ by the `build:types` npm script rather than
+// a plugin — it is a single-file copy, and the dedicated plugin was an extra dependency
+// (with its own advisories) for one `cp`.
 export default defineConfig({
-  plugins: [
-    viteStaticCopy({
-      targets: [
-        {
-          src: './src/index.d.ts',
-          dest: '',
-        }
-      ]
-    })
-  ],
   build: {
     emptyOutDir: false,
     target: 'node18',
