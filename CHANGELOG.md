@@ -4,6 +4,29 @@ All notable changes to the Vezgo SDK across versions will be documented in this 
 
 ## [Unreleased]
 
+## [2.0.7] - 2026-08-21
+- Document the `predictions` widget feature flag: add `predictions` to the documented
+  `providerCategories` values, describe the `features` option in the README and in
+  `src/index.d.ts`, and make the basic example configurable via `VEZGO_CLIENT_FEATURES`.
+  No runtime behaviour change — the SDK already forwarded `features` to the widget.
+- Security: resolve all dependency advisories reachable from the published package.
+  `apisauce` 3.0.1 -> 3.2.2 (pulls axios 1.6.8 -> 1.19.0, which requires `form-data`
+  >= 4.0.6 and `follow-redirects` >= 1.16.0) and `jsonwebtoken` 9.0.2 -> 9.0.3 (pulls
+  `jws` >= 4.0.1). This clears a critical advisory in `form-data`, a high-severity
+  improper-HMAC-verification advisory in `jws`, and 14 high-severity axios SSRF /
+  prototype-pollution / credential-leak advisories.
+- Build/tooling only (no effect on consumers): removed unused devDependencies (the
+  Babel toolchain, `eslint-config-airbnb-base`, `eslint-plugin-import`,
+  `vite-plugin-static-copy`), upgraded vite/vitest/eslint/prettier, and fixed the
+  eslint flat config so build output is no longer linted. Building the SDK now
+  requires Node >= 20.19; the published bundles still target Node 18+.
+
+## [2.0.6] - 2026-05-28
+- Fix the Connect widget closing on non-terminal `ERROR` events from vezgo-app
+  (`INVALID_CREDENTIALS`, `SECURITY_QUESTION_REQUIRED`, etc.) so users can retry
+  credentials inline, and restore the singleton-as-module-export DX so consumers can
+  call `require('vezgo-sdk-js').init(...)` without the `.default` workaround.
+
 ## [2.0.5] - 2026-05-05
 - Add `accounts.getKYCData(id)` for the new `GET /accounts/:id/kyc-data` endpoint. Returns the KYC payload on success, or `null` if no data has been captured yet for the account (404). Throws on 403 (KYC feature not enabled for the team) and other errors.
 
