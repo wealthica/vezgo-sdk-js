@@ -141,12 +141,15 @@ export type ConnectOptions = {
   provider?: string;
   accountId?: string;
   lang?: string;
+  /** 'exchanges' | 'blockchains' | 'wallets' | 'predictions' */
   providerCategories?: Array<string>;
   providers?: Array<string>;
   disabledProviders?: Array<string>;
   theme?: string;
   providersPerLine?: string;
   syncNfts?: boolean;
+  /** Comma-separated feature flags passed to the widget, e.g. 'predictions' to show
+   * prediction-market providers such as Polymarket. */
   features?: string;
   multiWallet?: boolean;
   hideWalletConnectWallets?: boolean;

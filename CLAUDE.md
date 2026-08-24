@@ -37,11 +37,16 @@ Run a single test file: `yarn test __tests__/resources/accounts.js`
 
 ## Build
 
-Two Vite configs produce three outputs:
+Two Vite configs produce three outputs, plus a copied type declaration:
 - `vite.config.node.mjs` -> `dist/vezgo.es.js` (ESM) + `dist/vezgo.cjs.js` (CJS), Node 18+ target
 - `vite.config.browser.mjs` -> `dist/vezgo.umd.js` (UMD), ES2015+ target with Node polyfills
+  (only `buffer`, `process`, and `stream` are polyfilled — no crypto polyfill is bundled)
+- `build:types` -> copies `src/index.d.ts` to `dist/index.d.ts` (the `types` entry in `package.json`)
 
 `prepublishOnly` runs `npm run build` automatically before `npm publish`.
+
+**Toolchain requires Node >= 20.19** (vite 8 / vitest 4 / eslint 10); CI runs Node 22. This
+applies to building the SDK, not to consuming it — the published bundles still target Node 18+.
 
 ## Testing
 
@@ -52,7 +57,9 @@ Two Vite configs produce three outputs:
 
 ## Code Style
 
-- ESLint with airbnb-base, single quotes enforced
+- ESLint flat config (`eslint.config.js`); the only enforced rule is single quotes.
+  Note: `eslint-config-airbnb-base` is NOT used — the flat config never loaded it, and it has
+  no eslint 9+/10 compatible release. Add a shared config here if broader rules are wanted.
 - Prettier: single quotes, trailing commas (es5), 100 char width
 - ES6 classes, async/await throughout
 
