@@ -20,6 +20,7 @@ export default defineConfig({
           dir: 'dist',
           entryFileNames: 'vezgo.umd.js',
           name: 'Vezgo',
+          exports: 'default',
         },
       ]
     },
