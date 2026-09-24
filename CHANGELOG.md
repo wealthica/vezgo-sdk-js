@@ -3,10 +3,14 @@
 All notable changes to the Vezgo SDK across versions will be documented in this file.
 
 ## [Unreleased]
-- Security: rebuild from the lockfile so the browser bundle ships axios 1.20.0 — the published
-  2.0.7 `dist/vezgo.umd.js` was built from a stale `node_modules` and inlines axios 1.14.0
-  (10+ high advisories, fixed in 1.18+). Dependencies refreshed within their current ranges;
-  no source change.
+- Security: rebuild from the lockfile so the browser bundle (`dist/vezgo.umd.js`) ships axios 1.20.0.
+  The published 2.0.7 UMD was built from a stale `node_modules` and inlines axios 1.14.0
+  (10 high advisories, all fixed by 1.16.0, plus several moderate ones fixed by 1.18.0). The ES
+  and CJS builds do not bundle axios: consumers resolve it through `apisauce` and should refresh
+  their own lockfile.
+- This is also the first release built with the Vite 8 / rolldown toolchain that 2.0.7 announced
+  but was not actually built with. Bundle shape changes (interop helpers, backtick strings); the
+  API surface and the request sequence are unchanged. No source change.
 
 ## [2.0.7] - 2026-08-21
 - Document the `predictions` widget feature flag: add `predictions` to the documented
