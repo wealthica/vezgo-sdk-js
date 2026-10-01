@@ -2,7 +2,7 @@
 
 All notable changes to the Vezgo SDK across versions will be documented in this file.
 
-## [Unreleased]
+## [2.0.8] - 2026-10-01
 - Security: rebuild from the lockfile so the browser bundle (`dist/vezgo.umd.js`) ships axios 1.20.0.
   The published 2.0.7 UMD was built from a stale `node_modules` and inlines axios 1.14.0
   (10 high advisories, all fixed by 1.16.0, plus several moderate ones fixed by 1.18.0). The ES
