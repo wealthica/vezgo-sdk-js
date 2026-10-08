@@ -65,18 +65,23 @@ applies to building the SDK, not to consuming it — the published bundles still
 
 ## Release Process
 
-Published to npm as `vezgo-sdk-js` (see `name` in `package.json`) by GitHub Actions (`.github/workflows/publish.yml`), never from a developer machine: a local `npm publish` bundles whatever `node_modules` the machine has instead of the lockfile (that is how 2.0.7 shipped axios 1.14.0). Releases can be cut from either `master` or a feature branch — the steps below assume you're already on the branch that has the change committed.
+Published to npm as `vezgo-sdk-js` (see `name` in `package.json`) by GitHub Actions (`.github/workflows/publish.yml`), never from a developer machine: a local `npm publish` bundles whatever `node_modules` the machine has instead of the lockfile (that is how 2.0.7 shipped axios 1.14.0). `prepublishOnly` fails on purpose, so a local `npm publish` stops with a pointer here.
+
+`master` only takes squash-merged PRs, so the version bump goes through a PR and the tag goes on the squash commit:
 
 ```bash
-# 1. Bump version — creates a "X.Y.Z" commit and a matching "vX.Y.Z" tag
-npm version patch        # or minor / major
+# 1. On a branch: bump the version without tagging, add a CHANGELOG.md entry, open a PR, squash-merge it
+npm version patch --no-git-tag-version   # or minor / major
 
-# 2. Push the version-bump commit and the tag — the tag push triggers the publish workflow
-git push origin <current-branch>
+# 2. Tag the squash commit on master and push the tag; this starts the publish workflow
+git fetch origin
+git tag vX.Y.Z <squash-commit-sha>
 git push origin vX.Y.Z
+
+# 3. Approve the `npm` environment deployment in the workflow run (Actions tab)
 ```
 
-The workflow installs with `--frozen-lockfile`, fails if the tag does not match the `package.json` version, runs lint, tests and build, fails if `dist/vezgo.umd.js` does not inline the axios version from `yarn.lock`, then runs `npm publish --provenance`. npm auth is trusted publishing (OIDC, configured in the package settings on npmjs.com), with an `NPM_TOKEN` repo secret as the fallback.
+The workflow only runs for `vX.Y.Z` tags (no prereleases). The `build` job fails if the tag does not match the `package.json` version or its commit is not on `master`, installs with `--frozen-lockfile --ignore-scripts`, runs lint, tests and build, fails if the bundled axios is not the version from `yarn.lock`, and packs the tarball. The `publish` job (environment `npm`, the only job with `id-token: write`) publishes that tarball with `npm publish --provenance`, authenticated by npm trusted publishing (OIDC) — there is no npm token. The trusted publisher on npmjs.com is GitHub Actions, organization `wealthica`, repository `vezgo-sdk-js`, workflow `publish.yml`, environment `npm`; renaming the workflow file or the environment breaks publishing until it is updated there.
 
 Check the run in the Actions tab, then verify the version page shows the provenance badge: https://www.npmjs.com/package/vezgo-sdk-js/v/<version>
 
@@ -88,5 +93,3 @@ rm -rf node_modules
 npm install              # installs the just-published version via the `^` range in package.json
 npm start                # visit http://localhost:3001 and exercise the change
 ```
-
-If the release was cut from a feature branch, remember to merge that branch back into `master` once verified so master and npm stay in sync.

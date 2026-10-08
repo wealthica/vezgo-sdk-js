@@ -904,9 +904,10 @@ That's useful for developing Connect URL when vite local server used.
 Token exposed in URL when GET method used what is not secure so this feature should be used only for development goals.
 
 ### Release
+Releases are published by GitHub Actions, not from a developer machine (`npm publish` fails locally on purpose):
 ```
-npm version patch # or minor/major
-git push && git push --tags
-# wait until merged then
-npm publish
+npm version patch --no-git-tag-version # or minor/major; add a CHANGELOG entry, PR, squash-merge
+git fetch origin
+git tag vX.Y.Z <squash-commit-sha-on-master>
+git push origin vX.Y.Z # starts .github/workflows/publish.yml; approve the `npm` environment in the run
 ```
