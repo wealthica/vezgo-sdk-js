@@ -4,6 +4,10 @@
   "description": "Official Vezgo JS SDK for the Browser & NodeJS",
   "author": "Wealthica Financial Technology Inc. <hello@wealthica.com> (https://wealthica.com/)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wealthica/vezgo-sdk-js.git"
+  },
   "main": "dist/vezgo.cjs.js",
   "module": "dist/vezgo.es.js",
   "types": "dist/index.d.ts",

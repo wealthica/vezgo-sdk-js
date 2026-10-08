@@ -65,29 +65,20 @@ applies to building the SDK, not to consuming it — the published bundles still
 
 ## Release Process
 
-Published to npm as `vezgo-sdk-js` (see `name` in `package.json`). Releases can be cut from either `master` or a feature branch — the steps below assume you're already on the branch that has the change committed.
+Published to npm as `vezgo-sdk-js` (see `name` in `package.json`) by GitHub Actions (`.github/workflows/publish.yml`), never from a developer machine: a local `npm publish` bundles whatever `node_modules` the machine has instead of the lockfile (that is how 2.0.7 shipped axios 1.14.0). Releases can be cut from either `master` or a feature branch — the steps below assume you're already on the branch that has the change committed.
 
 ```bash
-# 1. Use Node 22 (engines: node >= 18; Node 22 is what CI/release tooling uses)
-nvm use 22
-
-# 2. Bump version — creates a "X.Y.Z" commit and a matching "vX.Y.Z" tag
+# 1. Bump version — creates a "X.Y.Z" commit and a matching "vX.Y.Z" tag
 npm version patch        # or minor / major
 
-# 3. Push the version-bump commit and the tag
+# 2. Push the version-bump commit and the tag — the tag push triggers the publish workflow
 git push origin <current-branch>
-git push origin --tags
-
-# 4. Confirm you're logged in to npm (the publish account must have access to the `vezgo-sdk-js` package)
-npm whoami               # if this errors, run:
-npm login                # follow the browser/OTP prompt
-
-# 5. Publish — `prepublishOnly` runs `npm run build` automatically before upload
-npm publish
-
-# 6. Verify the version-specific page is live
-open https://www.npmjs.com/package/vezgo-sdk-js/v/<version>
+git push origin vX.Y.Z
 ```
+
+The workflow installs with `--frozen-lockfile`, fails if the tag does not match the `package.json` version, runs lint, tests and build, fails if `dist/vezgo.umd.js` does not inline the axios version from `yarn.lock`, then runs `npm publish --provenance`. npm auth is trusted publishing (OIDC, configured in the package settings on npmjs.com), with an `NPM_TOKEN` repo secret as the fallback.
+
+Check the run in the Actions tab, then verify the version page shows the provenance badge: https://www.npmjs.com/package/vezgo-sdk-js/v/<version>
 
 There is no separate staging environment — every published version is immediately available to all consumers. The standard local-verification path is:
 
