@@ -1,0 +1,125 @@
+name: Publish to npm
+
+on:
+  push:
+    tags: [ 'v[0-9]+.[0-9]+.[0-9]+' ]
+
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  build:
+    name: Build and check
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    outputs:
+      tarball: ${{ steps.pack.outputs.tarball }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Before any dependency code runs
+      - name: Check tag matches package.json version and is on master
+        run: |
+          version=$(jq -r .version package.json)
+          if [ "$GITHUB_REF_NAME" != "v$version" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $version"
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor HEAD origin/master; then
+            echo "::error::Tag $GITHUB_REF_NAME points to a commit that is not on master"
+            exit 1
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Run lint
+        run: yarn lint
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Run build
+        run: yarn build
+
+      # The browser bundle inlines axios, so it must be the version the lockfile resolves
+      - name: Check bundled axios version
+        env:
+          BUNDLES: dist/vezgo.umd.js
+        run: |
+          versions=$({ grep -A1 -E '^"?axios@' yarn.lock || true; } | sed -n 's/^  version "\(.*\)"$/\1/p' | sort -u)
+          if [ -z "$versions" ] || [ "$(echo "$versions" | wc -l)" -ne 1 ]; then
+            echo "::error::Expected exactly one axios version in yarn.lock, got: ${versions:-none}"
+            exit 1
+          fi
+          for bundle in $BUNDLES; do
+            if ! grep -qF -e "\"$versions\"" -e "'$versions'" -e "\`$versions\`" "$bundle"; then
+              echo "::error::$bundle does not inline axios $versions from yarn.lock"
+              exit 1
+            fi
+            echo "$bundle inlines axios $versions"
+          done
+
+      - name: Pack
+        id: pack
+        run: echo "tarball=$(npm pack --ignore-scripts --json | jq -r '.[0].filename')" >> "$GITHUB_OUTPUT"
+
+      - name: Upload package
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: package
+          path: ${{ steps.pack.outputs.tarball }}
+          if-no-files-found: error
+
+  # Only this job can mint an npm token (OIDC), and it runs no project or dependency code:
+  # it publishes the tarball checked above
+  publish:
+    name: Publish
+
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    environment: npm
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Download package
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: package
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+
+      # Trusted publishing needs npm >= 11.5.1; Node 22 ships npm 10
+      - name: Update npm
+        run: npm install -g npm@11.21.0
+
+      - name: Publish
+        run: npm publish "$TARBALL" --provenance --access public
+        env:
+          TARBALL: ${{ needs.build.outputs.tarball }}

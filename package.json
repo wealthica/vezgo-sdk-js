@@ -4,6 +4,10 @@
   "description": "Official Vezgo JS SDK for the Browser & NodeJS",
   "author": "Wealthica Financial Technology Inc. <hello@wealthica.com> (https://wealthica.com/)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wealthica/vezgo-sdk-js.git"
+  },
   "main": "dist/vezgo.cjs.js",
   "module": "dist/vezgo.es.js",
   "types": "dist/index.d.ts",
@@ -29,7 +33,7 @@
     "build:browser": "vite build --config vite.config.browser.mjs",
     "build:node": "vite build --config vite.config.node.mjs",
     "build:types": "cp src/index.d.ts dist/index.d.ts",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "node -e \"console.error('Publishing runs in CI only: merge the version bump, then push a vX.Y.Z tag (see CLAUDE.md)');process.exit(1)\"",
     "test": "vitest run",
     "watch:test": "vitest --watch",
     "lint": "eslint .",
