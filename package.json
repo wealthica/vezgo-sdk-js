@@ -44,7 +44,7 @@
     "jsonwebtoken": "^9.0.3"
   },
   "resolutions": {
-    "pbkdf2": "^3.1.6",
+    "pbkdf2": "^3.1.7",
     "sha.js": "^2.4.12",
     "cipher-base": "^1.0.7",
     "elliptic": "^6.6.1",
